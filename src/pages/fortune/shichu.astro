@@ -1,19 +1,20 @@
 ---
 import Layout from '../../layouts/Layout.astro';
-import '../../styles/global.css'; // 共通CSSを読み込み
+import '../../styles/global.css';
 ---
-
 <Layout title="四柱推命・算命学 | 東洋占術">
   <div class="page">
+    <div class="stars" id="stars"></div>
     <div class="page-inner">
+
       <header class="page-header fade-in-up">
         <h1 class="page-title">四柱推命・算命学</h1>
         <p class="page-desc">あなたの宿命の設計図と、真の才能を読み解きます</p>
       </header>
 
-      <div class="glass-card fade-in-up delay-1">
+      <div class="glass-card form-card fade-in-up delay-1">
         <div class="date-row">
-          <div class="field"><label>生年</label><input type="number" id="year" placeholder="1990" /></div>
+          <div class="field"><label>生年</label><input type="number" id="year" placeholder="1990" min="1900" max="2010" /></div>
           <div class="field">
             <label>月</label>
             <select id="month">{Array.from({length:12},(_,i)=><option value={i+1}>{i+1}月</option>)}</select>
@@ -33,44 +34,279 @@ import '../../styles/global.css'; // 共通CSSを読み込み
           </div>
           <div class="field">
             <label>性別</label>
-            <select id="gender"><option value="f">女性</option><option value="m">男性</option></select>
+            <select id="gender">
+              <option value="f">女性</option>
+              <option value="m">男性</option>
+            </select>
           </div>
         </div>
         <p class="error-msg" id="form-error"></p>
         <button class="btn-primary" id="btn" onclick="runShichu()">✦ 命式を作成する</button>
       </div>
 
-      <div id="result-section" style="display:none;">
-        <div class="glass-card result-item" style="text-align:center; border-top: 3px solid var(--gold);">
-          <p class="result-subtitle">あなたを表す自然界のシンボル（日干）</p>
-          <h2 class="result-title" id="res-nikkan"></h2>
-          <p class="result-text" id="res-desc" style="text-align:left; margin-top:2rem; padding:1.5rem; background:rgba(255,255,255,0.03); border-radius:8px;"></p>
+      <div id="result-section" style="display:none">
+        <div class="result-grid">
+
+          <!-- 命式盤 -->
+          <div class="glass-card result-item meishiki-card">
+            <h3 class="card-subtitle">命式盤</h3>
+            <div class="meishiki-table">
+              <div class="meishiki-col">
+                <p class="col-label">時柱</p>
+                <p class="col-kan" id="jichu-kan">--</p>
+                <p class="col-shi" id="jichu-shi">--</p>
+                <p class="col-tsuhen" id="jichu-tsuhen"></p>
+              </div>
+              <div class="meishiki-col">
+                <p class="col-label">日柱</p>
+                <p class="col-kan nikkan-highlight" id="nichu-kan"></p>
+                <p class="col-shi" id="nichu-shi"></p>
+                <p class="col-tsuhen">（本人）</p>
+              </div>
+              <div class="meishiki-col">
+                <p class="col-label">月柱</p>
+                <p class="col-kan" id="getchu-kan"></p>
+                <p class="col-shi" id="getchu-shi"></p>
+                <p class="col-tsuhen" id="getchu-tsuhen"></p>
+              </div>
+              <div class="meishiki-col">
+                <p class="col-label">年柱</p>
+                <p class="col-kan" id="nenchu-kan"></p>
+                <p class="col-shi" id="nenchu-shi"></p>
+                <p class="col-tsuhen" id="nenchu-tsuhen"></p>
+              </div>
+            </div>
+            <div class="meishiki-meta">
+              <span class="meta-chip" id="juniun-chip"></span>
+              <span class="meta-chip" id="gogyo-chip"></span>
+              <span class="meta-chip" id="inyo-chip"></span>
+            </div>
+          </div>
+
+          <!-- 日干 -->
+          <div class="glass-card result-item nikkan-card">
+            <p class="star-label" id="nikkan-label"></p>
+            <h2 class="result-title" id="nikkan-name"></h2>
+            <p class="star-sub" id="nikkan-gogyo"></p>
+            <div class="personality-box" id="nikkan-personality"></div>
+          </div>
+
+          <!-- 才能・弱点・恋愛・仕事 -->
+          <div class="glass-card result-item">
+            <h3 class="card-subtitle">才能・特性</h3>
+            <div class="text-grid">
+              <div class="text-section">
+                <h4 class="text-label">才能</h4>
+                <p class="text-body" id="nikkan-talent"></p>
+              </div>
+              <div class="text-section">
+                <h4 class="text-label">弱点</h4>
+                <p class="text-body" id="nikkan-weakness"></p>
+              </div>
+              <div class="text-section">
+                <h4 class="text-label">恋愛</h4>
+                <p class="text-body" id="nikkan-love"></p>
+              </div>
+              <div class="text-section">
+                <h4 class="text-label">仕事</h4>
+                <p class="text-body" id="nikkan-work"></p>
+              </div>
+            </div>
+          </div>
+
+          <!-- 算命学：天中殺 -->
+          <div class="glass-card result-item">
+            <h3 class="card-subtitle">算命学・天中殺</h3>
+            <div class="tenchusatsu-box">
+              <p class="tenchusatsu-name" id="tenchusatsu-name"></p>
+              <p class="text-body" id="tenchusatsu-desc"></p>
+            </div>
+          </div>
+
+          <!-- 大運 -->
+          <div class="glass-card result-item">
+            <h3 class="card-subtitle">大運（10年ごとの運勢）</h3>
+            <div class="daiun-list" id="daiun-list"></div>
+          </div>
+
         </div>
       </div>
     </div>
   </div>
 </Layout>
 
+<style>
+.page { padding: 3rem 1.5rem; min-height: 100vh; position: relative; }
+.stars { position: fixed; inset: 0; pointer-events: none; z-index: 0; }
+.page-inner { max-width: 680px; margin: 0 auto; position: relative; z-index: 1; }
+.page-header { text-align: center; margin-bottom: 2rem; }
+.page-title { font-family: 'Shippori Mincho', serif; font-size: 26px; margin-bottom: 0.5rem; }
+.page-desc { font-size: 14px; color: var(--text-secondary); }
+.form-card { margin-bottom: 2rem; }
+.date-row { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 8px; margin-bottom: 1rem; }
+.field { display: flex; flex-direction: column; gap: 4px; }
+.field label { font-size: 11px; color: var(--text-secondary); }
+.result-grid { display: flex; flex-direction: column; gap: 1.25rem; margin-top: 2rem; }
+.card-subtitle { font-family: 'Shippori Mincho', serif; color: var(--gold); font-size: 16px; margin-bottom: 1.25rem; text-align: center; }
+
+/* 命式盤 */
+.meishiki-card { padding: 1.75rem; }
+.meishiki-table { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 1rem; }
+.meishiki-col {
+  background: #ffffff06; border: 0.5px solid #ffffff15;
+  border-radius: var(--radius-md); padding: 1rem 0.5rem;
+  text-align: center;
+}
+.col-label { font-size: 10px; color: var(--text-secondary); margin-bottom: 8px; }
+.col-kan { font-family: 'Shippori Mincho', serif; font-size: 22px; margin-bottom: 6px; color: #f0e6d3; }
+.col-shi { font-size: 18px; color: var(--text-secondary); margin-bottom: 6px; }
+.col-tsuhen { font-size: 10px; color: var(--gold); }
+.nikkan-highlight { color: var(--gold) !important; font-size: 26px !important; }
+.meishiki-meta { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
+.meta-chip {
+  font-size: 12px; padding: 3px 12px; border-radius: 999px;
+  background: #b08d5a18; color: var(--gold); border: 0.5px solid #b08d5a44;
+}
+
+/* 日干カード */
+.nikkan-card { text-align: center; border-top: 3px solid var(--gold); padding: 2rem; }
+.star-label { font-size: 11px; color: var(--gold); letter-spacing: 0.15em; margin-bottom: 0.5rem; }
+.star-sub { font-size: 12px; color: var(--text-secondary); margin-bottom: 1.25rem; }
+.personality-box {
+  background: rgba(176,141,90,0.08); border-left: 3px solid var(--gold);
+  padding: 1.25rem; font-size: 13px; line-height: 1.9; text-align: left;
+  border-radius: 0 var(--radius-md) var(--radius-md) 0;
+}
+
+/* 才能グリッド */
+.text-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+.text-section { margin-bottom: 0.5rem; }
+.text-label { font-size: 10px; color: var(--gold); letter-spacing: 0.1em; margin-bottom: 0.4rem; }
+.text-body { font-size: 13px; color: var(--text-secondary); line-height: 1.8; }
+
+/* 天中殺 */
+.tenchusatsu-box { background: #ffffff06; border-radius: var(--radius-md); padding: 1.25rem; }
+.tenchusatsu-name { font-family: 'Shippori Mincho', serif; font-size: 20px; color: var(--gold); margin-bottom: 0.75rem; text-align: center; }
+
+/* 大運 */
+.daiun-list { display: flex; flex-direction: column; gap: 8px; }
+.daiun-item {
+  display: flex; align-items: center; gap: 1rem;
+  background: #ffffff06; border-radius: var(--radius-md);
+  padding: 0.75rem 1rem; border: 0.5px solid #ffffff10;
+}
+.daiun-age { font-size: 12px; color: var(--text-secondary); width: 60px; flex-shrink: 0; }
+.daiun-kanshi { font-family: 'Shippori Mincho', serif; font-size: 18px; color: #f0e6d3; }
+.daiun-gogyo { font-size: 11px; color: var(--gold); margin-left: auto; }
+
+@keyframes twinkle {
+  0%,100% { opacity: 0.2; } 50% { opacity: 0.8; }
+}
+</style>
+
 <script is:inline>
-  window.runShichu = function() {
-    const btn = document.getElementById('btn');
-    btn.textContent = '命式を解析中...'; btn.disabled = true;
+const WORKERS_URL = 'https://kyusei-api.seiji-tomizawa.workers.dev';
+const GOGYO_COLOR = { '木':'#5ef0c5','火':'#ff8e8e','土':'#d4af37','金':'#c0c0c0','水':'#7eb8f7' };
+const TENCHUSATSU_DESC = {
+  '子丑天中殺':'子丑天中殺の方は、地道な努力を積み重ねることで運が開きます。焦らず着実に進むことが大切です。組織の中で縁の下の力持ちとして活躍することで、大きな成果を得られます。',
+  '寅卯天中殺':'寅卯天中殺の方は、直感と行動力で道を切り開きます。既存の枠にとらわれず、新しい世界に飛び込むことで才能が開花します。',
+  '辰巳天中殺':'辰巳天中殺の方は、深い思慮と強い意志を持ちます。精神的な修行や学びを通じて、独自の世界観を築くことができます。',
+  '午未天中殺':'午未天中殺の方は、情熱と表現力が豊か。芸術や人との交流を通じて、自己を高めることで運が開きます。',
+  '申酉天中殺':'申酉天中殺の方は、鋭い判断力と実行力を持ちます。組織や社会のルールを活用することで、大きな成功を収められます。',
+  '戌亥天中殺':'戌亥天中殺の方は、精神性が高く、目に見えない世界への感受性が豊かです。精神的な探求や奉仕活動を通じて魂が磨かれます。',
+};
 
+window.runShichu = async function() {
+  const year = document.getElementById('year').value;
+  const month = document.getElementById('month').value;
+  const day = document.getElementById('day').value;
+  const time = document.getElementById('time').value;
+  const gender = document.getElementById('gender').value;
+  const errEl = document.getElementById('form-error');
+
+  if (!year || parseInt(year) < 1900 || parseInt(year) > 2010) {
+    errEl.textContent = '生年を正しく入力してください（1900〜2010）'; return;
+  }
+  errEl.textContent = '';
+
+  const btn = document.getElementById('btn');
+  btn.textContent = '命式を解析中...'; btn.disabled = true;
+
+  try {
+    const res = await fetch(
+      `${WORKERS_URL}/api/shichu/preview?year=${year}&month=${month}&day=${day}&hour=${time}&gender=${gender}`
+    );
+    const d = await res.json();
+
+    // 命式盤
+    document.getElementById('nichu-kan').textContent = d.nichu.kan;
+    document.getElementById('nichu-shi').textContent = d.nichu.shi;
+    document.getElementById('getchu-kan').textContent = d.getchu.kan;
+    document.getElementById('getchu-shi').textContent = d.getchu.shi;
+    document.getElementById('nenchu-kan').textContent = d.nenchu.kan;
+    document.getElementById('nenchu-shi').textContent = d.nenchu.shi;
+    document.getElementById('getchu-tsuhen').textContent = d.tsuhensei[1] || '';
+    document.getElementById('nenchu-tsuhen').textContent = d.tsuhensei[0] || '';
+
+    if (d.jichu) {
+      document.getElementById('jichu-kan').textContent = d.jichu.kan;
+      document.getElementById('jichu-shi').textContent = d.jichu.shi;
+      document.getElementById('jichu-tsuhen').textContent = d.tsuhensei[2] || '';
+    }
+
+    document.getElementById('juniun-chip').textContent = `十二運：${d.juniunSelf}`;
+    document.getElementById('gogyo-chip').textContent = `五行：${d.nikkanGogyo}`;
+    document.getElementById('inyo-chip').textContent = `${d.nikkanInyo}`;
+
+    // 日干
+    document.getElementById('nikkan-label').textContent = `日干 · ${d.nikkan}（${d.nikkanSymbol}）`;
+    document.getElementById('nikkan-name').textContent = `${d.nikkan}（${d.nikkanSymbol}）`;
+    document.getElementById('nikkan-gogyo').textContent = `${d.nikkanGogyo}の気 · ${d.nikkanInyo}`;
+    document.getElementById('nikkan-personality').textContent = d.personality;
+    document.getElementById('nikkan-talent').textContent = d.talent;
+    document.getElementById('nikkan-weakness').textContent = d.weakness;
+    document.getElementById('nikkan-love').textContent = d.love;
+    document.getElementById('nikkan-work').textContent = d.work;
+
+    // 天中殺
+    document.getElementById('tenchusatsu-name').textContent = d.shukumeisei;
+    document.getElementById('tenchusatsu-desc').textContent = TENCHUSATSU_DESC[d.shukumeisei] || '';
+
+    // 大運
+    const daiunList = document.getElementById('daiun-list');
+    daiunList.innerHTML = d.daiun.map(u => {
+      const kanGogyo = { '甲':'木','乙':'木','丙':'火','丁':'火','戊':'土','己':'土','庚':'金','辛':'金','壬':'水','癸':'水' }[u.kan];
+      const color = GOGYO_COLOR[kanGogyo] || '#b08d5a';
+      return `<div class="daiun-item">
+        <span class="daiun-age">${u.age}歳〜</span>
+        <span class="daiun-kanshi">${u.kan}${u.shi}</span>
+        <span class="daiun-gogyo" style="color:${color}">${kanGogyo}</span>
+      </div>`;
+    }).join('');
+
+    const section = document.getElementById('result-section');
+    section.style.display = 'block';
     setTimeout(() => {
-      const nikkans = ['甲 (大樹)','乙 (草花)','丙 (太陽)','丁 (灯火)','戊 (山)','己 (大地)','庚 (鋼鉄)','辛 (宝石)','壬 (海)','癸 (雨)'];
-      const randomNikkan = nikkans[Math.floor(Math.random() * nikkans.length)];
-      
-      document.getElementById('res-nikkan').textContent = randomNikkan;
-      document.getElementById('res-desc').textContent = `${randomNikkan}の性質を持つあなたは、周囲に影響を与える強いエネルギーを秘めています。表向きは穏やかに見えても、内面には決してブレない芯の強さを持っています。`;
-      
-      const res = document.getElementById('result-section');
-      res.style.display = 'block';
-      setTimeout(() => {
-        res.querySelectorAll('.result-item').forEach(el => el.classList.add('show'));
-        res.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }, 50);
+      section.querySelectorAll('.result-item').forEach((el, i) => {
+        setTimeout(() => el.classList.add('show'), i * 120);
+      });
+      section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 50);
 
-      btn.textContent = '✦ 命式を作成する'; btn.disabled = false;
-    }, 800);
-  };
+  } catch(e) {
+    errEl.textContent = 'エラーが発生しました。しばらくしてお試しください。';
+    console.error(e);
+  } finally {
+    btn.textContent = '✦ 命式を作成する'; btn.disabled = false;
+  }
+};
+
+// 星背景
+const starsEl = document.getElementById('stars');
+for (let i = 0; i < 50; i++) {
+  const s = document.createElement('div');
+  const size = Math.random() * 2 + 1;
+  s.style.cssText = `position:absolute;border-radius:50%;background:#fff;width:${size}px;height:${size}px;top:${Math.random()*100}%;left:${Math.random()*100}%;opacity:${Math.random()*0.5+0.1};animation:twinkle ${2+Math.random()*3}s ease-in-out infinite;animation-delay:${Math.random()*3}s;`;
+  starsEl.appendChild(s);
+}
 </script>

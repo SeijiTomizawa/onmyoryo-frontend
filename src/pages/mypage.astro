@@ -24,10 +24,10 @@ import '../styles/global.css';
         </div>
       </div>
 
-      <div class="alert-box glass-card fade-in-up delay-1">
+      <div class="alert-box glass-card fade-in-up delay-1" id="fate-alert" style="display: none;">
         <div class="alert-icon">⚠️</div>
         <div class="alert-content">
-          <h3 class="alert-title">運命の交差点まで、あと<span class="pulse-text">3日</span></h3>
+          <h3 class="alert-title"><span id="fate-name">誰か</span>との運命の交差点まで、あと<span class="pulse-text" id="fate-days">0日</span></h3>
           <p class="alert-desc">恋愛運が劇的に動く「特別な星回り」が接近しています。この好機を逃さないために、あなたが取るべき具体的なアクションを確認してください。</p>
         </div>
         <button class="btn-primary alert-btn" onclick="window.location.href='/menu/love'">詳細を鑑定する (300C)</button>
@@ -57,46 +57,40 @@ import '../styles/global.css';
         <div class="glass-card relation-section fade-in-up delay-3">
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
             <h2 class="section-title" style="font-size: 1.3rem; margin: 0;">秘密の相関図</h2>
-            <button class="btn-add">＋ 追加</button>
+            <button class="btn-add" onclick="openModal()">＋ 追加</button>
           </div>
           
-          <div class="relation-list">
-            <div class="relation-item">
-              <div class="person-icon" style="background: rgba(168, 85, 247, 0.2); color: #c084fc;">恋</div>
-              <div class="person-info">
-                <h4 class="person-name">Aさん (彼氏)</h4>
-                <p class="person-star">三碧木星 / 昴宿</p>
-              </div>
-              <div class="relation-badge badge-danger">安・壊</div>
+          <div class="relation-list" id="relation-list">
             </div>
-            
-            <div class="relation-item">
-              <div class="person-icon" style="background: rgba(59, 130, 246, 0.2); color: #60a5fa;">仕</div>
-              <div class="person-info">
-                <h4 class="person-name">B部長</h4>
-                <p class="person-star">六白金星 / 翼宿</p>
-              </div>
-              <div class="relation-badge badge-good">栄・親</div>
-            </div>
-
-            <div class="relation-item">
-              <div class="person-icon" style="background: rgba(16, 185, 129, 0.2); color: #34d399;">友</div>
-              <div class="person-info">
-                <h4 class="person-name">Cちゃん</h4>
-                <p class="person-star">四緑木星 / 斗宿</p>
-              </div>
-              <div class="relation-badge badge-normal">友・衰</div>
-            </div>
-          </div>
         </div>
       </div>
+    </div>
+  </div>
 
+  <div class="modal-overlay" id="partner-modal">
+    <div class="glass-card modal-content">
+      <h3 style="font-family: var(--font-mincho); color: #fff; margin-bottom: 0.5rem; font-size: 1.4rem;">お相手を顕現（登録）する</h3>
+      <p style="font-size: 0.8rem; color: #ff8e8e; margin-bottom: 1.5rem;">※ プライバシー保護のため、本名ではなく「ニックネーム（例：職場のAさん）」でご登録ください。</p>
+      
+      <div class="field" style="margin-bottom: 1rem;">
+        <label>ニックネーム</label>
+        <input type="text" id="partner-name" placeholder="例：Aくん" autocomplete="off" />
+      </div>
+      <div class="field" style="margin-bottom: 2rem;">
+        <label>生年（西暦）</label>
+        <input type="number" id="partner-year" placeholder="1995" min="1900" max="2020" />
+      </div>
+      
+      <div style="display: flex; gap: 12px;">
+        <button class="btn-primary" onclick="savePartner()" style="flex: 2;">想いを同期する</button>
+        <button class="btn-primary" onclick="closeModal()" style="flex: 1; background: transparent; border-color: rgba(255,255,255,0.2); color: var(--text-secondary);">取消</button>
+      </div>
     </div>
   </div>
 </Layout>
 
 <style>
-/* ユーザーヘッダー */
+/* 既存のスタイル */
 .user-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; flex-wrap: wrap; gap: 1rem; }
 .user-info { display: flex; align-items: center; gap: 1rem; }
 .user-avatar { width: 50px; height: 50px; border-radius: 50%; background: linear-gradient(135deg, var(--gold), #8b6d20); display: flex; align-items: center; justify-content: center; font-size: 1.5rem; font-family: var(--font-mincho); color: #000; font-weight: bold; }
@@ -107,12 +101,8 @@ import '../styles/global.css';
 .btn-charge { background: var(--gold); border: none; color: #000; padding: 6px 12px; border-radius: 6px; font-weight: bold; font-size: 0.8rem; cursor: pointer; transition: 0.3s; }
 .btn-charge:hover { box-shadow: 0 0 10px rgba(212, 175, 55, 0.5); transform: translateY(-2px); }
 
-/* 1. アラートボックス */
-.alert-box {
-  margin-bottom: 2rem; padding: 2rem; border-left: 4px solid #f43f5e;
-  background: linear-gradient(90deg, rgba(244, 63, 94, 0.1) 0%, rgba(20, 24, 39, 0.6) 100%);
-  display: flex; align-items: center; gap: 1.5rem;
-}
+/* アラートボックス */
+.alert-box { margin-bottom: 2rem; padding: 2rem; border-left: 4px solid #f43f5e; background: linear-gradient(90deg, rgba(244, 63, 94, 0.1) 0%, rgba(20, 24, 39, 0.6) 100%); display: flex; align-items: center; gap: 1.5rem; }
 .alert-icon { font-size: 3rem; animation: float 3s ease-in-out infinite; }
 .alert-content { flex: 1; }
 .alert-title { font-family: var(--font-mincho); font-size: 1.4rem; color: #fff; margin: 0 0 0.5rem 0; }
@@ -121,11 +111,10 @@ import '../styles/global.css';
 .alert-btn { width: auto; padding: 1rem 2rem; border-color: #f43f5e; color: #fff; background: rgba(244, 63, 94, 0.2); }
 .alert-btn:hover { background: #f43f5e; box-shadow: 0 0 20px rgba(244, 63, 94, 0.4); }
 
-/* ダッシュボードグリッド */
 .dashboard-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
 @media (max-width: 768px) { .dashboard-grid { grid-template-columns: 1fr; } .alert-box { flex-direction: column; text-align: center; } }
 
-/* 2. ワンオラクル（カードめくりアニメーション） */
+/* ワンオラクル */
 .oracle-section { text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center; }
 .oracle-card-container { perspective: 1000px; width: 160px; height: 240px; cursor: pointer; margin: 0 auto; }
 .oracle-card { width: 100%; height: 100%; position: relative; transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275); transform-style: preserve-3d; }
@@ -140,20 +129,29 @@ import '../styles/global.css';
 .ke-desc { font-size: 0.75rem; color: var(--text-main); margin: 0 0 1rem 0; line-height: 1.4; }
 .bonus-get { background: var(--gold); color: #000; font-size: 0.7rem; font-weight: bold; padding: 4px 8px; border-radius: 20px; animation: bounce 1s infinite; }
 
-/* 3. 相関図 */
+/* 相関図 */
 .btn-add { background: transparent; border: 1px solid var(--text-secondary); color: var(--text-secondary); padding: 4px 12px; border-radius: 20px; font-size: 0.8rem; cursor: pointer; transition: 0.3s; }
 .btn-add:hover { border-color: var(--gold); color: var(--gold); }
-.relation-list { display: flex; flex-direction: column; gap: 1rem; }
+.relation-list { display: flex; flex-direction: column; gap: 1rem; max-height: 400px; overflow-y: auto; padding-right: 5px; }
 .relation-item { display: flex; align-items: center; gap: 1rem; padding: 1rem; background: rgba(255, 255, 255, 0.03); border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.05); transition: 0.3s; cursor: pointer; }
 .relation-item:hover { background: rgba(255, 255, 255, 0.08); transform: translateX(5px); border-color: rgba(212, 175, 55, 0.2); }
-.person-icon { width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 0.9rem; }
+.person-icon { width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 1.2rem; }
 .person-info { flex: 1; }
-.person-name { font-size: 1rem; color: #fff; margin: 0 0 0.25rem 0; font-weight: normal; }
+.person-name { font-size: 1rem; color: #fff; margin: 0 0 0.25rem 0; font-weight: bold; }
 .person-star { font-size: 0.75rem; color: var(--text-secondary); margin: 0; }
-.relation-badge { font-size: 0.8rem; font-weight: bold; padding: 4px 10px; border-radius: 6px; }
+.relation-badge { font-size: 0.8rem; font-weight: bold; padding: 4px 10px; border-radius: 6px; text-align: center; min-width: 50px; }
 .badge-danger { background: rgba(244, 63, 94, 0.15); color: #fb7185; border: 1px solid rgba(244, 63, 94, 0.3); }
 .badge-good { background: rgba(59, 130, 246, 0.15); color: #93c5fd; border: 1px solid rgba(59, 130, 246, 0.3); }
 .badge-normal { background: rgba(16, 185, 129, 0.15); color: #6ee7b7; border: 1px solid rgba(16, 185, 129, 0.3); }
+
+/* モーダル用 */
+.modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.8); backdrop-filter: blur(5px); z-index: 1000; display: none; align-items: center; justify-content: center; padding: 1.5rem; }
+.modal-content { width: 100%; max-width: 400px; padding: 2rem; background: #0a0c10; animation: fadeInDown 0.3s ease-out; }
+
+/* スクロールバー装飾 */
+.relation-list::-webkit-scrollbar { width: 6px; }
+.relation-list::-webkit-scrollbar-track { background: rgba(255,255,255,0.05); border-radius: 10px; }
+.relation-list::-webkit-scrollbar-thumb { background: rgba(212, 175, 55, 0.3); border-radius: 10px; }
 
 /* アニメーション */
 @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
@@ -162,19 +160,174 @@ import '../styles/global.css';
 </style>
 
 <script is:inline>
-  function drawOracle() {
-    const card = document.querySelector('.oracle-card');
-    if (!card.classList.contains('is-flipped')) {
-      card.classList.add('is-flipped');
-      
-      // コイン増加アニメーション（演出）
-      setTimeout(() => {
-        const coinAmount = document.querySelector('.coin-amount');
-        if(coinAmount) {
-          coinAmount.innerHTML = '152<span>C</span>';
-          coinAmount.style.animation = 'textShine 1s ease-out';
-        }
-      }, 600);
-    }
+// ==========================================
+// 🔮 計算ロジック・マスタデータ
+// ==========================================
+const MY_YEAR = 1991; // ゲスト様（九紫火星）の仮の生年
+
+const STARS = [
+  { id: 1, name: '一白水星', element: 'water' }, { id: 2, name: '二黒土星', element: 'earth' },
+  { id: 3, name: '三碧木星', element: 'wood' },  { id: 4, name: '四緑木星', element: 'wood' },
+  { id: 5, name: '五黄土星', element: 'earth' }, { id: 6, name: '六白金星', element: 'metal' },
+  { id: 7, name: '七赤金星', element: 'metal' }, { id: 8, name: '八白土星', element: 'earth' },
+  { id: 9, name: '九紫火星', element: 'fire' }
+];
+
+const COMPATIBILITY_MATRIX = {
+  water: { water: 'good', wood: 'best', fire: 'bad', earth: 'worst', metal: 'best' },
+  wood:  { water: 'best', wood: 'good', fire: 'best', earth: 'bad', metal: 'worst' },
+  fire:  { water: 'worst', wood: 'best', fire: 'good', earth: 'best', metal: 'bad' },
+  earth: { water: 'bad', wood: 'worst', fire: 'best', earth: 'good', metal: 'best' },
+  metal: { water: 'best', wood: 'bad', fire: 'worst', earth: 'best', metal: 'good' }
+};
+
+const COMPATIBILITY_TEXTS = {
+  best:  { badge: '大吉', color: 'badge-good' },
+  good:  { badge: '吉', color: 'badge-normal' },
+  bad:   { badge: '波乱', color: 'badge-danger' },
+  worst: { badge: '試練', color: 'badge-danger' }
+};
+
+const DAILY_ACTIONS = [
+  { type: 'start', icon: '💬', title: '連絡吉', score: 80 },
+  { type: 'wait', icon: '☕', title: '様子見', score: 40 },
+  { type: 'active', icon: '🎟️', title: '誘い吉', score: 90 },
+  { type: 'harmony', icon: '📞', title: '長話吉', score: 75 },
+  { type: 'chaos', icon: '⚠️', title: 'すれ違い', score: 10 },
+  { type: 'progress', icon: '🌱', title: '歩み寄り', score: 70 },
+  { type: 'fun', icon: '🍽️', title: '共有吉', score: 85 },
+  { type: 'change', icon: '✨', title: '変化吉', score: 60 },
+  { type: 'passion', icon: '👑', title: '勝負日', score: 100 } // ★運命の日
+];
+
+function getHonmeiseiId(year) {
+  let h = (11 - (year % 9)) % 9;
+  return h === 0 ? 9 : h;
+}
+
+function calculateCompatibility(userYear, targetYear) {
+  const userEl = STARS[getHonmeiseiId(userYear) - 1].element;
+  const targetStar = STARS[getHonmeiseiId(targetYear) - 1];
+  const compKey = COMPATIBILITY_MATRIX[userEl][targetStar.element];
+  return { targetStar, result: COMPATIBILITY_TEXTS[compKey] };
+}
+
+function getDailyAction(userYear, targetYear, date = new Date()) {
+  const magic = (getHonmeiseiId(userYear) * 7) + (getHonmeiseiId(targetYear) * 3);
+  const dayNumber = Math.floor(date.getTime() / (1000 * 60 * 60 * 24));
+  return DAILY_ACTIONS[(dayNumber + magic) % 9];
+}
+
+// ==========================================
+// ⚙️ 画面制御・ローカルストレージ操作
+// ==========================================
+let partners = JSON.parse(localStorage.getItem('onmyoryo_partners') || '[]');
+
+function openModal() { document.getElementById('partner-modal').style.display = 'flex'; }
+function closeModal() { document.getElementById('partner-modal').style.display = 'none'; }
+
+function savePartner() {
+  const name = document.getElementById('partner-name').value;
+  const year = parseInt(document.getElementById('partner-year').value);
+  if (!name || !year || year < 1900) return alert('ニックネームと正しい生年を入力してください。');
+  
+  // 保存
+  partners.push({ id: Date.now(), name, year });
+  localStorage.setItem('onmyoryo_partners', JSON.stringify(partners));
+  
+  // UI更新
+  document.getElementById('partner-name').value = '';
+  document.getElementById('partner-year').value = '';
+  closeModal();
+  renderPartners();
+}
+
+function renderPartners() {
+  const list = document.getElementById('relation-list');
+  
+  if (partners.length === 0) {
+    list.innerHTML = `
+      <div style="text-align: center; padding: 3rem 1rem;">
+        <div style="font-size: 3rem; color: rgba(255,255,255,0.1); margin-bottom: 1rem;">👥</div>
+        <p class="text-muted">まだ誰も登録されていません。<br>「＋ 追加」からお相手を登録すると、毎日の恋のアクションが確認できます。</p>
+      </div>`;
+    document.getElementById('fate-alert').style.display = 'none';
+    return;
   }
+
+  // 登録された人をHTML化
+  list.innerHTML = partners.map(p => {
+    const comp = calculateCompatibility(MY_YEAR, p.year);
+    const todayAction = getDailyAction(MY_YEAR, p.year);
+    // ランダムな色をつけるための簡単なハッシュ
+    const hue = (p.year * 137) % 360; 
+    
+    return `
+      <div class="relation-item">
+        <div class="person-icon" style="background: hsla(${hue}, 70%, 50%, 0.2); color: hsl(${hue}, 80%, 70%);">
+          ${p.name.charAt(0)}
+        </div>
+        <div class="person-info">
+          <h4 class="person-name">${p.name}</h4>
+          <p class="person-star">${comp.targetStar.name} / 相性：${comp.result.badge}</p>
+          <div style="font-size: 0.85rem; color: #fff; margin-top: 6px; display: flex; align-items: center; gap: 6px; background: rgba(0,0,0,0.3); padding: 4px 8px; border-radius: 6px; display: inline-flex;">
+            <span style="font-size: 1rem;">${todayAction.icon}</span> 今日は「${todayAction.title}」
+          </div>
+        </div>
+        <div class="relation-badge ${comp.result.color}">${todayAction.score}点</div>
+      </div>
+    `;
+  }).join('');
+
+  // 運命の日のアラート計算
+  calculateFateDay();
+}
+
+function calculateFateDay() {
+  let closestDays = 999;
+  let fatePartner = null;
+  const today = new Date();
+
+  // 全パートナーの中で、一番近い「勝負日(score=100)」を探す
+  partners.forEach(p => {
+    for (let i = 0; i <= 9; i++) {
+      const checkDate = new Date(today);
+      checkDate.setDate(today.getDate() + i);
+      const action = getDailyAction(MY_YEAR, p.year, checkDate);
+      
+      if (action.score === 100 && i < closestDays) {
+        closestDays = i;
+        fatePartner = p;
+      }
+    }
+  });
+
+  const alertBox = document.getElementById('fate-alert');
+  if (fatePartner && closestDays <= 3) {
+    document.getElementById('fate-name').textContent = fatePartner.name;
+    document.getElementById('fate-days').textContent = closestDays === 0 ? "今日！" : `${closestDays}日`;
+    alertBox.style.display = 'flex';
+  } else {
+    alertBox.style.display = 'none';
+  }
+}
+
+// ワンオラクルのアニメーション
+function drawOracle() {
+  const card = document.querySelector('.oracle-card');
+  if (!card.classList.contains('is-flipped')) {
+    card.classList.add('is-flipped');
+    setTimeout(() => {
+      const coinAmount = document.querySelector('.coin-amount');
+      if(coinAmount) {
+        coinAmount.innerHTML = '152<span>C</span>';
+        coinAmount.style.animation = 'textShine 1s ease-out';
+      }
+    }, 600);
+  }
+}
+
+// 初回ロード時にリストを描画
+document.addEventListener('DOMContentLoaded', renderPartners);
+document.addEventListener('astro:page-load', renderPartners);
 </script>
