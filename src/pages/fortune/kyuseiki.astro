@@ -162,7 +162,6 @@ import '../../styles/global.css';
 </style>
 
 <script is:inline>
-const WORKERS_URL = 'https://kyusei-api.seiji-tomizawa.workers.dev';
 const STARS = ['一白水星','二黒土星','三碧木星','四緑木星','五黄土星','六白金星','七赤金星','八白土星','九紫火星'];
 const DIRECTIONS = {
   1:{lucky:['北','東','南東'],unlucky:['南','北東','南西']},
@@ -176,61 +175,6 @@ const DIRECTIONS = {
   9:{lucky:['南','東','南東'],unlucky:['北','北西','西']},
 };
 
-async function runPreview() {
-  const year = document.getElementById('year').value;
-  const month = document.getElementById('month').value;
-  const day = document.getElementById('day').value;
-  const errEl = document.getElementById('form-error');
-
-  if (!year || parseInt(year) < 1900 || parseInt(year) > 2010) {
-    errEl.textContent = '生年を入力してください（1900〜2010）';
-    return;
-  }
-  errEl.textContent = '';
-
-  const btn = document.getElementById('preview-btn');
-  const originalText = btn.textContent;
-  btn.textContent = '運命を読み解き中...'; btn.disabled = true;
-
-  try {
-    const res = await fetch(`${WORKERS_URL}/api/fortune/preview?year=${year}&month=${month}&day=${day}`);
-    const data = await res.json();
-    const h = data.honmeiseiNumber;
-    const dirs = DIRECTIONS[h];
-
-    document.getElementById('res-star-num').textContent = `第${h}星 · 本命星`;
-    document.getElementById('res-star-name').textContent = data.honmeisei;
-    document.getElementById('res-tsuki').textContent = STARS[calcTsuki(h, parseInt(month), parseInt(day)) - 1];
-    document.getElementById('res-birth').textContent = `${year}年${month}月${day}日`;
-    document.getElementById('res-keisha').textContent = '内面的な傾向を示す「傾斜宮」';
-    document.getElementById('res-personality').textContent = data.personality;
-
-    document.getElementById('lucky-dirs').innerHTML = dirs.lucky.map(d => `<span class="chip-lucky">▲ ${d}</span>`).join('');
-    document.getElementById('unlucky-dirs').innerHTML = dirs.unlucky.map(d => `<span class="chip-unlucky">▼ ${d}</span>`).join('');
-
-    const currentYear = new Date().getFullYear();
-    document.getElementById('res-year-fortune-title').textContent = `${currentYear}年の全体運勢`;
-    document.getElementById('res-year-fortune').textContent = 
-      `${data.honmeisei}のあなたにとって、${currentYear}年は新たな「気」が流れ込む重要な年。${data.personality.substring(0, 40)}...というあなたの本質を活かし、誠実に行動することで運は大きく開けます。`;
-
-    const section = document.getElementById('result-section');
-    section.style.display = 'block';
-    
-    setTimeout(() => {
-      const items = section.querySelectorAll('.result-item');
-      items.forEach((item, index) => {
-        setTimeout(() => item.classList.add('show'), index * 150);
-      });
-      section.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }, 100);
-
-  } catch (e) {
-    errEl.textContent = '鑑定エラーが発生しました。';
-  } finally {
-    btn.textContent = originalText; btn.disabled = false;
-  }
-}
-
 function calcTsuki(honmei, month, day) {
   const setsuiri = {1:6,2:4,3:6,4:5,5:6,6:6,7:7,8:8,9:8,10:8,11:7,12:7};
   let m = month;
@@ -241,24 +185,67 @@ function calcTsuki(honmei, month, day) {
   return ((base - offset - 1 + 90) % 9) + 1;
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-  const fadeElements = document.querySelectorAll('.fade-in-up');
-  fadeElements.forEach(el => el.classList.add('is-visible'));
+window.runPreview = async function() {
+  const year = document.getElementById('year').value;
+  const month = document.getElementById('month').value;
+  const day = document.getElementById('day').value;
+  const errEl = document.getElementById('form-error');
 
-  const starsContainer = document.getElementById('stars');
-  if (starsContainer) {
-    for (let i = 0; i < 50; i++) {
-      const s = document.createElement('div');
-      const size = Math.random() * 2 + 1;
-      s.style.cssText = `
-        position:absolute; border-radius:50%; background:#fff;
-        width:${size}px; height:${size}px;
-        top:${Math.random()*100}%; left:${Math.random()*100}%;
-        opacity:${Math.random()*0.5+0.1};
-        animation: twinkle ${2+Math.random()*4}s infinite;
-      `;
-      starsContainer.appendChild(s);
-    }
+  if (!year || parseInt(year) < 1900 || parseInt(year) > 2010) {
+    errEl.textContent = '生年を入力してください（1900〜2010）'; return;
   }
-});
+  errEl.textContent = '';
+
+  const btn = document.getElementById('preview-btn');
+  const originalText = btn.textContent;
+  btn.textContent = '運命を読み解き中...'; btn.disabled = true;
+
+  try {
+    let h = 1; let starName = STARS[0]; let personality = "柔軟で芯が強い、静かなる知略家です。";
+    
+    // API呼び出し（失敗時はフォールバックの計算を使用）
+    try {
+      const res = await fetch(`https://kyusei-api.seiji-tomizawa.workers.dev/api/fortune/preview?year=${year}&month=${month}&day=${day}`);
+      if(res.ok) {
+        const data = await res.json();
+        h = data.honmeiseiNumber || 1;
+        starName = data.honmeisei || STARS[h-1];
+        personality = data.personality || personality;
+      }
+    } catch(e) {
+      console.warn('APIエラーのため簡易計算を使用します');
+      h = (11 - (parseInt(year) % 9)) % 9 || 9;
+      starName = STARS[h-1];
+    }
+
+    const dirs = DIRECTIONS[h];
+    document.getElementById('res-star-num').textContent = `第${h}星 · 本命星`;
+    document.getElementById('res-star-name').textContent = starName;
+    document.getElementById('res-tsuki').textContent = STARS[calcTsuki(h, parseInt(month), parseInt(day)) - 1];
+    document.getElementById('res-birth').textContent = `${year}年${month}月${day}日`;
+    document.getElementById('res-keisha').textContent = '内面的な傾向を示す「傾斜宮」';
+    document.getElementById('res-personality').textContent = personality;
+    document.getElementById('lucky-dirs').innerHTML = dirs.lucky.map(d => `<span class="chip-lucky">▲ ${d}</span>`).join('');
+    document.getElementById('unlucky-dirs').innerHTML = dirs.unlucky.map(d => `<span class="chip-unlucky">▼ ${d}</span>`).join('');
+    
+    const currentYear = new Date().getFullYear();
+    document.getElementById('res-year-fortune-title').textContent = `${currentYear}年の全体運勢`;
+    document.getElementById('res-year-fortune').textContent = `${starName}のあなたにとって、${currentYear}年は新たな「気」が流れ込む重要な年。あなたの本質を活かし、誠実に行動することで運は大きく開けます。`;
+
+    const section = document.getElementById('result-section');
+    section.style.display = 'block';
+    
+    setTimeout(() => {
+      section.querySelectorAll('.result-item').forEach((item, idx) => {
+        setTimeout(() => item.classList.add('show'), idx * 150);
+      });
+      section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 100);
+
+  } catch (e) {
+    errEl.textContent = 'システムエラーが発生しました。';
+  } finally {
+    btn.textContent = originalText; btn.disabled = false;
+  }
+};
 </script>

@@ -47,8 +47,10 @@ import '../../styles/global.css';
 </Layout>
 
 <script is:inline>
-  function runShukuyo() {
-    document.getElementById('btn').textContent = '星の軌道を計算中...';
+  window.runShukuyo = function() {
+    const btn = document.getElementById('btn');
+    btn.textContent = '星の軌道を計算中...'; btn.disabled = true;
+
     setTimeout(() => {
       document.getElementById('res-syuku').textContent = '昴宿 (ぼうしゅく)';
       
@@ -57,14 +59,18 @@ import '../../styles/global.css';
         document.getElementById('comp-box').style.display = 'block';
         document.getElementById('res-comp-type').textContent = '【安・壊】の相性';
         document.getElementById('res-comp-desc').textContent = '非常に強烈に惹かれ合う、ドラマチックな縁です。自分にはない相手の魅力に破壊的なまでに惹かれますが、距離感には注意が必要です。';
+      } else {
+        document.getElementById('comp-box').style.display = 'none';
       }
       
       const res = document.getElementById('result-section');
       res.style.display = 'block';
-      setTimeout(() => res.querySelector('.result-item').classList.add('show'), 50);
-      res.scrollIntoView({ behavior: 'smooth' });
-      document.getElementById('btn').textContent = '✦ 宿と相性を占う';
+      setTimeout(() => {
+        res.querySelectorAll('.result-item').forEach(el => el.classList.add('show'));
+        res.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }, 50);
+
+      btn.textContent = '✦ 宿と相性を占う'; btn.disabled = false;
     }, 800);
-  }
-  document.addEventListener('DOMContentLoaded', () => document.querySelector('.fade-in-up').classList.add('is-visible'));
+  };
 </script>

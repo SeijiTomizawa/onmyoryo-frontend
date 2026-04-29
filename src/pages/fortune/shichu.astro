@@ -52,9 +52,11 @@ import '../../styles/global.css'; // 共通CSSを読み込み
 </Layout>
 
 <script is:inline>
-  function runShichu() {
-    document.getElementById('btn').textContent = '命式を解析中...';
-    setTimeout(() => { // モック用の遅延
+  window.runShichu = function() {
+    const btn = document.getElementById('btn');
+    btn.textContent = '命式を解析中...'; btn.disabled = true;
+
+    setTimeout(() => {
       const nikkans = ['甲 (大樹)','乙 (草花)','丙 (太陽)','丁 (灯火)','戊 (山)','己 (大地)','庚 (鋼鉄)','辛 (宝石)','壬 (海)','癸 (雨)'];
       const randomNikkan = nikkans[Math.floor(Math.random() * nikkans.length)];
       
@@ -63,10 +65,12 @@ import '../../styles/global.css'; // 共通CSSを読み込み
       
       const res = document.getElementById('result-section');
       res.style.display = 'block';
-      setTimeout(() => res.querySelector('.result-item').classList.add('show'), 50);
-      res.scrollIntoView({ behavior: 'smooth' });
-      document.getElementById('btn').textContent = '✦ 命式を作成する';
+      setTimeout(() => {
+        res.querySelectorAll('.result-item').forEach(el => el.classList.add('show'));
+        res.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }, 50);
+
+      btn.textContent = '✦ 命式を作成する'; btn.disabled = false;
     }, 800);
-  }
-  document.addEventListener('DOMContentLoaded', () => document.querySelector('.fade-in-up').classList.add('is-visible'));
+  };
 </script>

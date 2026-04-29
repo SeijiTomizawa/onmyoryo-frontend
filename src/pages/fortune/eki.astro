@@ -33,19 +33,20 @@ import '../../styles/global.css';
 </Layout>
 
 <script is:inline>
-  function runEki() {
+  window.runEki = function() {
     const btn = document.getElementById('btn');
-    btn.textContent = '筮竹を振っています...';
+    btn.textContent = '筮竹を振っています...'; btn.disabled = true;
     btn.style.animation = 'twinkle 0.5s infinite';
     
     setTimeout(() => {
       btn.style.animation = 'none';
       const res = document.getElementById('result-section');
       res.style.display = 'block';
-      setTimeout(() => res.querySelector('.result-item').classList.add('show'), 50);
-      res.scrollIntoView({ behavior: 'smooth' });
-      btn.textContent = '☯ もう一度占う';
+      setTimeout(() => {
+        res.querySelectorAll('.result-item').forEach(el => el.classList.add('show'));
+        res.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }, 50);
+      btn.textContent = '☯ もう一度占う'; btn.disabled = false;
     }, 1500);
-  }
-  document.addEventListener('DOMContentLoaded', () => document.querySelector('.fade-in-up').classList.add('is-visible'));
+  };
 </script>

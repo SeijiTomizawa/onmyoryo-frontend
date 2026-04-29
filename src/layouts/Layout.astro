@@ -250,6 +250,45 @@ const { title = "陰陽寮 | 東洋占術の館" } = Astro.props;
 }
 </style>
 
+<script is:inline>
+  function initGlobalScript() {
+    // 1. スクロールアニメーション（すべての .fade-in-up を監視）
+    const observer = new IntersectionObserver((entries, obs) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+          obs.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.fade-in-up').forEach(el => observer.observe(el));
+
+    // 2. 星空アニメーション（IDがstarsの要素があれば生成）
+    const starsContainer = document.getElementById('stars');
+    if (starsContainer && starsContainer.children.length === 0) {
+      const starCount = window.innerWidth < 768 ? 40 : 80;
+      for (let i = 0; i < starCount; i++) {
+        const s = document.createElement('div');
+        const size = Math.random() * 2 + 0.5;
+        s.style.cssText = `
+          position: absolute; border-radius: 50%; background: #ffffff;
+          width: ${size}px; height: ${size}px;
+          top: ${Math.random() * 100}%; left: ${Math.random() * 100}%;
+          opacity: ${Math.random() * 0.5 + 0.1};
+          animation: twinkle ${3 + Math.random() * 4}s ease-in-out infinite;
+          animation-delay: ${Math.random() * 5}s;
+        `;
+        starsContainer.appendChild(s);
+      }
+    }
+  }
+
+  // 初回読み込み時とAstroページ遷移時の両方で発火
+  document.addEventListener('DOMContentLoaded', initGlobalScript);
+  document.addEventListener('astro:page-load', initGlobalScript);
+</script>
+
 <script>
 // ログアウト処理
 function logout() {
