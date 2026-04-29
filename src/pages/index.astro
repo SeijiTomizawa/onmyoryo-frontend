@@ -190,12 +190,20 @@ a { text-decoration: none; color: inherit; }
   color: var(--gold); margin-bottom: 1rem;
 }
 
-/* ★ 占術選択グリッド（宝石エフェクト追加） ★ */
+/* ★ 占術選択グリッド（2×2固定 ＆ レスポンシブ対応　宝石エフェクト追加） ★ */
 .fortune-grid {
   display: grid;
   gap: 1.5rem;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  grid-template-columns: repeat(2, 1fr); /* PC・タブレットは2列に固定 */
 }
+
+/* スマホ用の設定（画面幅が768px以下の場合は縦1列にする） */
+@media (max-width: 768px) {
+  .fortune-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
 .fortune-card {
   padding: 2.5rem 2rem;
   position: relative;
