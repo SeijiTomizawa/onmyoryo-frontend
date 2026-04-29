@@ -72,28 +72,32 @@ import '../styles/global.css';
       </div>
       
       <div class="guide-grid">
-        <a href="/fortune/shichu" class="guide-item glass-card fade-in-up delay-1">
+        <a href="/menu/love" class="guide-item theme-amethyst glass-card fade-in-up delay-1" style="border-left: 4px solid #a855f7;">
+          <div class="guide-icon">💘</div>
           <div class="guide-text">
-            <h4>自分の天職や人生の転機を知りたい</h4>
-            <p>おすすめ：四柱推命・算命学</p>
+            <h4 style="color: #e9d5ff;">恋愛・相性・復縁</h4>
+            <p>あの人の本音、二人の運命の日、離れた心を取り戻す方法…</p>
           </div>
         </a>
-        <a href="/fortune/shukuyo" class="guide-item glass-card fade-in-up delay-2">
+        <a href="/menu/work" class="guide-item theme-sapphire glass-card fade-in-up delay-2" style="border-left: 4px solid #3b82f6;">
+          <div class="guide-icon">💼</div>
           <div class="guide-text">
-            <h4>あの人との相性や復縁の可能性を知りたい</h4>
-            <p>おすすめ：宿曜占星術</p>
+            <h4 style="color: #bfdbfe;">仕事・天職・転機</h4>
+            <p>今の仕事は続けるべき？あなたの隠された才能と成功の時期</p>
           </div>
         </a>
-        <a href="/fortune/kyuseiki" class="guide-item glass-card fade-in-up delay-3">
+        <a href="/menu/money" class="guide-item theme-amber glass-card fade-in-up delay-3" style="border-left: 4px solid #f59e0b;">
+          <div class="guide-icon">💰</div>
           <div class="guide-text">
-            <h4>転職や引越しの最高のタイミングを知りたい</h4>
-            <p>おすすめ：九星気学</p>
+            <h4 style="color: #fde68a;">金運・財運・投資</h4>
+            <p>一生の財運バイオリズム、お金を引き寄せるためのアクション</p>
           </div>
         </a>
-        <a href="/fortune/eki" class="guide-item glass-card fade-in-up delay-4">
+        <a href="/menu/life" class="guide-item theme-jade glass-card fade-in-up delay-4" style="border-left: 4px solid #10b981;">
+          <div class="guide-icon">🕊️</div>
           <div class="guide-text">
-            <h4>明日のプレゼン、この恋の行方…今すぐ答えが欲しい</h4>
-            <p>おすすめ：易（ワンオラクル）</p>
+            <h4 style="color: #a7f3d0;">人生・総合運</h4>
+            <p>あなたの持って生まれた宿命、今年の全体的な運勢の流れ</p>
           </div>
         </a>
       </div>
@@ -284,32 +288,44 @@ a { text-decoration: none; color: inherit; }
   transition: transform 0.3s ease;
 }
 
-/* 目的別ガイドグリッド */
+/* ★ お悩み別ガイドグリッド（デザイン強化） ★ */
 .guide-grid {
   display: grid;
-  gap: 1rem;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  max-width: 800px;
+  gap: 1.25rem;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  max-width: 900px;
   margin: 0 auto;
 }
 .guide-item {
-  padding: 1.5rem;
+  padding: 1.5rem 2rem;
   display: flex;
   align-items: center;
   border-radius: 12px;
   margin-bottom: 0;
   transition: all 0.4s ease;
+  background: rgba(20, 24, 39, 0.6);
 }
 .guide-item:hover {
-  background: rgba(30, 36, 56, 0.6);
-  border-color: rgba(212, 175, 55, 0.3);
+  background: rgba(30, 36, 56, 0.8);
   transform: translateX(5px);
 }
-.guide-item h4 {
-  color: #fff; font-size: 1rem; margin: 0 0 0.5rem 0; font-weight: normal;
+.guide-icon {
+  font-size: 2.5rem;
+  margin-right: 1.5rem;
+  filter: drop-shadow(0 0 8px rgba(255,255,255,0.2));
 }
-.guide-item p {
-  color: var(--gold); font-size: 0.8rem; margin: 0; font-family: var(--font-mincho);
+.guide-text h4 {
+  font-size: 1.15rem;
+  margin: 0 0 0.25rem 0;
+  font-weight: bold;
+  letter-spacing: 0.05em;
+}
+.guide-text p {
+  color: var(--text-main);
+  font-size: 0.85rem;
+  margin: 0;
+  line-height: 1.5;
+  font-family: var(--font-sans);
 }
 
 /* CTAセクション */
@@ -334,44 +350,8 @@ a { text-decoration: none; color: inherit; }
 </style>
 
 <script>
-  // 星空の生成
-  const starsContainer = document.getElementById('stars');
-  if (starsContainer) {
-    const starCount = window.innerWidth < 768 ? 40 : 80;
-    for (let i = 0; i < starCount; i++) {
-      const s = document.createElement('div');
-      const size = Math.random() * 2 + 0.5;
-      s.style.cssText = `
-        position: absolute;
-        border-radius: 50%;
-        background: #ffffff;
-        width: ${size}px;
-        height: ${size}px;
-        top: ${Math.random() * 100}%;
-        left: ${Math.random() * 100}%;
-        opacity: ${Math.random() * 0.5 + 0.1};
-        animation: twinkle ${3 + Math.random() * 4}s ease-in-out infinite;
-        animation-delay: ${Math.random() * 5}s;
-      `;
-      starsContainer.appendChild(s);
-    }
-  }
-
-  // スクロールフェードインのアニメーション制御
-  const fadeElements = document.querySelectorAll('.fade-in-up');
-  const observerOptions = { root: null, rootMargin: '0px', threshold: 0.15 };
-  const observer = new IntersectionObserver((entries, observer) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('is-visible');
-        observer.unobserve(entry.target);
-      }
-    });
-  }, observerOptions);
-
-  fadeElements.forEach(el => observer.observe(el));
-
-  // スムーススクロール制御
+  // 星空の生成とスクロール制御はLayoutに統合したため削除（Layout.astro側で実行されます）
+  // スムーススクロール制御のみ残す
   document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', function (e) {
       e.preventDefault();

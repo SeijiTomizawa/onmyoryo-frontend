@@ -1,0 +1,81 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import '../../styles/global.css';
+---
+
+<Layout title="人生・健康・総合運 | 陰陽寮">
+  <div class="page">
+    <div class="stars" id="stars"></div>
+
+    <div class="page-inner" style="max-width: 800px;">
+      <header class="page-header fade-in-up">
+        <h1 class="page-title" style="color: #a7f3d0; text-shadow: 0 0 20px rgba(16, 185, 129, 0.4);">人生・健康・総合運</h1>
+        <p class="page-desc">あなたの持って生まれた宿命と、これからの人生の全貌を明らかにします。</p>
+      </header>
+
+      <div class="premium-menus">
+        
+        <div class="glass-card menu-card theme-life fade-in-up delay-1">
+          <div class="menu-badge special">究極鑑定</div>
+          <div class="menu-header">
+            <h2 class="menu-title">【算命学】あなたの「宿命の設計図」と、これから10年の大きな運命の流れ</h2>
+            <div class="menu-price">500<span>C</span></div>
+          </div>
+          <p class="menu-desc">「なぜ自分だけこうなのか」と悩む必要はありません。あなたがこの世に生まれる前に描いた人生の設計図（宿命）を解き明かし、これから訪れる10年ごとの大きな転機（大運）を詳細に予言します。</p>
+          
+          <div class="teaser-box">
+            <p class="teaser-label">この鑑定でわかること</p>
+            <ul>
+              <li>あなたの本質と、人生で果たすべき使命</li>
+              <li>注意すべき「天中殺（空亡）」の時期と過ごし方</li>
+              <li>これから10年間に起こる、出会いと別れ、そして試練</li>
+            </ul>
+          </div>
+          
+          <button class="btn-primary" onclick="window.location.href='/fortune/shichu'">✦ 無料でお試し鑑定する</button>
+        </div>
+
+        <div class="glass-card menu-card theme-life fade-in-up delay-2">
+          <div class="menu-header">
+            <h2 class="menu-title">【九星気学】心身のバランスを整える「健康運」と、運気回復のパワースポット</h2>
+            <div class="menu-price">300<span>C</span></div>
+          </div>
+          <p class="menu-desc">何をやっても上手くいかない時は、気が枯渇している証拠です。あなたが肉体的・精神的に陥りやすい不調のサインと、エネルギーを充填するための「あなた専用の吉方位パワースポット」をお伝えします。</p>
+          
+          <button class="btn-primary" style="background: rgba(255,255,255,0.05); border-color: rgba(255,255,255,0.2); color: #fff;">詳細を見る</button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</Layout>
+
+<style>
+/* work.astroと同じ構造。テーマカラーだけ変更 */
+.premium-menus { display: flex; flex-direction: column; gap: 2rem; margin-top: 2rem; }
+.menu-card { position: relative; padding: 3rem 2.5rem 2.5rem; background: linear-gradient(145deg, rgba(20, 24, 39, 0.8), rgba(10, 12, 16, 0.9)); }
+
+/* テーマカラー：人生・健康（ジェイドグリーン） */
+.theme-life { border-top: 3px solid #10b981; }
+
+.menu-badge { position: absolute; top: 0; left: 2rem; transform: translateY(-50%); padding: 4px 16px; border-radius: 20px; font-size: 0.8rem; font-weight: bold; color: #fff; letter-spacing: 0.1em; }
+.menu-badge.special { background: linear-gradient(135deg, #10b981, #059669); box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4); }
+
+.menu-header { display: flex; justify-content: space-between; align-items: flex-start; gap: 1.5rem; margin-bottom: 1.5rem; }
+.menu-title { font-family: var(--font-mincho); font-size: 1.4rem; color: #fff; line-height: 1.6; margin: 0; flex: 1; }
+.menu-price { font-size: 1.8rem; font-weight: bold; color: var(--gold-light); white-space: nowrap; background: rgba(212, 175, 55, 0.1); padding: 8px 16px; border-radius: 12px; border: 1px solid rgba(212, 175, 55, 0.3); }
+.menu-price span { font-size: 1rem; margin-left: 2px; color: var(--gold); }
+.menu-desc { font-size: 0.95rem; color: var(--text-secondary); line-height: 1.8; margin-bottom: 1.5rem; }
+.teaser-box { background: rgba(255, 255, 255, 0.03); border: 1px dashed rgba(212, 175, 55, 0.3); border-radius: 12px; padding: 1.5rem; margin-bottom: 2rem; }
+.teaser-label { font-size: 0.85rem; color: var(--gold); margin-bottom: 0.75rem; font-weight: bold; letter-spacing: 0.1em; }
+.teaser-box ul { list-style: none; padding: 0; margin: 0; }
+.teaser-box li { font-size: 0.9rem; color: var(--text-main); margin-bottom: 0.5rem; padding-left: 1.5rem; position: relative; }
+.teaser-box li::before { content: '✓'; position: absolute; left: 0; color: var(--gold-light); }
+
+@media (max-width: 600px) {
+  .menu-header { flex-direction: column; gap: 1rem; }
+  .menu-price { align-self: flex-start; }
+  .menu-title { font-size: 1.2rem; }
+  .menu-card { padding: 2.5rem 1.5rem 1.5rem; }
+}
+</style>

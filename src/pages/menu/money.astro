@@ -1,0 +1,83 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import '../../styles/global.css';
+---
+
+<Layout title="金運・財運・投資 | 陰陽寮">
+  <div class="page">
+    <div class="stars" id="stars"></div>
+
+    <div class="page-inner" style="max-width: 800px;">
+      <header class="page-header fade-in-up">
+        <h1 class="page-title" style="color: #fde68a; text-shadow: 0 0 20px rgba(245, 158, 11, 0.4);">金運・財運・投資</h1>
+        <p class="page-desc">一生の財運バイオリズムを知り、お金を引き寄せる体質へと変化させます。</p>
+      </header>
+
+      <div class="premium-menus">
+        
+        <div class="glass-card menu-card theme-money fade-in-up delay-1">
+          <div class="menu-badge hot">人気No.1</div>
+          <div class="menu-header">
+            <h2 class="menu-title">【四柱推命】あなたが生まれ持つ「財運の器」と、一生のお金のバイオリズム</h2>
+            <div class="menu-price">300<span>C</span></div>
+          </div>
+          <p class="menu-desc">人はそれぞれ「財を成す方法」が違います。コツコツ貯蓄型か、投資で大金を動かす型か。あなたの宿命に刻まれた金運の強さと、お金に恵まれる黄金期を詳細に鑑定します。</p>
+          
+          <div class="teaser-box">
+            <p class="teaser-label">この鑑定でわかること</p>
+            <ul>
+              <li>あなたの生涯の金運レベルと「財の引き寄せ方」</li>
+              <li>最も金運が跳ね上がる「黄金の10年」はいつか</li>
+              <li>あなたがお金を失いやすい弱点と回避策</li>
+            </ul>
+          </div>
+          
+          <button class="btn-primary" onclick="window.location.href='/fortune/shichu'">✦ 無料でお試し鑑定する</button>
+        </div>
+
+        <div class="glass-card menu-card theme-money fade-in-up delay-2">
+          <div class="menu-badge special">開運特化</div>
+          <div class="menu-header">
+            <h2 class="menu-title">【九星気学】金運を劇的に引き上げる「大吉方位」と、やってはいけない散財の時期</h2>
+            <div class="menu-price">500<span>C</span></div>
+          </div>
+          <p class="menu-desc">金運は「気」の流れによって意図的に高めることができます。宝くじの購入や口座の開設に適した吉日と、金運を爆発させるための吉方位旅行（祐気取り）のプランをお教えします。</p>
+          
+          <button class="btn-primary" style="background: rgba(255,255,255,0.05); border-color: rgba(255,255,255,0.2); color: #fff;">詳細を見る</button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</Layout>
+
+<style>
+/* work.astroと同じ構造。テーマカラーだけ変更 */
+.premium-menus { display: flex; flex-direction: column; gap: 2rem; margin-top: 2rem; }
+.menu-card { position: relative; padding: 3rem 2.5rem 2.5rem; background: linear-gradient(145deg, rgba(20, 24, 39, 0.8), rgba(10, 12, 16, 0.9)); }
+
+/* テーマカラー：金運（アンバー） */
+.theme-money { border-top: 3px solid #f59e0b; }
+
+.menu-badge { position: absolute; top: 0; left: 2rem; transform: translateY(-50%); padding: 4px 16px; border-radius: 20px; font-size: 0.8rem; font-weight: bold; color: #fff; letter-spacing: 0.1em; }
+.menu-badge.hot { background: linear-gradient(135deg, #f43f5e, #fb923c); box-shadow: 0 4px 15px rgba(244, 63, 94, 0.4); }
+.menu-badge.special { background: linear-gradient(135deg, #f59e0b, #eab308); box-shadow: 0 4px 15px rgba(245, 158, 11, 0.4); }
+
+.menu-header { display: flex; justify-content: space-between; align-items: flex-start; gap: 1.5rem; margin-bottom: 1.5rem; }
+.menu-title { font-family: var(--font-mincho); font-size: 1.4rem; color: #fff; line-height: 1.6; margin: 0; flex: 1; }
+.menu-price { font-size: 1.8rem; font-weight: bold; color: var(--gold-light); white-space: nowrap; background: rgba(212, 175, 55, 0.1); padding: 8px 16px; border-radius: 12px; border: 1px solid rgba(212, 175, 55, 0.3); }
+.menu-price span { font-size: 1rem; margin-left: 2px; color: var(--gold); }
+.menu-desc { font-size: 0.95rem; color: var(--text-secondary); line-height: 1.8; margin-bottom: 1.5rem; }
+.teaser-box { background: rgba(255, 255, 255, 0.03); border: 1px dashed rgba(212, 175, 55, 0.3); border-radius: 12px; padding: 1.5rem; margin-bottom: 2rem; }
+.teaser-label { font-size: 0.85rem; color: var(--gold); margin-bottom: 0.75rem; font-weight: bold; letter-spacing: 0.1em; }
+.teaser-box ul { list-style: none; padding: 0; margin: 0; }
+.teaser-box li { font-size: 0.9rem; color: var(--text-main); margin-bottom: 0.5rem; padding-left: 1.5rem; position: relative; }
+.teaser-box li::before { content: '✓'; position: absolute; left: 0; color: var(--gold-light); }
+
+@media (max-width: 600px) {
+  .menu-header { flex-direction: column; gap: 1rem; }
+  .menu-price { align-self: flex-start; }
+  .menu-title { font-size: 1.2rem; }
+  .menu-card { padding: 2.5rem 1.5rem 1.5rem; }
+}
+</style>

@@ -1,0 +1,171 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import '../../styles/global.css';
+---
+
+<Layout title="恋愛・相性占い | 陰陽寮">
+  <div class="page">
+    <div class="stars" id="stars"></div>
+
+    <div class="page-inner" style="max-width: 800px;">
+      <header class="page-header fade-in-up">
+        <h1 class="page-title" style="color: #fbcfe8; text-shadow: 0 0 20px rgba(244, 114, 182, 0.4);">恋愛・相性・復縁</h1>
+        <p class="page-desc">東洋の神秘が、二人の宿命と「あの人の本当の気持ち」を解き明かします。</p>
+      </header>
+
+      <div class="premium-menus">
+        
+        <div class="glass-card menu-card fade-in-up delay-1">
+          <div class="menu-badge hot">人気No.1</div>
+          <div class="menu-header">
+            <h2 class="menu-title">【宿曜×九星】あの人があなたに隠している「本当の気持ち」と、二人が結ばれる運命の日</h2>
+            <div class="menu-price">300<span>C</span></div>
+          </div>
+          <p class="menu-desc">表向きの態度に隠された、あの人の本音とは？二人のご縁の深さ（安壊・栄親など）を読み解き、次にアプローチすべき「最強の吉日」を具体的にお伝えします。</p>
+          
+          <div class="teaser-box">
+            <p class="teaser-label">この鑑定でわかること</p>
+            <ul>
+              <li>あなたに対する「現在の率直な感情」</li>
+              <li>二人の間にある「前世からの宿縁」</li>
+              <li>あの人が動くタイミングと、あなたが取るべき行動</li>
+            </ul>
+          </div>
+          
+          <button class="btn-primary" onclick="window.location.href='/fortune/shukuyo'">✦ 無料でお試し鑑定する</button>
+        </div>
+
+        <div class="glass-card menu-card fade-in-up delay-2">
+          <div class="menu-badge special">復縁特化</div>
+          <div class="menu-header">
+            <h2 class="menu-title">【四柱推命】離れた心を取り戻す。もう一度あの人に愛されるための「絶対法則」</h2>
+            <div class="menu-price">500<span>C</span></div>
+          </div>
+          <p class="menu-desc">「もうチャンスはないの？」と諦める前に。別れの本当の理由を命式から紐解き、冷却期間の長さや、連絡を引き寄せるための効果的な言葉を導き出します。</p>
+          
+          <button class="btn-primary" style="background: rgba(255,255,255,0.05); border-color: rgba(255,255,255,0.2); color: #fff;">詳細を見る</button>
+        </div>
+
+        <div class="glass-card menu-card fade-in-up delay-3">
+          <div class="menu-header">
+            <h2 class="menu-title">【算命学】まもなく訪れる！あなたの「史上最高のモテ期」と運命の相手の特徴</h2>
+            <div class="menu-price">100<span>C</span></div>
+          </div>
+          <p class="menu-desc">出会いがないと焦っていませんか？あなたの魅力が最も輝く時期と、次に出会う「将来を約束する相手」の容姿・職業・性格をピンポイントで予言します。</p>
+          
+          <button class="btn-primary" style="background: rgba(255,255,255,0.05); border-color: rgba(255,255,255,0.2); color: #fff;">詳細を見る</button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</Layout>
+
+<style>
+/* プレミアムメニュー特化のスタイル */
+.premium-menus {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  margin-top: 2rem;
+}
+.menu-card {
+  position: relative;
+  padding: 3rem 2.5rem 2.5rem;
+  border-top: 3px solid #a855f7; /* 恋愛テーマのアメジストカラー */
+  background: linear-gradient(145deg, rgba(20, 24, 39, 0.8), rgba(10, 12, 16, 0.9));
+}
+.menu-badge {
+  position: absolute;
+  top: 0;
+  left: 2rem;
+  transform: translateY(-50%);
+  padding: 4px 16px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: bold;
+  color: #fff;
+  letter-spacing: 0.1em;
+}
+.menu-badge.hot { background: linear-gradient(135deg, #f43f5e, #fb923c); box-shadow: 0 4px 15px rgba(244, 63, 94, 0.4); }
+.menu-badge.special { background: linear-gradient(135deg, #8b5cf6, #3b82f6); box-shadow: 0 4px 15px rgba(139, 92, 246, 0.4); }
+
+.menu-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+.menu-title {
+  font-family: var(--font-mincho);
+  font-size: 1.4rem;
+  color: #fff;
+  line-height: 1.6;
+  margin: 0;
+  flex: 1;
+}
+.menu-price {
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: var(--gold-light);
+  white-space: nowrap;
+  background: rgba(212, 175, 55, 0.1);
+  padding: 8px 16px;
+  border-radius: 12px;
+  border: 1px solid rgba(212, 175, 55, 0.3);
+}
+.menu-price span {
+  font-size: 1rem;
+  margin-left: 2px;
+  color: var(--gold);
+}
+
+.menu-desc {
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+  line-height: 1.8;
+  margin-bottom: 1.5rem;
+}
+
+/* 焦らし（ティーザー）ボックス */
+.teaser-box {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px dashed rgba(212, 175, 55, 0.3);
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+}
+.teaser-label {
+  font-size: 0.85rem;
+  color: var(--gold);
+  margin-bottom: 0.75rem;
+  font-weight: bold;
+  letter-spacing: 0.1em;
+}
+.teaser-box ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.teaser-box li {
+  font-size: 0.9rem;
+  color: var(--text-main);
+  margin-bottom: 0.5rem;
+  padding-left: 1.5rem;
+  position: relative;
+}
+.teaser-box li::before {
+  content: '✓';
+  position: absolute;
+  left: 0;
+  color: var(--gold-light);
+}
+
+@media (max-width: 600px) {
+  .menu-header { flex-direction: column; gap: 1rem; }
+  .menu-price { align-self: flex-start; }
+  .menu-title { font-size: 1.2rem; }
+  .menu-card { padding: 2.5rem 1.5rem 1.5rem; }
+}
+</style>
