@@ -59,9 +59,9 @@ body {
   gap: 6px;
   min-width: 0; /* はみ出し防止 */
 }
-/* 「年」の入力欄を少し広めにとる */
+/* 「年」の入力欄を少し狭めにとる */
 .date-row > .field:first-child {
-  flex: 1.5;
+  flex: 0.8;
 }
 .field label { font-size: 11px; color: var(--gold); letter-spacing: 0.1em; text-transform: uppercase; }
 
