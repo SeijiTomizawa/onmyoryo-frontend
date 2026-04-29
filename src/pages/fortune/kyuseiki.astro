@@ -46,7 +46,6 @@ import '../../styles/global.css';
             <p class="star-label" id="res-star-num"></p>
             <h2 class="result-title" id="res-star-name" style="margin-bottom:0.25rem;"></h2>
             <p class="star-sub" id="res-keisha"></p>
-            
             <div class="star-grid-info">
               <div class="mini-card">
                 <p class="mini-label">月命星</p>
@@ -57,7 +56,6 @@ import '../../styles/global.css';
                 <p class="mini-value" id="res-birth"></p>
               </div>
             </div>
-            
             <div class="personality-box" id="res-personality"></div>
           </div>
 
@@ -71,11 +69,18 @@ import '../../styles/global.css';
               <p class="dir-label unlucky">凶方位</p>
               <div class="dir-chips" id="unlucky-dirs"></div>
             </div>
+            <div class="dir-preview-box" id="dir-preview-box" style="display:none">
+              <p class="dir-preview-text" id="dir-preview"></p>
+              <p class="dir-preview-lock">▼ 詳細は有料鑑定で公開</p>
+            </div>
           </div>
 
           <div class="glass-card result-item fortune-card">
             <h3 class="card-subtitle" id="res-year-fortune-title"></h3>
             <p class="result-text" id="res-year-fortune"></p>
+            <div class="fortune-lock-box">
+              <p class="fortune-lock-text">▼ 恋愛運・仕事運・金運・アドバイスは有料鑑定で公開</p>
+            </div>
           </div>
 
           <div class="glass-card result-item coin-card" id="coin-cta">
@@ -104,29 +109,21 @@ import '../../styles/global.css';
 </Layout>
 
 <style>
-/* 九星気学ページ固有のスタイル */
 .stars { position: absolute; inset: 0; pointer-events: none; z-index: 0; }
-
 .result-grid { display: grid; gap: 1.5rem; margin-top: 3rem; }
 .card-subtitle { font-family: var(--font-mincho); color: var(--gold); font-size: 1.1rem; margin-bottom: 1.25rem; text-align: center; }
-
-/* 星カード関連 */
 .star-card { text-align: center; border-top: 3px solid var(--gold); padding: 2.5rem; margin-bottom:0; }
 .star-label { font-size: 0.75rem; color: var(--gold); letter-spacing: 0.2em; margin-bottom: 0.5rem; }
 .star-sub { font-size: 0.8rem; color: var(--text-secondary); margin-bottom: 2rem; }
-
 .star-grid-info { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 1.5rem; }
 .mini-card { background: rgba(255,255,255,0.03); padding: 1rem; border-radius: var(--radius-md); border: 1px solid rgba(255,255,255,0.05); }
 .mini-label { font-size: 0.65rem; color: var(--text-secondary); margin-bottom: 4px; }
 .mini-value { font-size: 1rem; font-weight: 500; color: #fff; }
-
 .personality-box {
   background: rgba(176, 141, 90, 0.08); border-left: 3px solid var(--gold);
-  padding: 1.5rem; font-size: 0.95rem; color: var(--text-main); line-height: 1.9; text-align: left;
+  padding: 1.5rem; font-size: 0.95rem; line-height: 1.9; text-align: left;
   border-radius: 0 12px 12px 0;
 }
-
-/* 方位チップ */
 .dir-card { padding: 2.5rem; margin-bottom:0; }
 .dir-label { font-size: 0.7rem; font-weight: bold; margin-bottom: 0.5rem; text-transform: uppercase; }
 .dir-label.lucky { color: #5ef0c5; }
@@ -135,11 +132,13 @@ import '../../styles/global.css';
 .chip-lucky, .chip-unlucky { font-size: 0.85rem; padding: 6px 14px; border-radius: 30px; border: 1px solid transparent; }
 .chip-lucky { background: rgba(94, 240, 197, 0.1); color: #5ef0c5; border-color: rgba(94, 240, 197, 0.2); }
 .chip-unlucky { background: rgba(255, 142, 142, 0.1); color: #ff8e8e; border-color: rgba(255, 142, 142, 0.2); }
-
+.dir-preview-box { margin-top: 1.25rem; padding: 1rem; background: rgba(176,141,90,0.06); border-radius: var(--radius-md); border: 1px dashed rgba(176,141,90,0.3); }
+.dir-preview-text { font-size: 0.85rem; color: var(--text-secondary); line-height: 1.7; margin-bottom: 0.5rem; }
+.dir-preview-lock { font-size: 0.75rem; color: var(--gold); opacity: 0.7; }
 .fortune-card { padding: 2.5rem; margin-bottom:0; }
-
-/* コインプラン */
-.coin-card { text-align: center; background: linear-gradient(145deg, rgba(30,35,55,0.8), rgba(10,12,16,0.8)); padding: 2.5rem; margin-bottom:0;}
+.fortune-lock-box { margin-top: 1.25rem; padding: 1rem; background: rgba(176,141,90,0.06); border-radius: var(--radius-md); border: 1px dashed rgba(176,141,90,0.3); }
+.fortune-lock-text { font-size: 0.75rem; color: var(--gold); opacity: 0.7; }
+.coin-card { text-align: center; background: linear-gradient(145deg, rgba(30,35,55,0.8), rgba(10,12,16,0.8)); padding: 2.5rem; margin-bottom:0; }
 .coin-title { font-family: var(--font-mincho); font-size: 1.25rem; color: #fff; margin-bottom: 0.75rem; }
 .coin-desc { font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 2rem; }
 .coin-plans { display: flex; gap: 12px; }
@@ -153,7 +152,6 @@ import '../../styles/global.css';
 .plan-coins { font-size: 1.4rem; font-weight: bold; color: #fff; }
 .plan-coins span { font-size: 0.8rem; margin-left: 2px; color: var(--gold); }
 .plan-price { font-size: 0.75rem; color: var(--text-secondary); margin-top: 4px; }
-
 @keyframes twinkle {
   0% { opacity: 0.3; transform: scale(0.8); }
   50% { opacity: 1; transform: scale(1.1); }
@@ -201,40 +199,45 @@ window.runPreview = async function() {
   btn.textContent = '運命を読み解き中...'; btn.disabled = true;
 
   try {
-    let h = 1; let starName = STARS[0]; let personality = "柔軟で芯が強い、静かなる知略家です。";
-    
-    // API呼び出し（失敗時はフォールバックの計算を使用）
-    try {
-      const res = await fetch(`https://kyusei-api.seiji-tomizawa.workers.dev/api/fortune/preview?year=${year}&month=${month}&day=${day}`);
-      if(res.ok) {
-        const data = await res.json();
-        h = data.honmeiseiNumber || 1;
-        starName = data.honmeisei || STARS[h-1];
-        personality = data.personality || personality;
-      }
-    } catch(e) {
-      console.warn('APIエラーのため簡易計算を使用します');
-      h = (11 - (parseInt(year) % 9)) % 9 || 9;
-      starName = STARS[h-1];
-    }
+    const res = await fetch(
+      `https://kyusei-api.seiji-tomizawa.workers.dev/api/fortune/preview?year=${year}&month=${month}&day=${day}`
+    );
+    const data = await res.json();
 
+    const h = data.honmeiseiNumber || 1;
+    const starName = data.honmeisei || STARS[h-1];
     const dirs = DIRECTIONS[h];
+
+    // 基本情報
     document.getElementById('res-star-num').textContent = `第${h}星 · 本命星`;
     document.getElementById('res-star-name').textContent = starName;
     document.getElementById('res-tsuki').textContent = STARS[calcTsuki(h, parseInt(month), parseInt(day)) - 1];
     document.getElementById('res-birth').textContent = `${year}年${month}月${day}日`;
-    document.getElementById('res-keisha').textContent = '内面的な傾向を示す「傾斜宮」';
-    document.getElementById('res-personality').textContent = personality;
-    document.getElementById('lucky-dirs').innerHTML = dirs.lucky.map(d => `<span class="chip-lucky">▲ ${d}</span>`).join('');
-    document.getElementById('unlucky-dirs').innerHTML = dirs.unlucky.map(d => `<span class="chip-unlucky">▼ ${d}</span>`).join('');
-    
-    const currentYear = new Date().getFullYear();
-    document.getElementById('res-year-fortune-title').textContent = `${currentYear}年の全体運勢`;
-    document.getElementById('res-year-fortune').textContent = `${starName}のあなたにとって、${currentYear}年は新たな「気」が流れ込む重要な年。あなたの本質を活かし、誠実に行動することで運は大きく開けます。`;
+    document.getElementById('res-keisha').textContent = data.keishakyuu || '傾斜宮';
+    document.getElementById('res-personality').textContent = data.personality;
 
+    // 方位
+    document.getElementById('lucky-dirs').innerHTML =
+      dirs.lucky.map(d => `<span class="chip-lucky">▲ ${d}</span>`).join('');
+    document.getElementById('unlucky-dirs').innerHTML =
+      dirs.unlucky.map(d => `<span class="chip-unlucky">▼ ${d}</span>`).join('');
+
+    // 吉方位プレビュー（D1から取得）
+    if (data.directionPreview) {
+      document.getElementById('dir-preview').textContent = data.directionPreview;
+      document.getElementById('dir-preview-box').style.display = 'block';
+    }
+
+    // 年運（D1から取得）
+    const yf = data.yearFortune;
+    document.getElementById('res-year-fortune-title').textContent =
+      yf?.title || `${yf?.year || new Date().getFullYear()}年の全体運勢`;
+    document.getElementById('res-year-fortune').textContent =
+      yf?.overview || `${starName}のあなたにとって、今年は大切な年です。`;
+
+    // 表示
     const section = document.getElementById('result-section');
     section.style.display = 'block';
-    
     setTimeout(() => {
       section.querySelectorAll('.result-item').forEach((item, idx) => {
         setTimeout(() => item.classList.add('show'), idx * 150);
@@ -243,9 +246,21 @@ window.runPreview = async function() {
     }, 100);
 
   } catch (e) {
-    errEl.textContent = 'システムエラーが発生しました。';
+    errEl.textContent = 'システムエラーが発生しました。しばらくしてお試しください。';
+    console.error(e);
   } finally {
     btn.textContent = originalText; btn.disabled = false;
   }
 };
+
+// 星背景
+const starsEl = document.getElementById('stars');
+if (starsEl) {
+  for (let i = 0; i < 60; i++) {
+    const s = document.createElement('div');
+    const size = Math.random() * 2 + 1;
+    s.style.cssText = `position:absolute;border-radius:50%;background:#fff;width:${size}px;height:${size}px;top:${Math.random()*100}%;left:${Math.random()*100}%;opacity:${Math.random()*0.6+0.1};animation:twinkle ${2+Math.random()*3}s ease-in-out infinite;animation-delay:${Math.random()*3}s;`;
+    starsEl.appendChild(s);
+  }
+}
 </script>
