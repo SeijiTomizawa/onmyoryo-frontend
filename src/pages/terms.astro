@@ -1,0 +1,85 @@
+---
+import Layout from '../layouts/Layout.astro';
+import '../styles/global.css';
+---
+
+<Layout title="利用規約 | 陰陽寮">
+  <div class="page legal-page">
+    <div class="page-inner">
+      <header class="page-header fade-in-up">
+        <h1 class="page-title">利用規約</h1>
+      </header>
+
+      <div class="glass-card legal-content fade-in-up delay-1">
+        <p>この利用規約（以下、「本規約」といいます。）は、陰陽寮（以下、「当サイト」といいます。）が提供する占いサービス（以下、「本サービス」といいます。）の利用条件を定めるものです。ユーザーの皆さま（以下、「ユーザー」といいます。）には、本規約に従って、本サービスをご利用いただきます。</p>
+
+        <h2>第1条（適用）</h2>
+        <p>本規約は、ユーザーと当サイトとの間の本サービスの利用に関わる一切の関係に適用されるものとします。</p>
+
+        <h2>第2条（サービスの性質と非保証）</h2>
+        <ol>
+          <li>本サービスが提供する鑑定結果は、東洋占術の統計や理論に基づくものであり、将来の出来事や現在の状況について、確実性、正確性、完全性、有用性を100%保証するものではありません。</li>
+          <li>本サービスの鑑定結果をどのように利用するかはユーザー自身の判断と責任に委ねられており、鑑定結果によって生じた損害やトラブルについて、当サイトは一切の責任を負いません。</li>
+        </ol>
+
+        <h2>第3条（利用料金およびコイン）</h2>
+        <ol>
+          <li>本サービスの一部は、当サイト内で利用可能な専用コイン（以下、「コイン」といいます。）を消費することで利用できます。</li>
+          <li>コインは、当サイトが定める決済方法により購入するものとします。</li>
+          <li>デジタルコンテンツという商品の性質上、購入後のコインの払い戻し、現金への換金、および購入のキャンセルはいかなる理由があっても受け付けません。</li>
+        </ol>
+
+        <h2>第4条（禁止事項）</h2>
+        <p>ユーザーは、本サービスの利用にあたり、以下の行為をしてはなりません。</p>
+        <ul>
+          <li>法令または公序良俗に違反する行為</li>
+          <li>犯罪行為に関連する行為</li>
+          <li>当サイトのサーバーやネットワークの機能を破壊したり、妨害したりする行為</li>
+          <li>本サービスによって得られた情報を商業的に利用する行為（無断転載など）</li>
+          <li>他のユーザーに関する個人情報等を収集または蓄積する行為</li>
+        </ul>
+
+        <h2>第5条（利用制限および登録抹消）</h2>
+        <p>当サイトは、ユーザーが本規約のいずれかに違反した場合、事前の通知なく、ユーザーに対して本サービスの全部もしくは一部の利用を制限し、またはユーザーとしての登録を抹消することができるものとします。</p>
+
+        <h2>第6条（免責事項）</h2>
+        <p>当サイトは、本サービスに関して、ユーザーと他のユーザーまたは第三者との間において生じた取引、連絡または紛争等について一切責任を負いません。</p>
+
+        <p class="enact-date">制定日：2026年〇月〇日</p>
+      </div>
+    </div>
+  </div>
+</Layout>
+
+<style>
+/* 法的文書用の共通スタイル */
+.legal-page { padding: 4rem 1.5rem; }
+.legal-content {
+  padding: 3rem;
+  color: var(--text-main);
+  line-height: 2;
+  font-size: 0.95rem;
+}
+.legal-content h2 {
+  font-family: var(--font-mincho);
+  font-size: 1.4rem;
+  color: var(--gold);
+  margin: 2.5rem 0 1rem;
+  border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+  padding-bottom: 0.5rem;
+}
+.legal-content p { margin-bottom: 1.5rem; }
+.legal-content ol, .legal-content ul {
+  margin-bottom: 1.5rem;
+  padding-left: 1.5rem;
+}
+.legal-content li { margin-bottom: 0.5rem; }
+.enact-date {
+  text-align: right;
+  margin-top: 4rem;
+  color: var(--text-secondary);
+}
+@media (max-width: 600px) {
+  .legal-content { padding: 1.5rem; }
+}
+</style>

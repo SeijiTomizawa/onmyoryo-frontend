@@ -1,0 +1,61 @@
+---
+import Layout from '../layouts/Layout.astro';
+import '../styles/global.css';
+---
+
+<Layout title="プライバシーポリシー | 陰陽寮">
+  <div class="page legal-page">
+    <div class="page-inner">
+      <header class="page-header fade-in-up">
+        <h1 class="page-title">プライバシーポリシー</h1>
+      </header>
+
+      <div class="glass-card legal-content fade-in-up delay-1">
+        <p>陰陽寮（以下、「当サイト」といいます。）は、ユーザーの個人情報の取扱いについて、以下のとおりプライバシーポリシー（以下、「本ポリシー」といいます。）を定めます。</p>
+
+        <h2>第1条（個人情報）</h2>
+        <p>「個人情報」とは、個人情報保護法にいう「個人情報」を指すものとし、生存する個人に関する情報であって、当該情報に含まれる氏名、生年月日、住所、電話番号、連絡先その他の記述等により特定の個人を識別できる情報、および容貌、指紋、声紋にかかるデータ、及び健康保険証の保険者番号などの当該情報単体から特定の個人を識別できる情報（個人識別情報）を指します。</p>
+
+        <h2>第2条（収集する情報とその目的）</h2>
+        <p>当サイトは、占いサービス（鑑定）を提供するため、以下の情報を収集・利用します。</p>
+        <ul>
+          <li>**鑑定に必要な情報：** 生年月日、出生時間、性別など（鑑定結果の算出のため）</li>
+          <li>**アカウント情報：** メールアドレス、パスワード（ログイン・ユーザー認証のため）</li>
+          <li>**決済に関する情報：** クレジットカード情報等（※決済代行会社を通じて処理され、当サイトではカード番号等を保持しません）</li>
+        </ul>
+
+        <h2>第3条（個人情報の第三者提供）</h2>
+        <p>当サイトは、次に掲げる場合を除いて、あらかじめユーザーの同意を得ることなく、第三者に個人情報を提供することはありません。ただし、個人情報保護法その他の法令で認められる場合を除きます。</p>
+        <ol>
+          <li>人の生命、身体または財産の保護のために必要がある場合であって、本人の同意を得ることが困難であるとき</li>
+          <li>公衆衛生の向上または児童の健全な育成の推進のために特に必要がある場合であって、本人の同意を得ることが困難であるとき</li>
+          <li>国の機関もしくは地方公共団体またはその委託を受けた者が法令の定める事務を遂行することに対して協力する必要がある場合</li>
+        </ol>
+
+        <h2>第4条（セキュリティ・情報の保護）</h2>
+        <p>当サイトは、ユーザーの個人情報を正確かつ最新の状態に保ち、個人情報への不正アクセス・紛失・破損・改ざん・漏洩などを防止するため、セキュリティシステムの維持・管理体制の整備等の必要な措置を講じ、安全対策を実施し個人情報の厳重な管理を行ないます。</p>
+
+        <h2>第5条（お問い合わせ窓口）</h2>
+        <p>本ポリシーに関するお問い合わせは、下記の窓口までお願いいたします。</p>
+        <p>
+          運営：【運営者名または法人名】<br>
+          Eメールアドレス：【support@example.com】
+        </p>
+
+        <p class="enact-date">制定日：2026年〇月〇日</p>
+      </div>
+    </div>
+  </div>
+</Layout>
+
+<style>
+/* src/pages/terms.astro と同じCSSを適用 */
+.legal-page { padding: 4rem 1.5rem; }
+.legal-content { padding: 3rem; color: var(--text-main); line-height: 2; font-size: 0.95rem; }
+.legal-content h2 { font-family: var(--font-mincho); font-size: 1.4rem; color: var(--gold); margin: 2.5rem 0 1rem; border-bottom: 1px solid rgba(212, 175, 55, 0.2); padding-bottom: 0.5rem; }
+.legal-content p { margin-bottom: 1.5rem; }
+.legal-content ol, .legal-content ul { margin-bottom: 1.5rem; padding-left: 1.5rem; }
+.legal-content li { margin-bottom: 0.5rem; }
+.enact-date { text-align: right; margin-top: 4rem; color: var(--text-secondary); }
+@media (max-width: 600px) { .legal-content { padding: 1.5rem; } }
+</style>
