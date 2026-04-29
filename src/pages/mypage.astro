@@ -1,0 +1,202 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+<Layout title="マイページ | 九星気学">
+  <div class="page">
+    <div class="page-inner">
+      <h1 class="page-title">マイページ</h1>
+
+      <div class="card user-card">
+        <div class="user-info">
+          <div class="avatar">☯</div>
+          <div>
+            <p class="user-email" id="user-email"></p>
+            <p class="user-birth" id="user-birth"></p>
+          </div>
+        </div>
+        <div class="coin-row">
+          <span class="coin-label">保有コイン</span>
+          <span class="coin-value" id="coin-balance">読み込み中...</span>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2 class="section-title">コインを購入</h2>
+        <div class="coin-plans">
+          <div class="coin-plan" onclick="purchaseCoin('plan_100')">
+            <p class="plan-coins">100コイン</p>
+            <p class="plan-price">¥500</p>
+          </div>
+          <div class="coin-plan featured" onclick="purchaseCoin('plan_300')">
+            <span class="plan-badge">人気</span>
+            <p class="plan-coins">300コイン</p>
+            <p class="plan-price">¥1,200</p>
+          </div>
+          <div class="coin-plan" onclick="purchaseCoin('plan_500')">
+            <p class="plan-coins">500コイン</p>
+            <p class="plan-price">¥1,800</p>
+          </div>
+        </div>
+        <p class="error-msg" id="purchase-error"></p>
+      </div>
+
+      <div class="card">
+        <h2 class="section-title">鑑定履歴</h2>
+        <div id="history-list">
+          <p class="empty-msg">読み込み中...</p>
+        </div>
+      </div>
+
+      <button class="btn-outline logout-btn" onclick="logout()">ログアウト</button>
+    </div>
+  </div>
+</Layout>
+
+<style>
+.page { padding: 3rem 1.5rem; }
+.page-inner { max-width: 560px; margin: 0 auto; display: flex; flex-direction: column; gap: 1rem; }
+.page-title {
+  font-family: 'Shippori Mincho', serif;
+  font-size: 24px; text-align: center; margin-bottom: 1rem;
+}
+.user-card {}
+.user-info { display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem; }
+.avatar {
+  width: 48px; height: 48px; border-radius: 50%;
+  background: #b08d5a22; border: 0.5px solid var(--gold);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 20px; color: var(--gold); flex-shrink: 0;
+}
+.user-email { font-size: 14px; margin-bottom: 4px; }
+.user-birth { font-size: 12px; color: var(--text-secondary); }
+.coin-row {
+  display: flex; align-items: center; justify-content: space-between;
+  background: #ffffff08; border-radius: var(--radius-md);
+  padding: 0.75rem 1rem;
+}
+.coin-label { font-size: 13px; color: var(--text-secondary); }
+.coin-value { font-size: 20px; font-weight: 500; color: var(--gold); }
+
+.section-title {
+  font-family: 'Shippori Mincho', serif;
+  font-size: 16px; margin-bottom: 1rem;
+}
+.coin-plans { display: flex; gap: 8px; margin-bottom: 0.5rem; }
+.coin-plan {
+  flex: 1; border: 0.5px solid #ffffff22;
+  border-radius: var(--radius-md); padding: 0.75rem 0.5rem;
+  text-align: center; cursor: pointer;
+  background: #ffffff08; transition: border-color 0.2s;
+}
+.coin-plan:hover { border-color: var(--gold); }
+.coin-plan.featured { border-color: var(--gold); background: #b08d5a12; }
+.plan-badge {
+  font-size: 9px; background: var(--gold); color: #fff;
+  padding: 1px 6px; border-radius: 999px; margin-bottom: 4px;
+  display: inline-block;
+}
+.plan-coins { font-size: 14px; font-weight: 500; }
+.plan-price { font-size: 11px; color: var(--text-secondary); margin-top: 2px; }
+
+.history-item {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0.75rem 0; border-bottom: 0.5px solid #ffffff10;
+}
+.history-item:last-child { border-bottom: none; }
+.history-type { font-size: 13px; }
+.history-meta { font-size: 11px; color: var(--text-secondary); margin-top: 2px; }
+.history-cost { font-size: 12px; color: var(--gold); }
+.empty-msg { font-size: 13px; color: var(--text-muted); text-align: center; padding: 1rem 0; }
+
+.logout-btn { width: 100%; margin-top: 0.5rem; }
+</style>
+
+<script>
+const WORKERS_URL = import.meta.env.PUBLIC_WORKERS_URL;
+
+const TYPE_LABEL: Record<string, string> = {
+  basic: '基本鑑定',
+  monthly: '月運鑑定',
+  yearly: '年運鑑定',
+};
+
+async function init() {
+  const token = localStorage.getItem('kyusei_token');
+  const user = JSON.parse(localStorage.getItem('kyusei_user') || 'null');
+  if (!token || !user) { window.location.href = '/login'; return; }
+
+  document.getElementById('user-email')!.textContent = user.email;
+  const [y, m, d] = user.birth_date.split('-');
+  document.getElementById('user-birth')!.textContent = `${y}年${parseInt(m)}月${parseInt(d)}日生まれ`;
+
+  await Promise.all([loadBalance(token), loadHistory(token)]);
+}
+
+async function loadBalance(token: string) {
+  try {
+    const res = await fetch(`${WORKERS_URL}/api/coins/balance`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    const data = await res.json() as any;
+    document.getElementById('coin-balance')!.textContent = `${data.coins} コイン`;
+  } catch {
+    document.getElementById('coin-balance')!.textContent = 'エラー';
+  }
+}
+
+async function loadHistory(token: string) {
+  try {
+    const res = await fetch(`${WORKERS_URL}/api/fortune/history`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    const data = await res.json() as any;
+    const list = document.getElementById('history-list')!;
+    if (!data.readings || data.readings.length === 0) {
+      list.innerHTML = '<p class="empty-msg">鑑定履歴はありません</p>';
+      return;
+    }
+    list.innerHTML = data.readings.map((r: any) => `
+      <div class="history-item">
+        <div>
+          <p class="history-type">${TYPE_LABEL[r.reading_type] ?? r.reading_type}</p>
+          <p class="history-meta">${new Date(r.created_at).toLocaleDateString('ja-JP')}</p>
+        </div>
+        <span class="history-cost">-${r.coins_used}コイン</span>
+      </div>
+    `).join('');
+  } catch {
+    document.getElementById('history-list')!.innerHTML = '<p class="empty-msg">読み込みに失敗しました</p>';
+  }
+}
+
+async function purchaseCoin(planId: string) {
+  const token = localStorage.getItem('kyusei_token');
+  if (!token) { window.location.href = '/login'; return; }
+  const errEl = document.getElementById('purchase-error')!;
+  errEl.textContent = '';
+  try {
+    const res = await fetch(`${WORKERS_URL}/api/coins/purchase`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+      body: JSON.stringify({
+        plan_id: planId,
+        success_url: `${window.location.origin}/mypage?success=1`,
+        cancel_url: `${window.location.origin}/mypage`,
+      }),
+    });
+    const data = await res.json() as any;
+    if (!res.ok) { errEl.textContent = data.error; return; }
+    window.location.href = data.checkoutUrl;
+  } catch {
+    errEl.textContent = 'エラーが発生しました。しばらくしてお試しください。';
+  }
+}
+
+function logout() {
+  localStorage.removeItem('kyusei_token');
+  localStorage.removeItem('kyusei_user');
+  window.location.href = '/';
+}
+
+init();
+</script>

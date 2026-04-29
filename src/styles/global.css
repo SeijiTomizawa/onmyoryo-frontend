@@ -1,0 +1,81 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400;500&family=Shippori+Mincho:wght@400;500;700&display=swap');
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --gold: #b08d5a;
+  --gold-light: #d4af7a;
+  --dark-bg: #0d0d1a;
+  --dark-surface: #151528;
+  --dark-card: #1a1a30;
+  --text-primary: #f0e6d3;
+  --text-secondary: #8ea8c0;
+  --text-muted: #5a6a7a;
+  --success: #1d9e75;
+  --danger: #e24b4a;
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+}
+
+html { font-family: 'Noto Serif JP', serif; background: var(--dark-bg); color: var(--text-primary); }
+body { min-height: 100vh; }
+
+a { color: var(--gold); text-decoration: none; }
+a:hover { color: var(--gold-light); }
+
+button {
+  font-family: 'Noto Serif JP', serif;
+  cursor: pointer;
+  border: none;
+  transition: opacity 0.2s, transform 0.1s;
+}
+button:active { transform: scale(0.98); }
+
+input, select {
+  font-family: 'Noto Serif JP', serif;
+  background: #ffffff0d;
+  border: 0.5px solid #ffffff22;
+  border-radius: var(--radius-sm);
+  color: var(--text-primary);
+  padding: 0.6rem 0.875rem;
+  font-size: 14px;
+  width: 100%;
+  outline: none;
+  transition: border-color 0.2s;
+}
+input:focus, select:focus { border-color: var(--gold); }
+input::placeholder { color: var(--text-muted); }
+
+select option { background: #1a1a30; }
+
+.btn-primary {
+  background: linear-gradient(135deg, var(--gold), #7a5c2e);
+  color: #fff;
+  border-radius: var(--radius-md);
+  padding: 0.75rem 1.5rem;
+  font-size: 15px;
+  width: 100%;
+  letter-spacing: 0.05em;
+}
+.btn-primary:hover { opacity: 0.9; }
+
+.btn-outline {
+  background: transparent;
+  color: var(--gold);
+  border: 0.5px solid var(--gold);
+  border-radius: var(--radius-md);
+  padding: 0.6rem 1.25rem;
+  font-size: 14px;
+}
+.btn-outline:hover { background: var(--gold); color: #fff; }
+
+.card {
+  background: var(--dark-card);
+  border: 0.5px solid #ffffff15;
+  border-radius: var(--radius-lg);
+  padding: 1.5rem;
+}
+
+.error-msg { color: var(--danger); font-size: 13px; margin-top: 0.5rem; }
+.success-msg { color: var(--success); font-size: 13px; margin-top: 0.5rem; }

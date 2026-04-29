@@ -1,5 +1,8 @@
-// @ts-check
 import { defineConfig } from 'astro/config';
+import cloudflare from '@astrojs/cloudflare';
 
-// https://astro.build/config
-export default defineConfig({});
+export default defineConfig({
+  // 'hybrid' から 'static' に変更します
+  output: 'static', 
+  adapter: cloudflare(),
+});

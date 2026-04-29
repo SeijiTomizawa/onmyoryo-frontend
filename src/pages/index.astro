@@ -1,17 +1,119 @@
 ---
-
+import Layout from '../layouts/Layout.astro';
 ---
+<Layout title="九星気学鑑定 | 東洋占術">
+  <div class="hero">
+    <div class="stars" id="stars"></div>
+    <div class="hero-content">
+      <p class="eyebrow">東洋占術 · 九星気学</p>
+      <h1 class="hero-title">生年月日が示す<br/>あなたの本質と運命</h1>
+      <p class="hero-desc">
+        古来より伝わる九星気学で、本命星・月命星・吉方位を読み解きます。
+      </p>
+      <a href="/fortune" class="btn-primary hero-btn">無料で鑑定する</a>
+    </div>
+  </div>
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+  <section class="features">
+    <div class="features-inner">
+      <div class="feature-card">
+        <div class="feature-icon">☽</div>
+        <h3>本命星・月命星</h3>
+        <p>生年月日から本命星と月命星を算出。あなたの本質的な性格と内面を照らします。</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">◈</div>
+        <h3>吉方位・凶方位</h3>
+        <p>引越し・旅行・就職など重要な決断に役立つ方位をお伝えします。</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">◎</div>
+        <h3>年運・月運</h3>
+        <p>今年の運気の流れと月ごとの吉凶を詳しく鑑定します。</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta">
+    <div class="cta-inner card">
+      <h2>まずは無料鑑定から</h2>
+      <p>生年月日を入力するだけで本命星がわかります。詳細鑑定はコインで。</p>
+      <a href="/fortune" class="btn-primary" style="max-width:240px;margin:0 auto;display:block">鑑定を始める</a>
+    </div>
+  </section>
+</Layout>
+
+<style>
+.hero {
+  min-height: 80vh;
+  display: flex; align-items: center; justify-content: center;
+  text-align: center; position: relative; overflow: hidden;
+  padding: 4rem 1.5rem;
+}
+.stars { position: absolute; inset: 0; pointer-events: none; }
+.hero-content { position: relative; z-index: 1; max-width: 600px; }
+.eyebrow {
+  font-size: 11px; letter-spacing: 0.25em;
+  color: var(--gold); text-transform: uppercase; margin-bottom: 1.25rem;
+}
+.hero-title {
+  font-family: 'Shippori Mincho', serif;
+  font-size: clamp(28px, 6vw, 48px);
+  font-weight: 700; line-height: 1.5;
+  margin-bottom: 1.25rem;
+}
+.hero-desc {
+  font-size: 15px; color: var(--text-secondary);
+  line-height: 1.9; margin-bottom: 2rem;
+}
+.hero-btn { max-width: 200px; margin: 0 auto; display: block; }
+
+.features { padding: 4rem 1.5rem; }
+.features-inner {
+  max-width: 860px; margin: 0 auto;
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1rem;
+}
+.feature-card {
+  background: var(--dark-card);
+  border: 0.5px solid #ffffff15;
+  border-radius: var(--radius-lg);
+  padding: 1.75rem 1.5rem;
+  text-align: center;
+}
+.feature-icon {
+  font-size: 28px; margin-bottom: 1rem;
+  color: var(--gold);
+}
+.feature-card h3 {
+  font-family: 'Shippori Mincho', serif;
+  font-size: 16px; margin-bottom: 0.75rem;
+}
+.feature-card p { font-size: 13px; color: var(--text-secondary); line-height: 1.8; }
+
+.cta { padding: 0 1.5rem 4rem; }
+.cta-inner { max-width: 560px; margin: 0 auto; text-align: center; }
+.cta-inner h2 {
+  font-family: 'Shippori Mincho', serif;
+  font-size: 22px; margin-bottom: 0.75rem;
+}
+.cta-inner p { font-size: 14px; color: var(--text-secondary); margin-bottom: 1.5rem; }
+</style>
+
+<script>
+const stars = document.getElementById('stars');
+for (let i = 0; i < 60; i++) {
+  const s = document.createElement('div');
+  const size = Math.random() * 2 + 1;
+  s.style.cssText = `
+    position:absolute; border-radius:50%; background:#fff;
+    width:${size}px; height:${size}px;
+    top:${Math.random()*100}%; left:${Math.random()*100}%;
+    opacity:${Math.random()*0.6+0.1};
+    animation: twinkle ${2+Math.random()*3}s ease-in-out infinite;
+    animation-delay:${Math.random()*3}s;
+  `;
+  stars.appendChild(s);
+}
+</script>
+</Layout>
