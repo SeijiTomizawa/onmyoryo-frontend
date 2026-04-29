@@ -1,0 +1,72 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import '../../styles/global.css'; // 共通CSSを読み込み
+---
+
+<Layout title="四柱推命・算命学 | 東洋占術">
+  <div class="page">
+    <div class="page-inner">
+      <header class="page-header fade-in-up">
+        <h1 class="page-title">四柱推命・算命学</h1>
+        <p class="page-desc">あなたの宿命の設計図と、真の才能を読み解きます</p>
+      </header>
+
+      <div class="glass-card fade-in-up delay-1">
+        <div class="date-row">
+          <div class="field"><label>生年</label><input type="number" id="year" placeholder="1990" /></div>
+          <div class="field">
+            <label>月</label>
+            <select id="month">{Array.from({length:12},(_,i)=><option value={i+1}>{i+1}月</option>)}</select>
+          </div>
+          <div class="field">
+            <label>日</label>
+            <select id="day">{Array.from({length:31},(_,i)=><option value={i+1}>{i+1}日</option>)}</select>
+          </div>
+        </div>
+        <div class="date-row">
+          <div class="field">
+            <label>出生時間（不明でも可）</label>
+            <select id="time">
+              <option value="unknown">不明</option>
+              {Array.from({length:24},(_,i)=><option value={i}>{i}時台</option>)}
+            </select>
+          </div>
+          <div class="field">
+            <label>性別</label>
+            <select id="gender"><option value="f">女性</option><option value="m">男性</option></select>
+          </div>
+        </div>
+        <p class="error-msg" id="form-error"></p>
+        <button class="btn-primary" id="btn" onclick="runShichu()">✦ 命式を作成する</button>
+      </div>
+
+      <div id="result-section" style="display:none;">
+        <div class="glass-card result-item" style="text-align:center; border-top: 3px solid var(--gold);">
+          <p class="result-subtitle">あなたを表す自然界のシンボル（日干）</p>
+          <h2 class="result-title" id="res-nikkan"></h2>
+          <p class="result-text" id="res-desc" style="text-align:left; margin-top:2rem; padding:1.5rem; background:rgba(255,255,255,0.03); border-radius:8px;"></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</Layout>
+
+<script is:inline>
+  function runShichu() {
+    document.getElementById('btn').textContent = '命式を解析中...';
+    setTimeout(() => { // モック用の遅延
+      const nikkans = ['甲 (大樹)','乙 (草花)','丙 (太陽)','丁 (灯火)','戊 (山)','己 (大地)','庚 (鋼鉄)','辛 (宝石)','壬 (海)','癸 (雨)'];
+      const randomNikkan = nikkans[Math.floor(Math.random() * nikkans.length)];
+      
+      document.getElementById('res-nikkan').textContent = randomNikkan;
+      document.getElementById('res-desc').textContent = `${randomNikkan}の性質を持つあなたは、周囲に影響を与える強いエネルギーを秘めています。表向きは穏やかに見えても、内面には決してブレない芯の強さを持っています。`;
+      
+      const res = document.getElementById('result-section');
+      res.style.display = 'block';
+      setTimeout(() => res.querySelector('.result-item').classList.add('show'), 50);
+      res.scrollIntoView({ behavior: 'smooth' });
+      document.getElementById('btn').textContent = '✦ 命式を作成する';
+    }, 800);
+  }
+  document.addEventListener('DOMContentLoaded', () => document.querySelector('.fade-in-up').classList.add('is-visible'));
+</script>

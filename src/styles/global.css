@@ -1,81 +1,78 @@
-@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400;500&family=Shippori+Mincho:wght@400;500;700&display=swap');
-
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
+/* src/styles/global.css */
 :root {
-  --gold: #b08d5a;
-  --gold-light: #d4af7a;
-  --dark-bg: #0d0d1a;
-  --dark-surface: #151528;
-  --dark-card: #1a1a30;
-  --text-primary: #f0e6d3;
-  --text-secondary: #8ea8c0;
-  --text-muted: #5a6a7a;
-  --success: #1d9e75;
-  --danger: #e24b4a;
-  --radius-sm: 6px;
-  --radius-md: 10px;
-  --radius-lg: 16px;
+  --bg-dark: #0a0c10;
+  --bg-gradient: radial-gradient(circle at top, #1a1c2e 0%, #050508 100%);
+  --gold: #d4af37;
+  --gold-light: #f9e596;
+  --text-main: #e2e8f0;
+  --text-secondary: #94a3b8;
+  --glass-bg: rgba(20, 24, 39, 0.6);
+  --glass-border: rgba(212, 175, 55, 0.2);
+  --radius-lg: 20px;
+  --radius-md: 12px;
+  --font-mincho: 'Shippori Mincho', 'Noto Serif JP', serif;
+  --font-sans: 'Helvetica Neue', Arial, 'Hiragino Kaku Gothic ProN', sans-serif;
 }
 
-html { font-family: 'Noto Serif JP', serif; background: var(--dark-bg); color: var(--text-primary); }
-body { min-height: 100vh; }
-
-a { color: var(--gold); text-decoration: none; }
-a:hover { color: var(--gold-light); }
-
-button {
-  font-family: 'Noto Serif JP', serif;
-  cursor: pointer;
-  border: none;
-  transition: opacity 0.2s, transform 0.1s;
+body {
+  background: var(--bg-gradient);
+  background-color: var(--bg-dark);
+  color: var(--text-main);
+  font-family: var(--font-sans);
+  line-height: 1.8;
+  margin: 0;
+  min-height: 100vh;
 }
-button:active { transform: scale(0.98); }
 
-input, select {
-  font-family: 'Noto Serif JP', serif;
-  background: #ffffff0d;
-  border: 0.5px solid #ffffff22;
-  border-radius: var(--radius-sm);
-  color: var(--text-primary);
-  padding: 0.6rem 0.875rem;
-  font-size: 14px;
-  width: 100%;
-  outline: none;
-  transition: border-color 0.2s;
-}
-input:focus, select:focus { border-color: var(--gold); }
-input::placeholder { color: var(--text-muted); }
+/* 共通ページレイアウト */
+.page { padding: 4rem 1.5rem; position: relative; overflow: hidden; }
+.page-inner { max-width: 640px; margin: 0 auto; position: relative; z-index: 1; }
+.page-header { text-align: center; margin-bottom: 3rem; }
+.page-title { font-family: var(--font-mincho); font-size: 2rem; color: #fff; letter-spacing: 0.1em; }
+.page-desc { color: var(--text-secondary); font-size: 0.9rem; margin-top: 0.5rem; }
 
-select option { background: #1a1a30; }
-
-.btn-primary {
-  background: linear-gradient(135deg, var(--gold), #7a5c2e);
-  color: #fff;
-  border-radius: var(--radius-md);
-  padding: 0.75rem 1.5rem;
-  font-size: 15px;
-  width: 100%;
-  letter-spacing: 0.05em;
-}
-.btn-primary:hover { opacity: 0.9; }
-
-.btn-outline {
-  background: transparent;
-  color: var(--gold);
-  border: 0.5px solid var(--gold);
-  border-radius: var(--radius-md);
-  padding: 0.6rem 1.25rem;
-  font-size: 14px;
-}
-.btn-outline:hover { background: var(--gold); color: #fff; }
-
-.card {
-  background: var(--dark-card);
-  border: 0.5px solid #ffffff15;
+/* グラスモーフィズムカード */
+.glass-card {
+  background: var(--glass-bg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--glass-border);
   border-radius: var(--radius-lg);
-  padding: 1.5rem;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  padding: 2.5rem;
+  margin-bottom: 2rem;
 }
 
-.error-msg { color: var(--danger); font-size: 13px; margin-top: 0.5rem; }
-.success-msg { color: var(--success); font-size: 13px; margin-top: 0.5rem; }
+/* フォーム共通 */
+.date-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(80px, 1fr)); gap: 12px; margin-bottom: 1.5rem; }
+.field { display: flex; flex-direction: column; gap: 6px; }
+.field label { font-size: 11px; color: var(--gold); letter-spacing: 0.1em; text-transform: uppercase; }
+input, select {
+  width: 100%; padding: 12px; background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.1); border-radius: 8px;
+  color: #fff; font-size: 1rem; transition: all 0.3s;
+}
+input:focus, select:focus { outline: none; border-color: var(--gold); background: rgba(212, 175, 55, 0.05); }
+.error-msg { color: #ff6b6b; font-size: 0.8rem; min-height: 1.2em; text-align: center; margin-bottom: 1rem; }
+
+/* 共通ボタン */
+.btn-primary {
+  width: 100%; padding: 1.2rem; background: rgba(212, 175, 55, 0.1);
+  border: 1px solid var(--gold); color: var(--gold-light);
+  font-family: var(--font-mincho); font-size: 1.1rem; border-radius: 50px;
+  cursor: pointer; transition: all 0.4s; backdrop-filter: blur(5px);
+}
+.btn-primary:hover:not(:disabled) { background: var(--gold); color: #000; box-shadow: 0 0 20px rgba(212, 175, 55, 0.4); transform: translateY(-2px); }
+.btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
+
+/* アニメーション */
+.fade-in-up { opacity: 0; transform: translateY(30px); transition: 0.8s ease-out; }
+.fade-in-up.is-visible { opacity: 1; transform: translateY(0); }
+.delay-1 { transition-delay: 0.1s; }
+.result-item { opacity: 0; transform: translateY(30px); transition: 0.8s ease-out; }
+.result-item.show { opacity: 1; transform: translateY(0); }
+
+/* 結果表示共通 */
+.result-title { font-family: var(--font-mincho); font-size: 2.2rem; color: #fff; margin-bottom: 0.5rem; text-align: center;}
+.result-subtitle { font-size: 0.8rem; color: var(--gold); letter-spacing: 0.2em; text-align: center; margin-bottom: 1.5rem; }
+.result-text { font-size: 0.95rem; line-height: 1.9; color: var(--text-main); }
