@@ -3,14 +3,14 @@ interface Props {
   title?: string;
 }
 import '../styles/global.css';
-const { title = "九星気学鑑定" } = Astro.props;
+const { title = "陰陽寮 | 東洋占術の館" } = Astro.props;
 ---
 <!doctype html>
 <html lang="ja">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="九星気学による本格占い鑑定サービス" />
+    <meta name="description" content="陰陽寮による東洋占い鑑定サービス" />
     <title>{title}</title>
   </head>
   <body>
@@ -18,75 +18,263 @@ const { title = "九星気学鑑定" } = Astro.props;
       <div class="header-inner">
         <a href="/" class="logo">
           <span class="logo-mark">☯</span>
-          <span class="logo-text">九星気学</span>
+          <span class="logo-text">陰陽寮</span>
         </a>
+        
         <nav class="nav" id="nav">
-          <a href="/fortune">鑑定する</a>
-          <a href="/mypage" id="nav-mypage" style="display:none">マイページ</a>
-          <a href="/login" id="nav-login">ログイン</a>
-          <button class="btn-outline" id="nav-logout" style="display:none" onclick="logout()">ログアウト</button>
+          <a href="/#select-fortune" class="nav-link">占術一覧</a>
+          
+          <div class="auth-group" id="auth-guest">
+            <a href="/login" class="btn-login">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
+              ログイン / 登録
+            </a>
+          </div>
+
+          <div class="auth-group" id="auth-user" style="display:none">
+            <a href="/mypage" class="btn-mypage">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+              マイページ
+            </a>
+            <button class="btn-logout" onclick="logout()">ログアウト</button>
+          </div>
         </nav>
       </div>
     </header>
+
     <main>
       <slot />
     </main>
+
     <footer class="footer">
-      <p>© 2026 九星気学鑑定</p>
+      <div class="footer-inner">
+        <p class="footer-logo"><span class="logo-mark">☯</span> 陰陽寮</p>
+        <div class="footer-links">
+          <a href="#">利用規約</a>
+          <a href="#">プライバシーポリシー</a>
+          <a href="#">特定商取引法に基づく表記</a>
+        </div>
+        <p class="copyright">© 2026 Onmyoryo. All rights reserved.</p>
+      </div>
     </footer>
   </body>
 </html>
 
 <style>
+/* --- ヘッダー --- */
 .header {
-  border-bottom: 0.5px solid #ffffff15;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(10, 12, 16, 0.75);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid rgba(212, 175, 55, 0.15);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
   padding: 0 1.5rem;
-  position: sticky; top: 0; z-index: 100;
-  background: #0d0d1acc;
-  backdrop-filter: blur(12px);
 }
 .header-inner {
-  max-width: 860px; margin: 0 auto;
-  display: flex; align-items: center; justify-content: space-between;
-  height: 56px;
+  max-width: 1000px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 70px; /* 少し高さを出して高級感を演出 */
 }
+
+/* --- ロゴ --- */
 .logo {
-  display: flex; align-items: center; gap: 8px;
-  color: var(--text-primary); text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+  transition: transform 0.3s ease;
 }
-.logo-mark { font-size: 20px; }
-.logo-text {
-  font-family: 'Shippori Mincho', serif;
-  font-size: 16px; font-weight: 700;
+.logo:hover {
+  transform: scale(1.02);
+}
+.logo:hover .logo-mark {
+  transform: rotate(180deg);
+}
+.logo-mark {
+  font-size: 24px;
   color: var(--gold);
+  transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
 }
-.nav { display: flex; align-items: center; gap: 1.25rem; }
-.nav a { font-size: 13px; color: var(--text-secondary); }
-.nav a:hover { color: var(--text-primary); }
+.logo-text {
+  font-family: var(--font-mincho);
+  font-size: 20px;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: 0.1em;
+}
+
+/* --- ナビゲーション共通 --- */
+.nav {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+}
+.nav-link {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  text-decoration: none;
+  position: relative;
+  transition: color 0.3s ease;
+}
+.nav-link:hover {
+  color: var(--gold-light);
+}
+/* ホバー時の下線アニメーション */
+.nav-link::after {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 1px;
+  bottom: -4px;
+  left: 0;
+  background-color: var(--gold);
+  transition: width 0.3s ease;
+}
+.nav-link:hover::after {
+  width: 100%;
+}
+
+/* --- 認証ボタングループ --- */
+.auth-group {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+/* ログイン・登録ボタン（目立たせる） */
+.btn-login {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.85rem;
+  font-weight: bold;
+  color: var(--gold-light);
+  text-decoration: none;
+  padding: 8px 20px;
+  border: 1px solid var(--gold);
+  border-radius: 30px;
+  background: rgba(212, 175, 55, 0.05);
+  transition: all 0.3s ease;
+}
+.btn-login:hover {
+  background: var(--gold);
+  color: #000;
+  box-shadow: 0 0 15px rgba(212, 175, 55, 0.4);
+}
+
+/* マイページボタン */
+.btn-mypage {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.85rem;
+  color: #fff;
+  text-decoration: none;
+  padding: 8px 16px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.05);
+  transition: background 0.3s ease;
+}
+.btn-mypage:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--gold-light);
+}
+
+/* ログアウトボタン */
+.btn-logout {
+  background: transparent;
+  border: none;
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+  cursor: pointer;
+  padding: 8px;
+  transition: color 0.3s ease;
+}
+.btn-logout:hover {
+  color: #ff6b6b;
+}
+
+/* --- フッター --- */
 .footer {
-  text-align: center; padding: 2rem;
-  font-size: 12px; color: var(--text-muted);
-  border-top: 0.5px solid #ffffff10;
-  margin-top: 4rem;
+  margin-top: 6rem;
+  padding: 3rem 1.5rem;
+  background: rgba(5, 5, 8, 0.8);
+  border-top: 1px solid rgba(212, 175, 55, 0.1);
+  text-align: center;
+}
+.footer-inner {
+  max-width: 800px;
+  margin: 0 auto;
+}
+.footer-logo {
+  font-family: var(--font-mincho);
+  font-size: 1.2rem;
+  color: var(--gold);
+  margin-bottom: 1.5rem;
+  letter-spacing: 0.1em;
+}
+.footer-links {
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+}
+.footer-links a {
+  color: var(--text-secondary);
+  font-size: 0.8rem;
+  text-decoration: none;
+  transition: color 0.3s;
+}
+.footer-links a:hover {
+  color: var(--gold-light);
+}
+.copyright {
+  font-size: 0.75rem;
+  color: rgba(148, 163, 184, 0.5);
+  letter-spacing: 0.05em;
+}
+
+/* --- レスポンシブ対応 --- */
+@media (max-width: 600px) {
+  .nav { gap: 1rem; }
+  .logo-text { display: none; } /* スマホではマークのみ表示して領域確保 */
+  .btn-login { padding: 8px 12px; font-size: 0.8rem; }
+  .btn-login svg { display: none; } /* スマホではアイコンを隠してテキストのみ */
 }
 </style>
 
 <script>
+// ログアウト処理
 function logout() {
   localStorage.removeItem('kyusei_token');
   localStorage.removeItem('kyusei_user');
   window.location.href = '/';
 }
+
+// ナビゲーションの表示切り替え
 function updateNav() {
   const token = localStorage.getItem('kyusei_token');
-  const login = document.getElementById('nav-login');
-  const logout = document.getElementById('nav-logout');
-  const mypage = document.getElementById('nav-mypage');
+  const guestNav = document.getElementById('auth-guest');
+  const userNav = document.getElementById('auth-user');
+  
   if (token) {
-    if (login) login.style.display = 'none';
-    if (logout) logout.style.display = 'block';
-    if (mypage) mypage.style.display = 'block';
+    // ログイン済み
+    if (guestNav) guestNav.style.display = 'none';
+    if (userNav) userNav.style.display = 'flex';
+  } else {
+    // 未ログイン
+    if (guestNav) guestNav.style.display = 'flex';
+    if (userNav) userNav.style.display = 'none';
   }
 }
-updateNav();
+
+// ページ読み込み時に実行
+document.addEventListener('DOMContentLoaded', updateNav);
 </script>
