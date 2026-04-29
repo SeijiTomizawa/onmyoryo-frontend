@@ -45,8 +45,8 @@ import Layout from '../layouts/Layout.astro';
     </div>
   </div>
 
-  <section class="content-section fade-in">
-    <div class="content-inner text-center">
+  <section class="content-section">
+    <div class="content-inner text-center fade-in-up">
       <h2 class="section-title">幸せへの最短ルートを見つける。<br>「九星気学」の世界へようこそ</h2>
       <p class="lead-text">
         「なんだか最近、タイミングが悪いな」<br>
@@ -62,20 +62,20 @@ import Layout from '../layouts/Layout.astro';
 
   <section class="content-section">
     <div class="content-inner">
-      <div class="text-center mb-3">
+      <div class="text-center mb-3 fade-in-up">
         <h3 class="section-subtitle">九星気学で何がわかるの？</h3>
         <p class="text-muted">九星気学の最大の特徴は、ただ「運勢を待つ」のではなく、自ら「運を掴みに行く」ことができる点にあります。</p>
       </div>
       <div class="grid-cards">
-        <div class="glass-card">
+        <div class="glass-card fade-in-up delay-1">
           <h4>✧ あなたの「本質」と「才能」</h4>
           <p>自分でも気づいていない強みや、人生で直面しやすい課題がわかります。</p>
         </div>
-        <div class="glass-card">
+        <div class="glass-card fade-in-up delay-2">
           <h4>✧ 動くべき「最高のタイミング」</h4>
           <p>転職、結婚、大きな買い物。いつ動けば追い風に乗れるのか、その時期を特定します。</p>
         </div>
-        <div class="glass-card">
+        <div class="glass-card fade-in-up delay-3">
           <h4>✧ 最強のパワースポット「吉方位」</h4>
           <p>「どの方向へ行けば運気が上がるのか？」という方位学の知恵を使い、運気を劇的に改善する「祐気取り」の実践が可能です。</p>
         </div>
@@ -85,11 +85,11 @@ import Layout from '../layouts/Layout.astro';
 
   <section class="content-section alternate-bg">
     <div class="content-inner">
-      <div class="text-center mb-3">
+      <div class="text-center mb-3 fade-in-up">
         <h3 class="section-subtitle">九つの星、あなたはどのタイプ？</h3>
         <p class="text-muted">宇宙のエネルギーは、以下の9つの個性に分かれます。</p>
       </div>
-      <div class="stars-grid">
+      <div class="stars-grid fade-in-up delay-1">
         <dl class="star-list">
           <div class="star-item"><dt>一白水星</dt><dd>柔軟で芯が強い、静かなる知略家</dd></div>
           <div class="star-item"><dt>二黒土星</dt><dd>献身的で誠実、大地のような包容力</dd></div>
@@ -107,17 +107,17 @@ import Layout from '../layouts/Layout.astro';
 
   <section class="features">
     <div class="features-inner">
-      <div class="feature-card glass-card">
+      <div class="feature-card glass-card fade-in-up delay-1">
         <div class="feature-icon">☽</div>
         <h3>本命星・月命星</h3>
         <p>生年月日から本命星と月命星を算出。あなたの本質的な性格と内面を照らします。</p>
       </div>
-      <div class="feature-card glass-card">
+      <div class="feature-card glass-card fade-in-up delay-2">
         <div class="feature-icon">◈</div>
         <h3>吉方位・凶方位</h3>
         <p>引越し・旅行・就職など重要な決断に役立つ方位をお伝えします。</p>
       </div>
-      <div class="feature-card glass-card">
+      <div class="feature-card glass-card fade-in-up delay-3">
         <div class="feature-icon">◎</div>
         <h3>年運・月運</h3>
         <p>今年の運気の流れと月ごとの吉凶を詳しく鑑定します。</p>
@@ -125,7 +125,7 @@ import Layout from '../layouts/Layout.astro';
     </div>
   </section>
 
-  <section class="cta">
+  <section class="cta fade-in-up">
     <div class="cta-inner glass-card text-center">
       <h2 class="section-subtitle">さあ、あなたの運命のサイクルを動かしましょう</h2>
       <p class="text-muted mb-3">
@@ -138,6 +138,23 @@ import Layout from '../layouts/Layout.astro';
 </Layout>
 
 <style>
+/* --- スクロールアニメーション用のクラス追加 --- */
+.fade-in-up {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+  will-change: opacity, transform;
+}
+.fade-in-up.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+/* 複数要素を順番に出すためのディレイクラス */
+.delay-1 { transition-delay: 0.1s; }
+.delay-2 { transition-delay: 0.25s; }
+.delay-3 { transition-delay: 0.4s; }
+
+
 /* 共通ユーティリティ */
 .text-center { text-align: center; }
 .text-muted { color: var(--text-secondary); font-size: 0.95rem; }
@@ -183,7 +200,7 @@ import Layout from '../layouts/Layout.astro';
   animation: bounce 2s infinite; text-transform: uppercase;
 }
 
-/* ボタンデザイン（洗練されたグラスモーフィズム風） */
+/* ボタンデザイン */
 .btn-primary {
   display: inline-block;
   padding: 1rem 3rem;
@@ -251,7 +268,7 @@ import Layout from '../layouts/Layout.astro';
   margin: 0 0 1rem 0; font-size: 1.1rem;
 }
 
-/* 九星リスト（美しい定義リスト） */
+/* 九星リスト */
 .star-list {
   display: grid; gap: 1rem;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -262,7 +279,7 @@ import Layout from '../layouts/Layout.astro';
   border-left: 2px solid var(--gold);
   padding: 1rem 1.5rem;
   border-radius: 0 8px 8px 0;
-  transition: transform 0.3s ease;
+  transition: transform 0.3s ease, background 0.3s ease;
 }
 .star-item:hover { transform: translateX(5px); background: rgba(255, 255, 255, 0.05); }
 .star-item dt {
@@ -271,7 +288,7 @@ import Layout from '../layouts/Layout.astro';
 }
 .star-item dd { margin: 0; color: var(--text-secondary); font-size: 0.9rem; }
 
-/* 既存のFeatures改修 */
+/* 機能紹介セクション */
 .features { padding: 4rem 1.5rem; }
 .features-inner {
   max-width: 900px; margin: 0 auto;
@@ -306,10 +323,10 @@ import Layout from '../layouts/Layout.astro';
 </style>
 
 <script>
-  // 星空の生成スクリプト（より立体的で自然な瞬きに改修）
+  // 星空の生成スクリプト
   const starsContainer = document.getElementById('stars');
   if (starsContainer) {
-    const starCount = window.innerWidth < 768 ? 40 : 80; // スマホとPCで星の数を調整
+    const starCount = window.innerWidth < 768 ? 40 : 80;
     for (let i = 0; i < starCount; i++) {
       const s = document.createElement('div');
       const size = Math.random() * 2 + 0.5;
@@ -328,4 +345,27 @@ import Layout from '../layouts/Layout.astro';
       starsContainer.appendChild(s);
     }
   }
+
+  // スクロールフェードインのアニメーション制御 (Intersection Observer)
+  const fadeElements = document.querySelectorAll('.fade-in-up');
+  
+  const observerOptions = {
+    root: null,
+    rootMargin: '0px',
+    threshold: 0.15 // 要素が15%画面に入ったら発火
+  };
+
+  const observer = new IntersectionObserver((entries, observer) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('is-visible');
+        // 一度アニメーションしたら監視を解除する（何度もフェードインさせたい場合は下1行を削除）
+        observer.unobserve(entry.target);
+      }
+    });
+  }, observerOptions);
+
+  fadeElements.forEach(el => {
+    observer.observe(el);
+  });
 </script>
