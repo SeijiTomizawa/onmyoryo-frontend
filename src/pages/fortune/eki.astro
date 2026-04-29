@@ -1,0 +1,51 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import '../../styles/global.css';
+---
+
+<Layout title="易占い | 東洋占術">
+  <div class="page">
+    <div class="page-inner">
+      <header class="page-header fade-in-up">
+        <h1 class="page-title">易（周易）</h1>
+        <p class="page-desc">心に迷いがある時、六十四の卦が今のあなたに啓示を与えます</p>
+      </header>
+
+      <div class="glass-card fade-in-up delay-1" style="text-align:center;">
+        <p style="color:var(--text-main); margin-bottom:2rem; font-size:1.1rem;">
+          占いたいこと（悩みや迷い）を心の中で強く念じてから、<br>下のボタンを押してください。
+        </p>
+        <button class="btn-primary" id="btn" onclick="runEki()" style="max-width:300px; padding:1.5rem; font-size:1.3rem;">☯ 卦を立てる</button>
+      </div>
+
+      <div id="result-section" style="display:none;">
+        <div class="glass-card result-item" style="text-align:center; border-top: 3px solid var(--gold);">
+          <p class="result-subtitle">得られた啓示（六十四卦）</p>
+          <div style="font-size:3rem; margin:1rem 0; line-height:1;">䷀</div>
+          <h2 class="result-title" id="res-ke">乾為天 (けんいてん)</h2>
+          <p class="result-text" id="res-desc" style="text-align:left; margin-top:2rem; padding:1.5rem; background:rgba(212,175,55,0.05); border-radius:8px;">
+            大いなる龍が天を飛ぶように、エネルギーに満ち溢れた力強い時期です。迷わず突き進んで良い時ですが、自信過剰にならないよう周囲への配慮を忘れずに。
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</Layout>
+
+<script is:inline>
+  function runEki() {
+    const btn = document.getElementById('btn');
+    btn.textContent = '筮竹を振っています...';
+    btn.style.animation = 'twinkle 0.5s infinite';
+    
+    setTimeout(() => {
+      btn.style.animation = 'none';
+      const res = document.getElementById('result-section');
+      res.style.display = 'block';
+      setTimeout(() => res.querySelector('.result-item').classList.add('show'), 50);
+      res.scrollIntoView({ behavior: 'smooth' });
+      btn.textContent = '☯ もう一度占う';
+    }, 1500);
+  }
+  document.addEventListener('DOMContentLoaded', () => document.querySelector('.fade-in-up').classList.add('is-visible'));
+</script>

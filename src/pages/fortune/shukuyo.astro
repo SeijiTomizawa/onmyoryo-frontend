@@ -1,0 +1,70 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import '../../styles/global.css';
+---
+
+<Layout title="宿曜占星術 | 東洋占術">
+  <div class="page">
+    <div class="page-inner">
+      <header class="page-header fade-in-up">
+        <h1 class="page-title">宿曜占星術</h1>
+        <p class="page-desc">月の周期が導き出す、究極の相性とご縁の深さ</p>
+      </header>
+
+      <div class="glass-card fade-in-up delay-1">
+        <p style="color:var(--gold); font-size:0.9rem; margin-bottom:0.5rem;">あなたの生年月日</p>
+        <div class="date-row" style="margin-bottom:2rem;">
+          <div class="field"><input type="number" id="y1" placeholder="1990" /></div>
+          <div class="field"><select id="m1">{Array.from({length:12},(_,i)=><option value={i+1}>{i+1}月</option>)}</select></div>
+          <div class="field"><select id="d1">{Array.from({length:31},(_,i)=><option value={i+1}>{i+1}日</option>)}</select></div>
+        </div>
+
+        <p style="color:var(--gold); font-size:0.9rem; margin-bottom:0.5rem;">お相手の生年月日（任意）</p>
+        <div class="date-row">
+          <div class="field"><input type="number" id="y2" placeholder="1992" /></div>
+          <div class="field"><select id="m2">{Array.from({length:12},(_,i)=><option value={i+1}>{i+1}月</option>)}</select></div>
+          <div class="field"><select id="d2">{Array.from({length:31},(_,i)=><option value={i+1}>{i+1}日</option>)}</select></div>
+        </div>
+        
+        <p class="error-msg" id="form-error"></p>
+        <button class="btn-primary" id="btn" onclick="runShukuyo()">✦ 宿と相性を占う</button>
+      </div>
+
+      <div id="result-section" style="display:none;">
+        <div class="glass-card result-item" style="text-align:center;">
+          <p class="result-subtitle">あなたの本命宿</p>
+          <h2 class="result-title" id="res-syuku" style="color:#fff;"></h2>
+          
+          <div id="comp-box" style="margin-top:2rem; padding-top:2rem; border-top:1px solid rgba(255,255,255,0.1); display:none;">
+            <p class="result-subtitle">二人の相性</p>
+            <h3 style="font-family:var(--font-mincho); font-size:1.8rem; color:#ff8e8e; margin-bottom:1rem;" id="res-comp-type"></h3>
+            <p class="result-text" id="res-comp-desc" style="text-align:left;"></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</Layout>
+
+<script is:inline>
+  function runShukuyo() {
+    document.getElementById('btn').textContent = '星の軌道を計算中...';
+    setTimeout(() => {
+      document.getElementById('res-syuku').textContent = '昴宿 (ぼうしゅく)';
+      
+      const y2 = document.getElementById('y2').value;
+      if(y2) {
+        document.getElementById('comp-box').style.display = 'block';
+        document.getElementById('res-comp-type').textContent = '【安・壊】の相性';
+        document.getElementById('res-comp-desc').textContent = '非常に強烈に惹かれ合う、ドラマチックな縁です。自分にはない相手の魅力に破壊的なまでに惹かれますが、距離感には注意が必要です。';
+      }
+      
+      const res = document.getElementById('result-section');
+      res.style.display = 'block';
+      setTimeout(() => res.querySelector('.result-item').classList.add('show'), 50);
+      res.scrollIntoView({ behavior: 'smooth' });
+      document.getElementById('btn').textContent = '✦ 宿と相性を占う';
+    }, 800);
+  }
+  document.addEventListener('DOMContentLoaded', () => document.querySelector('.fade-in-up').classList.add('is-visible'));
+</script>
