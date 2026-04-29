@@ -1,0 +1,323 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+<Layout title="管理画面 | 九星気学">
+  <div class="page">
+    <div class="page-inner">
+
+      <div id="auth-section">
+        <h1 class="page-title">管理画面</h1>
+        <div class="card" style="max-width:360px;margin:0 auto">
+          <div class="field">
+            <label>管理者パスワード</label>
+            <input type="password" id="admin-password" placeholder="パスワードを入力" />
+          </div>
+          <p class="error-msg" id="auth-error"></p>
+          <button class="btn-primary" onclick="doAuth()">ログイン</button>
+        </div>
+      </div>
+
+      <div id="admin-section" style="display:none">
+        <div class="admin-header">
+          <h1 class="page-title">管理画面</h1>
+          <div class="tab-row">
+            <button class="tab-btn active" onclick="switchTab('fortune')">本命星テキスト</button>
+            <button class="tab-btn" onclick="switchTab('year')">年運</button>
+            <button class="tab-btn" onclick="switchTab('month')">月運</button>
+            <button class="tab-btn" onclick="switchTab('direction')">吉方位</button>
+          </div>
+        </div>
+
+        <!-- 本命星テキスト -->
+        <div id="tab-fortune" class="tab-content">
+          <div class="star-selector">
+            <label>本命星を選択</label>
+            <select id="fortune-star-select" onchange="loadFortuneText()">
+              <option value="1">一白水星</option>
+              <option value="2">二黒土星</option>
+              <option value="3">三碧木星</option>
+              <option value="4">四緑木星</option>
+              <option value="5">五黄土星</option>
+              <option value="6">六白金星</option>
+              <option value="7">七赤金星</option>
+              <option value="8">八白土星</option>
+              <option value="9">九紫火星</option>
+            </select>
+          </div>
+          <div class="card edit-card">
+            <div class="field"><label>性格・特徴</label><textarea id="ft-personality" rows="4"></textarea></div>
+            <div class="field"><label>才能</label><textarea id="ft-talent" rows="3"></textarea></div>
+            <div class="field"><label>弱点</label><textarea id="ft-weakness" rows="3"></textarea></div>
+            <div class="field"><label>恋愛</label><textarea id="ft-love" rows="3"></textarea></div>
+            <div class="field"><label>仕事</label><textarea id="ft-work" rows="3"></textarea></div>
+            <p class="save-msg" id="ft-msg"></p>
+            <button class="btn-primary" onclick="saveFortuneText()">保存する</button>
+          </div>
+        </div>
+
+        <!-- 年運 -->
+        <div id="tab-year" class="tab-content" style="display:none">
+          <div class="star-selector two-col">
+            <div class="field">
+              <label>本命星</label>
+              <select id="year-honmei-select" onchange="loadYearFortune()">
+                <option value="1">一白水星</option><option value="2">二黒土星</option>
+                <option value="3">三碧木星</option><option value="4">四緑木星</option>
+                <option value="5">五黄土星</option><option value="6">六白金星</option>
+                <option value="7">七赤金星</option><option value="8">八白土星</option>
+                <option value="9">九紫火星</option>
+              </select>
+            </div>
+            <div class="field">
+              <label>年盤星</label>
+              <select id="year-star-select" onchange="loadYearFortune()">
+                <option value="1">一白水星</option><option value="2">二黒土星</option>
+                <option value="3">三碧木星</option><option value="4">四緑木星</option>
+                <option value="5">五黄土星</option><option value="6">六白金星</option>
+                <option value="7">七赤金星</option><option value="8">八白土星</option>
+                <option value="9">九紫火星</option>
+              </select>
+            </div>
+          </div>
+          <div class="card edit-card">
+            <div class="field"><label>タイトル</label><input type="text" id="yf-title" /></div>
+            <div class="field"><label>全体運</label><textarea id="yf-overview" rows="4"></textarea></div>
+            <div class="field"><label>恋愛運</label><textarea id="yf-love" rows="3"></textarea></div>
+            <div class="field"><label>仕事運</label><textarea id="yf-work" rows="3"></textarea></div>
+            <div class="field"><label>金運</label><textarea id="yf-money" rows="3"></textarea></div>
+            <div class="field"><label>アドバイス</label><textarea id="yf-advice" rows="3"></textarea></div>
+            <p class="save-msg" id="yf-msg"></p>
+            <button class="btn-primary" onclick="saveYearFortune()">保存する</button>
+          </div>
+        </div>
+
+        <!-- 月運 -->
+        <div id="tab-month" class="tab-content" style="display:none">
+          <div class="star-selector two-col">
+            <div class="field">
+              <label>本命星</label>
+              <select id="month-honmei-select" onchange="loadMonthFortune()">
+                <option value="1">一白水星</option><option value="2">二黒土星</option>
+                <option value="3">三碧木星</option><option value="4">四緑木星</option>
+                <option value="5">五黄土星</option><option value="6">六白金星</option>
+                <option value="7">七赤金星</option><option value="8">八白土星</option>
+                <option value="9">九紫火星</option>
+              </select>
+            </div>
+            <div class="field">
+              <label>月盤星</label>
+              <select id="month-star-select" onchange="loadMonthFortune()">
+                <option value="1">一白水星</option><option value="2">二黒土星</option>
+                <option value="3">三碧木星</option><option value="4">四緑木星</option>
+                <option value="5">五黄土星</option><option value="6">六白金星</option>
+                <option value="7">七赤金星</option><option value="8">八白土星</option>
+                <option value="9">九紫火星</option>
+              </select>
+            </div>
+          </div>
+          <div class="card edit-card">
+            <div class="field"><label>全体運</label><textarea id="mf-overview" rows="4"></textarea></div>
+            <div class="field"><label>アドバイス</label><textarea id="mf-advice" rows="3"></textarea></div>
+            <p class="save-msg" id="mf-msg"></p>
+            <button class="btn-primary" onclick="saveMonthFortune()">保存する</button>
+          </div>
+        </div>
+
+        <!-- 吉方位 -->
+        <div id="tab-direction" class="tab-content" style="display:none">
+          <div class="star-selector">
+            <label>本命星を選択</label>
+            <select id="dir-star-select" onchange="loadDirectionText()">
+              <option value="1">一白水星</option><option value="2">二黒土星</option>
+              <option value="3">三碧木星</option><option value="4">四緑木星</option>
+              <option value="5">五黄土星</option><option value="6">六白金星</option>
+              <option value="7">七赤金星</option><option value="8">八白土星</option>
+              <option value="9">九紫火星</option>
+            </select>
+          </div>
+          <div class="card edit-card">
+            <div class="field"><label>吉方位の詳細解説</label><textarea id="dt-lucky" rows="4"></textarea></div>
+            <div class="field"><label>凶方位の詳細解説</label><textarea id="dt-unlucky" rows="4"></textarea></div>
+            <div class="field"><label>旅行・移動のアドバイス</label><textarea id="dt-travel" rows="3"></textarea></div>
+            <p class="save-msg" id="dt-msg"></p>
+            <button class="btn-primary" onclick="saveDirectionText()">保存する</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</Layout>
+
+<style>
+.page { padding: 2rem 1.5rem; }
+.page-inner { max-width: 700px; margin: 0 auto; }
+.page-title {
+  font-family: 'Shippori Mincho', serif;
+  font-size: 22px; text-align: center; margin-bottom: 1.5rem;
+}
+.tab-row { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 1.5rem; }
+.tab-btn {
+  padding: 0.5rem 1rem; border-radius: var(--radius-md);
+  background: #ffffff08; border: 0.5px solid #ffffff22;
+  color: var(--text-secondary); font-size: 13px;
+  transition: all 0.15s;
+}
+.tab-btn.active { background: var(--gold); color: #fff; border-color: var(--gold); }
+.star-selector { margin-bottom: 1rem; display: flex; flex-direction: column; gap: 4px; }
+.star-selector label { font-size: 12px; color: var(--text-secondary); }
+.star-selector.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; flex-direction: unset; }
+.edit-card { display: flex; flex-direction: column; gap: 1rem; }
+.field { display: flex; flex-direction: column; gap: 4px; }
+.field label { font-size: 12px; color: var(--text-secondary); }
+textarea {
+  font-family: 'Noto Serif JP', serif;
+  background: #ffffff0d; border: 0.5px solid #ffffff22;
+  border-radius: var(--radius-sm); color: var(--text-primary);
+  padding: 0.6rem 0.875rem; font-size: 13px; line-height: 1.8;
+  width: 100%; resize: vertical; outline: none;
+}
+textarea:focus { border-color: var(--gold); }
+.save-msg { font-size: 13px; color: var(--success); min-height: 1.2em; }
+</style>
+
+<script is:inline>
+const WORKERS_URL = 'https://kyusei-api.seiji-tomizawa.workers.dev';
+let ADMIN_PW = '';
+
+function doAuth() {
+  const pw = document.getElementById('admin-password').value;
+  if (!pw) { document.getElementById('auth-error').textContent = 'パスワードを入力してください'; return; }
+  ADMIN_PW = pw;
+  document.getElementById('auth-section').style.display = 'none';
+  document.getElementById('admin-section').style.display = 'block';
+  loadFortuneText();
+}
+
+function adminHeaders() {
+  return { 'Content-Type': 'application/json', 'X-Admin-Password': ADMIN_PW };
+}
+
+function switchTab(name) {
+  document.querySelectorAll('.tab-content').forEach(el => el.style.display = 'none');
+  document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+  document.getElementById(`tab-${name}`).style.display = 'block';
+  event.target.classList.add('active');
+  if (name === 'fortune') loadFortuneText();
+  if (name === 'year') loadYearFortune();
+  if (name === 'month') loadMonthFortune();
+  if (name === 'direction') loadDirectionText();
+}
+
+// 本命星テキスト
+async function loadFortuneText() {
+  const star = document.getElementById('fortune-star-select').value;
+  const res = await fetch(`${WORKERS_URL}/api/admin/fortune-texts`, { headers: adminHeaders() });
+  const data = await res.json();
+  const item = data.data.find(d => d.star_number == star);
+  document.getElementById('ft-personality').value = item?.personality ?? '';
+  document.getElementById('ft-talent').value = item?.talent ?? '';
+  document.getElementById('ft-weakness').value = item?.weakness ?? '';
+  document.getElementById('ft-love').value = item?.love ?? '';
+  document.getElementById('ft-work').value = item?.work ?? '';
+  document.getElementById('ft-msg').textContent = '';
+}
+
+async function saveFortuneText() {
+  const star = document.getElementById('fortune-star-select').value;
+  const body = {
+    personality: document.getElementById('ft-personality').value,
+    talent: document.getElementById('ft-talent').value,
+    weakness: document.getElementById('ft-weakness').value,
+    love: document.getElementById('ft-love').value,
+    work: document.getElementById('ft-work').value,
+  };
+  const res = await fetch(`${WORKERS_URL}/api/admin/fortune-texts/${star}`, {
+    method: 'PUT', headers: adminHeaders(), body: JSON.stringify(body),
+  });
+  document.getElementById('ft-msg').textContent = res.ok ? '✓ 保存しました' : '保存に失敗しました';
+}
+
+// 年運
+async function loadYearFortune() {
+  const honmei = document.getElementById('year-honmei-select').value;
+  const year = document.getElementById('year-star-select').value;
+  const res = await fetch(`${WORKERS_URL}/api/admin/year-fortunes`, { headers: adminHeaders() });
+  const data = await res.json();
+  const item = data.data.find(d => d.honmei_star == honmei && d.year_star == year);
+  document.getElementById('yf-title').value = item?.title ?? '';
+  document.getElementById('yf-overview').value = item?.overview ?? '';
+  document.getElementById('yf-love').value = item?.love ?? '';
+  document.getElementById('yf-work').value = item?.work ?? '';
+  document.getElementById('yf-money').value = item?.money ?? '';
+  document.getElementById('yf-advice').value = item?.advice ?? '';
+  document.getElementById('yf-msg').textContent = '';
+}
+
+async function saveYearFortune() {
+  const honmei = document.getElementById('year-honmei-select').value;
+  const year = document.getElementById('year-star-select').value;
+  const body = {
+    title: document.getElementById('yf-title').value,
+    overview: document.getElementById('yf-overview').value,
+    love: document.getElementById('yf-love').value,
+    work: document.getElementById('yf-work').value,
+    money: document.getElementById('yf-money').value,
+    advice: document.getElementById('yf-advice').value,
+  };
+  const res = await fetch(`${WORKERS_URL}/api/admin/year-fortunes/${honmei}/${year}`, {
+    method: 'PUT', headers: adminHeaders(), body: JSON.stringify(body),
+  });
+  document.getElementById('yf-msg').textContent = res.ok ? '✓ 保存しました' : '保存に失敗しました';
+}
+
+// 月運
+async function loadMonthFortune() {
+  const honmei = document.getElementById('month-honmei-select').value;
+  const month = document.getElementById('month-star-select').value;
+  const res = await fetch(`${WORKERS_URL}/api/admin/month-fortunes`, { headers: adminHeaders() });
+  const data = await res.json();
+  const item = data.data.find(d => d.honmei_star == honmei && d.month_star == month);
+  document.getElementById('mf-overview').value = item?.overview ?? '';
+  document.getElementById('mf-advice').value = item?.advice ?? '';
+  document.getElementById('mf-msg').textContent = '';
+}
+
+async function saveMonthFortune() {
+  const honmei = document.getElementById('month-honmei-select').value;
+  const month = document.getElementById('month-star-select').value;
+  const body = {
+    overview: document.getElementById('mf-overview').value,
+    advice: document.getElementById('mf-advice').value,
+  };
+  const res = await fetch(`${WORKERS_URL}/api/admin/month-fortunes/${honmei}/${month}`, {
+    method: 'PUT', headers: adminHeaders(), body: JSON.stringify(body),
+  });
+  document.getElementById('mf-msg').textContent = res.ok ? '✓ 保存しました' : '保存に失敗しました';
+}
+
+// 吉方位
+async function loadDirectionText() {
+  const star = document.getElementById('dir-star-select').value;
+  const res = await fetch(`${WORKERS_URL}/api/admin/direction-texts`, { headers: adminHeaders() });
+  const data = await res.json();
+  const item = data.data.find(d => d.star_number == star);
+  document.getElementById('dt-lucky').value = item?.lucky_detail ?? '';
+  document.getElementById('dt-unlucky').value = item?.unlucky_detail ?? '';
+  document.getElementById('dt-travel').value = item?.travel_advice ?? '';
+  document.getElementById('dt-msg').textContent = '';
+}
+
+async function saveDirectionText() {
+  const star = document.getElementById('dir-star-select').value;
+  const body = {
+    lucky_detail: document.getElementById('dt-lucky').value,
+    unlucky_detail: document.getElementById('dt-unlucky').value,
+    travel_advice: document.getElementById('dt-travel').value,
+  };
+  const res = await fetch(`${WORKERS_URL}/api/admin/direction-texts/${star}`, {
+    method: 'PUT', headers: adminHeaders(), body: JSON.stringify(body),
+  });
+  document.getElementById('dt-msg').textContent = res.ok ? '✓ 保存しました' : '保存に失敗しました';
+}
+</script>
