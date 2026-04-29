@@ -2,7 +2,7 @@
 import Layout from '../layouts/Layout.astro';
 ---
 
-<Layout title="九星気学鑑定 | 東洋占術">
+<Layout title="東洋占術の館 | 運命を読み解く羅針盤">
   <style is:global>
     :root {
       --bg-dark: #0a0c10;
@@ -12,6 +12,7 @@ import Layout from '../layouts/Layout.astro';
       --text-main: #e2e8f0;
       --text-secondary: #94a3b8;
       --glass-bg: rgba(20, 24, 39, 0.4);
+      --glass-hover: rgba(30, 36, 56, 0.6);
       --glass-border: rgba(212, 175, 55, 0.15);
       --radius-lg: 16px;
       --font-mincho: 'Shippori Mincho', 'Noto Serif JP', serif;
@@ -24,61 +25,63 @@ import Layout from '../layouts/Layout.astro';
       font-family: var(--font-sans);
       line-height: 1.8;
       margin: 0;
+      overflow-x: hidden;
     }
+    a { text-decoration: none; color: inherit; }
   </style>
 
   <div class="hero">
     <div class="stars" id="stars"></div>
     <div class="hero-content">
-      <p class="eyebrow">東洋占術 · 九星気学</p>
-      <h1 class="hero-title">生年月日が示す<br/>あなたの本質と運命</h1>
+      <p class="eyebrow">Oriental Divination Portal</p>
+      <h1 class="hero-title">古の叡智が導く<br/>あなたの宿命と未来</h1>
       <p class="hero-desc">
-        古来より伝わる「気」の統計学。<br>本命星・月命星・吉方位を読み解き、人生の羅針盤を手に入れる。
+        数千年の歴史を持つ東洋占術。<br>
+        四柱推命、九星気学、宿曜、そして易。<br>
+        今のあなたに必要なメッセージを受け取ってください。
       </p>
-      <a href="/fortune" class="btn-primary hero-btn">無料で鑑定する</a>
-      <p class="hero-note">
-        ※無料鑑定では本命星のみ表示されます。<br>月命星や吉方位、年運・月運の詳細鑑定はコインが必要です。
-      </p>
+      <a href="#select-fortune" class="btn-primary hero-btn">占術を選ぶ</a>
     </div>
     <div class="scroll-indicator">
       <span>Scroll</span>
     </div>
   </div>
 
-  <section class="content-section">
-    <div class="content-inner text-center fade-in-up">
-      <h2 class="section-title">幸せへの最短ルートを見つける。<br>「九星気学」の世界へようこそ</h2>
-      <p class="lead-text">
-        「なんだか最近、タイミングが悪いな」<br>
-        「自分にぴったりの環境や、運気が上がる場所を知りたい」
-      </p>
-      <p class="text-muted">
-        もしあなたがそう感じているなら、九星気学がその答えを教えてくれるかもしれません。<br>
-        九星気学は、古代中国から伝わる「気（エネルギー）」の統計学です。<br>
-        私たちが生まれた瞬間に吸い込んだ地球のエネルギーを、「一白水星」から「九紫火星」まで9つの星に分類し、あなたの宿命や運気のバイオリズムを驚くほど鮮明に描き出します。
-      </p>
-    </div>
-  </section>
-
-  <section class="content-section">
+  <section id="select-fortune" class="content-section">
     <div class="content-inner">
       <div class="text-center mb-3 fade-in-up">
-        <h3 class="section-subtitle">九星気学で何がわかるの？</h3>
-        <p class="text-muted">九星気学の最大の特徴は、ただ「運勢を待つ」のではなく、自ら「運を掴みに行く」ことができる点にあります。</p>
+        <h2 class="section-title">占術を選ぶ</h2>
+        <p class="text-muted">直感で惹かれるもの、または知りたいテーマに合わせてお選びください。</p>
       </div>
-      <div class="grid-cards">
-        <div class="glass-card fade-in-up delay-1">
-          <h4>✧ あなたの「本質」と「才能」</h4>
-          <p>自分でも気づいていない強みや、人生で直面しやすい課題がわかります。</p>
-        </div>
-        <div class="glass-card fade-in-up delay-2">
-          <h4>✧ 動くべき「最高のタイミング」</h4>
-          <p>転職、結婚、大きな買い物。いつ動けば追い風に乗れるのか、その時期を特定します。</p>
-        </div>
-        <div class="glass-card fade-in-up delay-3">
-          <h4>✧ 最強のパワースポット「吉方位」</h4>
-          <p>「どの方向へ行けば運気が上がるのか？」という方位学の知恵を使い、運気を劇的に改善する「祐気取り」の実践が可能です。</p>
-        </div>
+      
+      <div class="fortune-grid">
+        <a href="/fortune/shichu" class="fortune-card glass-card fade-in-up delay-1">
+          <div class="card-icon">☯</div>
+          <h3 class="card-title">四柱推命・算命学</h3>
+          <p class="card-desc">「占いの帝王」と呼ばれる緻密な命卜。<br>あなたの持って生まれた宿命、人生の大きなバイオリズム、そして本当の才能を深く読み解きます。</p>
+          <span class="card-action">鑑定する <span>→</span></span>
+        </a>
+
+        <a href="/fortune/kyusei" class="fortune-card glass-card fade-in-up delay-2">
+          <div class="card-icon">🧭</div>
+          <h3 class="card-title">九星気学</h3>
+          <p class="card-desc">動くことで運を掴む「方位」と「気」の統計学。<br>引越しや旅行の吉方位、今年の運勢、そしてあなたが輝く最適な環境を導き出します。</p>
+          <span class="card-action">鑑定する <span>→</span></span>
+        </a>
+
+        <a href="/fortune/shukuyo" class="fortune-card glass-card fade-in-up delay-3">
+          <div class="card-icon">☽</div>
+          <h3 class="card-title">宿曜占星術</h3>
+          <p class="card-desc">月の運行を元にした、相性占いの最高峰。<br>気になるあの人とのご縁（安壊・栄親など）、対人関係の秘密をドラマチックに暴きます。</p>
+          <span class="card-action">鑑定する <span>→</span></span>
+        </a>
+
+        <a href="/fortune/eki" class="fortune-card glass-card fade-in-up delay-4">
+          <div class="card-icon">☵</div>
+          <h3 class="card-title">易（周易）</h3>
+          <p class="card-desc">「今、この瞬間の悩み」に答える神秘の卜術。<br>AかBか迷っている時、相手の今の気持ちを知りたい時、六十四卦が明確な啓示を与えます。</p>
+          <span class="card-action">鑑定する <span>→</span></span>
+        </a>
       </div>
     </div>
   </section>
@@ -86,59 +89,53 @@ import Layout from '../layouts/Layout.astro';
   <section class="content-section alternate-bg">
     <div class="content-inner">
       <div class="text-center mb-3 fade-in-up">
-        <h3 class="section-subtitle">九つの星、あなたはどのタイプ？</h3>
-        <p class="text-muted">宇宙のエネルギーは、以下の9つの個性に分かれます。</p>
+        <h3 class="section-subtitle">迷った時は、お悩みから選ぶ</h3>
+        <p class="text-muted">あなたの心に一番近いテーマを選択してください。</p>
       </div>
-      <div class="stars-grid fade-in-up delay-1">
-        <dl class="star-list">
-          <div class="star-item"><dt>一白水星</dt><dd>柔軟で芯が強い、静かなる知略家</dd></div>
-          <div class="star-item"><dt>二黒土星</dt><dd>献身的で誠実、大地のような包容力</dd></div>
-          <div class="star-item"><dt>三碧木星</dt><dd>若々しく行動的、アイデア溢れる開拓者</dd></div>
-          <div class="star-item"><dt>四緑木星</dt><dd>社交的で穏やか、良縁を呼び込む風のよう</dd></div>
-          <div class="star-item"><dt>五黄土星</dt><dd>圧倒的な存在感、逆境を跳ね返す帝王</dd></div>
-          <div class="star-item"><dt>六白金星</dt><dd>高い志と正義感、完璧を求めるリーダー</dd></div>
-          <div class="star-item"><dt>七赤金星</dt><dd>華やかで多才、人生を楽しむ悦びの象徴</dd></div>
-          <div class="star-item"><dt>八白土星</dt><dd>粘り強く着実、変化を力に変える改革者</dd></div>
-          <div class="star-item"><dt>九紫火星</dt><dd>情熱的で先見の明がある、美と知性の人</dd></div>
-        </dl>
-      </div>
-    </div>
-  </section>
-
-  <section class="features">
-    <div class="features-inner">
-      <div class="feature-card glass-card fade-in-up delay-1">
-        <div class="feature-icon">☽</div>
-        <h3>本命星・月命星</h3>
-        <p>生年月日から本命星と月命星を算出。あなたの本質的な性格と内面を照らします。</p>
-      </div>
-      <div class="feature-card glass-card fade-in-up delay-2">
-        <div class="feature-icon">◈</div>
-        <h3>吉方位・凶方位</h3>
-        <p>引越し・旅行・就職など重要な決断に役立つ方位をお伝えします。</p>
-      </div>
-      <div class="feature-card glass-card fade-in-up delay-3">
-        <div class="feature-icon">◎</div>
-        <h3>年運・月運</h3>
-        <p>今年の運気の流れと月ごとの吉凶を詳しく鑑定します。</p>
+      
+      <div class="guide-grid">
+        <a href="/fortune/shichu" class="guide-item glass-card fade-in-up delay-1">
+          <div class="guide-text">
+            <h4>自分の天職や人生の転機を知りたい</h4>
+            <p>おすすめ：四柱推命・算命学</p>
+          </div>
+        </a>
+        <a href="/fortune/shukuyo" class="guide-item glass-card fade-in-up delay-2">
+          <div class="guide-text">
+            <h4>あの人との相性や復縁の可能性を知りたい</h4>
+            <p>おすすめ：宿曜占星術</p>
+          </div>
+        </a>
+        <a href="/fortune/kyusei" class="guide-item glass-card fade-in-up delay-3">
+          <div class="guide-text">
+            <h4>転職や引越しの最高のタイミングを知りたい</h4>
+            <p>おすすめ：九星気学</p>
+          </div>
+        </a>
+        <a href="/fortune/eki" class="guide-item glass-card fade-in-up delay-4">
+          <div class="guide-text">
+            <h4>明日のプレゼン、この恋の行方…今すぐ答えが欲しい</h4>
+            <p>おすすめ：易（ワンオラクル）</p>
+          </div>
+        </a>
       </div>
     </div>
   </section>
 
   <section class="cta fade-in-up">
     <div class="cta-inner glass-card text-center">
-      <h2 class="section-subtitle">さあ、あなたの運命のサイクルを動かしましょう</h2>
+      <h2 class="section-subtitle">運命の扉を開く準備はできましたか？</h2>
       <p class="text-muted mb-3">
-        占いは「当てる」ためだけのものではありません。<br>九星気学は、あなたの人生という航海をスムーズに進めるための「羅針盤」です。<br><br>
-        今のあなたが必要としているエネルギーは何色ですか？<br>まずは、あなたの「本命星」をチェックすることから始めてみてください。
+        東洋占術は、ただ未来を当てるだけでなく、より良い人生を歩むための「羅針盤」です。<br><br>
+        まずは気になる占術から、あなたの宿命を紐解いてみましょう。
       </p>
-      <a href="/fortune" class="btn-primary hero-btn">鑑定を始める</a>
+      <a href="#select-fortune" class="btn-primary hero-btn">占術を選ぶ</a>
     </div>
   </section>
 </Layout>
 
 <style>
-/* --- スクロールアニメーション用のクラス追加 --- */
+/* --- スクロールアニメーション --- */
 .fade-in-up {
   opacity: 0;
   transform: translateY(40px);
@@ -149,16 +146,15 @@ import Layout from '../layouts/Layout.astro';
   opacity: 1;
   transform: translateY(0);
 }
-/* 複数要素を順番に出すためのディレイクラス */
 .delay-1 { transition-delay: 0.1s; }
-.delay-2 { transition-delay: 0.25s; }
-.delay-3 { transition-delay: 0.4s; }
-
+.delay-2 { transition-delay: 0.2s; }
+.delay-3 { transition-delay: 0.3s; }
+.delay-4 { transition-delay: 0.4s; }
 
 /* 共通ユーティリティ */
 .text-center { text-align: center; }
-.text-muted { color: var(--text-secondary); font-size: 0.95rem; }
-.mb-3 { margin-bottom: 2rem; }
+.text-muted { color: var(--text-secondary); font-size: 0.95rem; line-height: 1.8; }
+.mb-3 { margin-bottom: 3rem; }
 
 /* ヒーローセクション */
 .hero {
@@ -188,11 +184,8 @@ import Layout from '../layouts/Layout.astro';
   text-shadow: 0 0 40px rgba(212, 175, 55, 0.2);
 }
 .hero-desc {
-  font-size: 1rem; color: var(--text-secondary);
+  font-size: 1.05rem; color: var(--text-secondary);
   line-height: 2; margin-bottom: 3rem; letter-spacing: 0.05em;
-}
-.hero-note {
-  margin-top: 1.5rem; font-size: 0.8rem; color: rgba(148, 163, 184, 0.7);
 }
 .scroll-indicator {
   position: absolute; bottom: 40px; left: 50%; transform: translateX(-50%);
@@ -203,15 +196,14 @@ import Layout from '../layouts/Layout.astro';
 /* ボタンデザイン */
 .btn-primary {
   display: inline-block;
-  padding: 1rem 3rem;
+  padding: 1.2rem 3.5rem;
   background: rgba(212, 175, 55, 0.1);
   border: 1px solid var(--gold);
   color: var(--gold-light);
-  text-decoration: none;
   font-family: var(--font-mincho);
   font-size: 1.1rem;
   letter-spacing: 0.1em;
-  border-radius: 30px;
+  border-radius: 40px;
   transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
   backdrop-filter: blur(5px);
 }
@@ -221,91 +213,116 @@ import Layout from '../layouts/Layout.astro';
   box-shadow: 0 0 20px rgba(212, 175, 55, 0.4);
   transform: translateY(-2px);
 }
-.hero-btn { max-width: 280px; margin: 0 auto; display: block; }
+.hero-btn { margin: 0 auto; display: inline-block; }
 
 /* コンテンツセクション */
 .content-section {
-  padding: 6rem 1.5rem;
+  padding: 8rem 1.5rem;
   position: relative;
   z-index: 2;
+  scroll-margin-top: 4rem; /* ページ内リンク用 */
 }
 .alternate-bg {
-  background: linear-gradient(180deg, transparent 0%, rgba(20, 24, 39, 0.3) 50%, transparent 100%);
+  background: linear-gradient(180deg, transparent 0%, rgba(20, 24, 39, 0.5) 50%, transparent 100%);
 }
-.content-inner { max-width: 800px; margin: 0 auto; }
+.content-inner { max-width: 1000px; margin: 0 auto; }
 
 /* 見出し */
 .section-title {
-  font-family: var(--font-mincho); font-size: clamp(24px, 4vw, 36px);
-  font-weight: 400; margin-bottom: 2rem; line-height: 1.5; color: #fff;
+  font-family: var(--font-mincho); font-size: clamp(28px, 4vw, 40px);
+  font-weight: 400; margin-bottom: 1rem; color: #fff;
 }
 .section-subtitle {
-  font-family: var(--font-mincho); font-size: 1.5rem;
+  font-family: var(--font-mincho); font-size: 1.8rem;
   color: var(--gold); margin-bottom: 1rem;
 }
-.lead-text {
-  font-size: 1.1rem; font-weight: bold; line-height: 2; margin-bottom: 2rem;
-}
 
-/* グラスモーフィズムカード */
+/* グラスモーフィズムカード共通 */
 .glass-card {
   background: var(--glass-bg);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   border: 1px solid var(--glass-border);
   border-radius: var(--radius-lg);
-  padding: 2.5rem 2rem;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  transition: all 0.4s ease;
+  display: block; /* リンク化のため */
 }
 
-/* グリッドレイアウト */
-.grid-cards {
-  display: grid; gap: 1.5rem;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+/* 占術選択グリッド */
+.fortune-grid {
+  display: grid;
+  gap: 1.5rem;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
 }
-.grid-cards h4 {
-  font-family: var(--font-mincho); color: var(--gold-light);
-  margin: 0 0 1rem 0; font-size: 1.1rem;
+.fortune-card {
+  padding: 2.5rem 2rem;
+  position: relative;
+  overflow: hidden;
 }
-
-/* 九星リスト */
-.star-list {
-  display: grid; gap: 1rem;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  margin: 0; padding: 0;
+.fortune-card:hover {
+  background: var(--glass-hover);
+  transform: translateY(-5px);
+  border-color: rgba(212, 175, 55, 0.4);
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5), inset 0 0 20px rgba(212, 175, 55, 0.05);
 }
-.star-item {
-  background: rgba(255, 255, 255, 0.03);
-  border-left: 2px solid var(--gold);
-  padding: 1rem 1.5rem;
-  border-radius: 0 8px 8px 0;
-  transition: transform 0.3s ease, background 0.3s ease;
-}
-.star-item:hover { transform: translateX(5px); background: rgba(255, 255, 255, 0.05); }
-.star-item dt {
-  font-family: var(--font-mincho); font-size: 1.2rem;
-  color: #fff; margin-bottom: 0.25rem;
-}
-.star-item dd { margin: 0; color: var(--text-secondary); font-size: 0.9rem; }
-
-/* 機能紹介セクション */
-.features { padding: 4rem 1.5rem; }
-.features-inner {
-  max-width: 900px; margin: 0 auto;
-  display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.5rem;
-}
-.feature-card { text-align: center; }
-.feature-icon {
-  font-size: 2.5rem; margin-bottom: 1.25rem; color: var(--gold);
+.card-icon {
+  font-size: 2.5rem; color: var(--gold); margin-bottom: 1.5rem;
   text-shadow: 0 0 15px rgba(212, 175, 55, 0.3);
+  display: inline-block;
 }
-.feature-card h3 { font-family: var(--font-mincho); font-size: 1.2rem; margin-bottom: 1rem; }
+.fortune-card:hover .card-icon {
+  transform: scale(1.1);
+  transition: transform 0.3s ease;
+}
+.card-title {
+  font-family: var(--font-mincho); color: #fff; font-size: 1.4rem;
+  margin-bottom: 1rem; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 0.5rem;
+}
+.card-desc {
+  color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 2rem; line-height: 1.7;
+}
+.card-action {
+  font-size: 0.85rem; color: var(--gold-light); font-weight: bold;
+  letter-spacing: 0.1em; display: flex; align-items: center; gap: 0.5rem;
+  position: absolute; bottom: 2rem; left: 2rem;
+}
+.fortune-card:hover .card-action span {
+  transform: translateX(5px);
+  transition: transform 0.3s ease;
+}
+
+/* 目的別ガイドグリッド */
+.guide-grid {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  max-width: 800px;
+  margin: 0 auto;
+}
+.guide-item {
+  padding: 1.5rem;
+  display: flex;
+  align-items: center;
+  border-radius: 12px;
+}
+.guide-item:hover {
+  background: var(--glass-hover);
+  border-color: rgba(212, 175, 55, 0.3);
+  transform: translateX(5px);
+}
+.guide-item h4 {
+  color: #fff; font-size: 1rem; margin: 0 0 0.5rem 0; font-weight: normal;
+}
+.guide-item p {
+  color: var(--gold); font-size: 0.8rem; margin: 0; font-family: var(--font-mincho);
+}
 
 /* CTAセクション */
 .cta { padding: 4rem 1.5rem 8rem; }
 .cta-inner { max-width: 700px; margin: 0 auto; padding: 4rem 2rem; }
 
-/* アニメーション */
+/* アニメーションキーフレーム */
 @keyframes fadeInDown {
   from { opacity: 0; transform: translateY(-20px); }
   to { opacity: 1; transform: translateY(0); }
@@ -323,7 +340,7 @@ import Layout from '../layouts/Layout.astro';
 </style>
 
 <script>
-  // 星空の生成スクリプト
+  // 星空の生成
   const starsContainer = document.getElementById('stars');
   if (starsContainer) {
     const starCount = window.innerWidth < 768 ? 40 : 80;
@@ -346,26 +363,30 @@ import Layout from '../layouts/Layout.astro';
     }
   }
 
-  // スクロールフェードインのアニメーション制御 (Intersection Observer)
+  // スクロールフェードインのアニメーション制御
   const fadeElements = document.querySelectorAll('.fade-in-up');
-  
-  const observerOptions = {
-    root: null,
-    rootMargin: '0px',
-    threshold: 0.15 // 要素が15%画面に入ったら発火
-  };
-
+  const observerOptions = { root: null, rootMargin: '0px', threshold: 0.15 };
   const observer = new IntersectionObserver((entries, observer) => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
         entry.target.classList.add('is-visible');
-        // 一度アニメーションしたら監視を解除する（何度もフェードインさせたい場合は下1行を削除）
         observer.unobserve(entry.target);
       }
     });
   }, observerOptions);
 
-  fadeElements.forEach(el => {
-    observer.observe(el);
+  fadeElements.forEach(el => observer.observe(el));
+
+  // スムーススクロール制御（a href="#..."用）
+  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+      e.preventDefault();
+      const targetId = this.getAttribute('href');
+      if(targetId === '#') return;
+      const targetElement = document.querySelector(targetId);
+      if(targetElement) {
+        targetElement.scrollIntoView({ behavior: 'smooth' });
+      }
+    });
   });
 </script>
