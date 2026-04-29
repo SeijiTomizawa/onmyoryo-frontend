@@ -29,28 +29,32 @@ import '../styles/global.css';
       </div>
       
       <div class="fortune-grid">
-        <a href="/fortune/shichu" class="fortune-card glass-card fade-in-up delay-1">
+        <a href="/fortune/shichu" class="fortune-card jewel-card theme-jade glass-card fade-in-up delay-1">
+          <div class="shine-effect"></div>
           <div class="card-icon">☯</div>
           <h3 class="card-title">四柱推命・算命学</h3>
           <p class="card-desc">「占いの帝王」と呼ばれる緻密な命卜。<br>あなたの持って生まれた宿命、人生の大きなバイオリズム、そして本当の才能を深く読み解きます。</p>
           <span class="card-action">鑑定する <span>→</span></span>
         </a>
 
-        <a href="/fortune/kyusei" class="fortune-card glass-card fade-in-up delay-2">
+        <a href="/fortune/kyuseiki" class="fortune-card jewel-card theme-sapphire glass-card fade-in-up delay-2">
+          <div class="shine-effect"></div>
           <div class="card-icon">🧭</div>
           <h3 class="card-title">九星気学</h3>
           <p class="card-desc">動くことで運を掴む「方位」と「気」の統計学。<br>引越しや旅行の吉方位、今年の運勢、そしてあなたが輝く最適な環境を導き出します。</p>
           <span class="card-action">鑑定する <span>→</span></span>
         </a>
 
-        <a href="/fortune/shukuyo" class="fortune-card glass-card fade-in-up delay-3">
+        <a href="/fortune/shukuyo" class="fortune-card jewel-card theme-amethyst glass-card fade-in-up delay-3">
+          <div class="shine-effect"></div>
           <div class="card-icon">☽</div>
           <h3 class="card-title">宿曜占星術</h3>
           <p class="card-desc">月の運行を元にした、相性占いの最高峰。<br>気になるあの人とのご縁（安壊・栄親など）、対人関係の秘密をドラマチックに暴きます。</p>
           <span class="card-action">鑑定する <span>→</span></span>
         </a>
 
-        <a href="/fortune/eki" class="fortune-card glass-card fade-in-up delay-4">
+        <a href="/fortune/eki" class="fortune-card jewel-card theme-amber glass-card fade-in-up delay-4">
+          <div class="shine-effect"></div>
           <div class="card-icon">☵</div>
           <h3 class="card-title">易（周易）</h3>
           <p class="card-desc">「今、この瞬間の悩み」に答える神秘の卜術。<br>AかBか迷っている時、相手の今の気持ちを知りたい時、六十四卦が明確な啓示を与えます。</p>
@@ -80,7 +84,7 @@ import '../styles/global.css';
             <p>おすすめ：宿曜占星術</p>
           </div>
         </a>
-        <a href="/fortune/kyusei" class="guide-item glass-card fade-in-up delay-3">
+        <a href="/fortune/kyuseiki" class="guide-item glass-card fade-in-up delay-3">
           <div class="guide-text">
             <h4>転職や引越しの最高のタイミングを知りたい</h4>
             <p>おすすめ：九星気学</p>
@@ -157,7 +161,7 @@ a { text-decoration: none; color: inherit; }
   animation: bounce 2s infinite; text-transform: uppercase;
 }
 
-/* ボタン上書き（global.cssの width: 100% をトップページ用に解除） */
+/* ボタン上書き */
 .hero-btn { margin: 0 auto; display: inline-block; width: auto; padding: 1.2rem 3.5rem; border-radius: 40px; }
 
 /* コンテンツセクション */
@@ -182,7 +186,7 @@ a { text-decoration: none; color: inherit; }
   color: var(--gold); margin-bottom: 1rem;
 }
 
-/* 占術選択グリッド */
+/* ★ 占術選択グリッド（宝石エフェクト追加） ★ */
 .fortune-grid {
   display: grid;
   gap: 1.5rem;
@@ -193,18 +197,68 @@ a { text-decoration: none; color: inherit; }
   position: relative;
   overflow: hidden;
   display: block;
-  margin-bottom: 0; /* global.css相殺 */
+  margin-bottom: 0;
   transition: all 0.4s ease;
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
+
+/* 斜めに走る光のアニメーション */
+.shine-effect {
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(
+    to right,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.15) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  transform: skewX(-25deg);
+  animation: shine 5s infinite;
+  z-index: 1;
+  pointer-events: none;
+}
+@keyframes shine {
+  0% { left: -100%; }
+  20% { left: 200%; }
+  100% { left: 200%; }
+}
+
+/* 宝石ごとのテーマカラー（ホバー時の発光） */
+.theme-jade { box-shadow: inset 0 0 15px rgba(80, 227, 194, 0.05), 0 4px 20px rgba(0,0,0,0.3); }
+.theme-jade:hover { 
+  border-color: rgba(80, 227, 194, 0.5); 
+  box-shadow: inset 0 0 25px rgba(80, 227, 194, 0.2), 0 10px 30px rgba(80, 227, 194, 0.2); 
+}
+.theme-sapphire { box-shadow: inset 0 0 15px rgba(74, 144, 226, 0.05), 0 4px 20px rgba(0,0,0,0.3); }
+.theme-sapphire:hover { 
+  border-color: rgba(74, 144, 226, 0.5); 
+  box-shadow: inset 0 0 25px rgba(74, 144, 226, 0.2), 0 10px 30px rgba(74, 144, 226, 0.2); 
+}
+.theme-amethyst { box-shadow: inset 0 0 15px rgba(168, 85, 247, 0.05), 0 4px 20px rgba(0,0,0,0.3); }
+.theme-amethyst:hover { 
+  border-color: rgba(168, 85, 247, 0.5); 
+  box-shadow: inset 0 0 25px rgba(168, 85, 247, 0.2), 0 10px 30px rgba(168, 85, 247, 0.2); 
+}
+.theme-amber { box-shadow: inset 0 0 15px rgba(245, 158, 11, 0.05), 0 4px 20px rgba(0,0,0,0.3); }
+.theme-amber:hover { 
+  border-color: rgba(245, 158, 11, 0.5); 
+  box-shadow: inset 0 0 25px rgba(245, 158, 11, 0.2), 0 10px 30px rgba(245, 158, 11, 0.2); 
+}
+
 .fortune-card:hover {
-  background: rgba(30, 36, 56, 0.6);
+  background: rgba(30, 36, 56, 0.7);
   transform: translateY(-5px);
-  border-color: rgba(212, 175, 55, 0.4);
-  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5), inset 0 0 20px rgba(212, 175, 55, 0.05);
 }
+
+/* カード内部要素 */
 .card-icon {
+  position: relative;
+  z-index: 2;
   font-size: 2.5rem; color: var(--gold); margin-bottom: 1.5rem;
-  text-shadow: 0 0 15px rgba(212, 175, 55, 0.3);
+  text-shadow: 0 0 15px rgba(212, 175, 55, 0.5);
   display: inline-block;
 }
 .fortune-card:hover .card-icon {
@@ -212,16 +266,18 @@ a { text-decoration: none; color: inherit; }
   transition: transform 0.3s ease;
 }
 .card-title {
+  position: relative; z-index: 2;
   font-family: var(--font-mincho); color: #fff; font-size: 1.4rem;
   margin-bottom: 1rem; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 0.5rem;
 }
 .card-desc {
+  position: relative; z-index: 2;
   color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 2rem; line-height: 1.7;
 }
 .card-action {
+  position: absolute; bottom: 2rem; left: 2rem; z-index: 2;
   font-size: 0.85rem; color: var(--gold-light); font-weight: bold;
   letter-spacing: 0.1em; display: flex; align-items: center; gap: 0.5rem;
-  position: absolute; bottom: 2rem; left: 2rem;
 }
 .fortune-card:hover .card-action span {
   transform: translateX(5px);
@@ -241,7 +297,7 @@ a { text-decoration: none; color: inherit; }
   display: flex;
   align-items: center;
   border-radius: 12px;
-  margin-bottom: 0; /* global.css相殺 */
+  margin-bottom: 0;
   transition: all 0.4s ease;
 }
 .guide-item:hover {
