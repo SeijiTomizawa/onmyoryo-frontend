@@ -61,259 +61,142 @@ const { title = "陰陽寮 | 東洋占術の館" } = Astro.props;
 </html>
 
 <style>
-/* --- ヘッダー --- */
-.header {
-  position: sticky;
-  top: 0;
-  z-index: 100;
-  background: rgba(10, 12, 16, 0.75);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border-bottom: 1px solid rgba(212, 175, 55, 0.15);
-  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
-  padding: 0 1.5rem;
-}
-.header-inner {
-  max-width: 1000px;
-  margin: 0 auto;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  height: 70px; /* 少し高さを出して高級感を演出 */
-}
+/* ヘッダー */
+.header { position: sticky; top: 0; z-index: 100; background: rgba(10, 12, 16, 0.75); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border-bottom: 1px solid rgba(212, 175, 55, 0.15); box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3); padding: 0 1.5rem; }
+.header-inner { max-width: 1000px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; height: 70px; }
+.logo { display: flex; align-items: center; gap: 8px; text-decoration: none; transition: transform 0.3s ease; }
+.logo:hover { transform: scale(1.02); }
+.logo:hover .logo-mark { transform: rotate(180deg); }
+.logo-mark { font-size: 24px; color: var(--gold); transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1); }
+.logo-text { font-family: var(--font-mincho); font-size: 20px; font-weight: 700; color: #fff; letter-spacing: 0.1em; }
+.nav { display: flex; align-items: center; gap: 2rem; }
+.nav-link { font-size: 0.9rem; color: var(--text-secondary); text-decoration: none; position: relative; transition: color 0.3s ease; }
+.nav-link:hover { color: var(--gold-light); }
+.nav-link::after { content: ''; position: absolute; width: 0; height: 1px; bottom: -4px; left: 0; background-color: var(--gold); transition: width 0.3s ease; }
+.nav-link:hover::after { width: 100%; }
+.auth-group { display: flex; align-items: center; gap: 1rem; }
+.btn-login { display: flex; align-items: center; gap: 6px; font-size: 0.85rem; font-weight: bold; color: var(--gold-light); text-decoration: none; padding: 8px 20px; border: 1px solid var(--gold); border-radius: 30px; background: rgba(212, 175, 55, 0.05); transition: all 0.3s ease; }
+.btn-login:hover { background: var(--gold); color: #000; box-shadow: 0 0 15px rgba(212, 175, 55, 0.4); }
+.btn-mypage { display: flex; align-items: center; gap: 6px; font-size: 0.85rem; color: #fff; text-decoration: none; padding: 8px 16px; border-radius: 8px; background: rgba(255, 255, 255, 0.05); transition: background 0.3s ease; }
+.btn-mypage:hover { background: rgba(255, 255, 255, 0.1); color: var(--gold-light); }
+.btn-logout { background: transparent; border: none; color: var(--text-secondary); font-size: 0.85rem; cursor: pointer; padding: 8px; transition: color 0.3s ease; }
+.btn-logout:hover { color: #ff6b6b; }
+.footer { margin-top: 6rem; padding: 3rem 1.5rem; background: rgba(5, 5, 8, 0.8); border-top: 1px solid rgba(212, 175, 55, 0.1); text-align: center; }
+.footer-inner { max-width: 800px; margin: 0 auto; }
+.footer-logo { font-family: var(--font-mincho); font-size: 1.2rem; color: var(--gold); margin-bottom: 1.5rem; letter-spacing: 0.1em; }
+.footer-links { display: flex; justify-content: center; gap: 1.5rem; margin-bottom: 2rem; flex-wrap: wrap; }
+.footer-links a { color: var(--text-secondary); font-size: 0.8rem; text-decoration: none; transition: color 0.3s; }
+.footer-links a:hover { color: var(--gold-light); }
+.copyright { font-size: 0.75rem; color: rgba(148, 163, 184, 0.5); letter-spacing: 0.05em; }
 
-/* --- ロゴ --- */
-.logo {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  text-decoration: none;
-  transition: transform 0.3s ease;
-}
-.logo:hover {
-  transform: scale(1.02);
-}
-.logo:hover .logo-mark {
-  transform: rotate(180deg);
-}
-.logo-mark {
-  font-size: 24px;
-  color: var(--gold);
-  transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-}
-.logo-text {
-  font-family: var(--font-mincho);
-  font-size: 20px;
-  font-weight: 700;
-  color: #fff;
-  letter-spacing: 0.1em;
-}
-
-/* --- ナビゲーション共通 --- */
-.nav {
-  display: flex;
-  align-items: center;
-  gap: 2rem;
-}
-.nav-link {
-  font-size: 0.9rem;
-  color: var(--text-secondary);
-  text-decoration: none;
-  position: relative;
-  transition: color 0.3s ease;
-}
-.nav-link:hover {
-  color: var(--gold-light);
-}
-/* ホバー時の下線アニメーション */
-.nav-link::after {
-  content: '';
-  position: absolute;
-  width: 0;
-  height: 1px;
-  bottom: -4px;
-  left: 0;
-  background-color: var(--gold);
-  transition: width 0.3s ease;
-}
-.nav-link:hover::after {
-  width: 100%;
-}
-
-/* --- 認証ボタングループ --- */
-.auth-group {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-}
-
-/* ログイン・登録ボタン（目立たせる） */
-.btn-login {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 0.85rem;
-  font-weight: bold;
-  color: var(--gold-light);
-  text-decoration: none;
-  padding: 8px 20px;
-  border: 1px solid var(--gold);
-  border-radius: 30px;
-  background: rgba(212, 175, 55, 0.05);
-  transition: all 0.3s ease;
-}
-.btn-login:hover {
-  background: var(--gold);
-  color: #000;
-  box-shadow: 0 0 15px rgba(212, 175, 55, 0.4);
-}
-
-/* マイページボタン */
-.btn-mypage {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 0.85rem;
-  color: #fff;
-  text-decoration: none;
-  padding: 8px 16px;
-  border-radius: 8px;
-  background: rgba(255, 255, 255, 0.05);
-  transition: background 0.3s ease;
-}
-.btn-mypage:hover {
-  background: rgba(255, 255, 255, 0.1);
-  color: var(--gold-light);
-}
-
-/* ログアウトボタン */
-.btn-logout {
-  background: transparent;
-  border: none;
-  color: var(--text-secondary);
-  font-size: 0.85rem;
-  cursor: pointer;
-  padding: 8px;
-  transition: color 0.3s ease;
-}
-.btn-logout:hover {
-  color: #ff6b6b;
-}
-
-/* --- フッター --- */
-.footer {
-  margin-top: 6rem;
-  padding: 3rem 1.5rem;
-  background: rgba(5, 5, 8, 0.8);
-  border-top: 1px solid rgba(212, 175, 55, 0.1);
-  text-align: center;
-}
-.footer-inner {
-  max-width: 800px;
-  margin: 0 auto;
-}
-.footer-logo {
-  font-family: var(--font-mincho);
-  font-size: 1.2rem;
-  color: var(--gold);
-  margin-bottom: 1.5rem;
-  letter-spacing: 0.1em;
-}
-.footer-links {
-  display: flex;
-  justify-content: center;
-  gap: 1.5rem;
-  margin-bottom: 2rem;
-  flex-wrap: wrap;
-}
-.footer-links a {
-  color: var(--text-secondary);
-  font-size: 0.8rem;
-  text-decoration: none;
-  transition: color 0.3s;
-}
-.footer-links a:hover {
-  color: var(--gold-light);
-}
-.copyright {
-  font-size: 0.75rem;
-  color: rgba(148, 163, 184, 0.5);
-  letter-spacing: 0.05em;
-}
-
-/* --- レスポンシブ対応 --- */
 @media (max-width: 600px) {
   .nav { gap: 1rem; }
-  .logo-text { display: none; } /* スマホではマークのみ表示して領域確保 */
+  .logo-text { display: none; }
   .btn-login { padding: 8px 12px; font-size: 0.8rem; }
-  .btn-login svg { display: none; } /* スマホではアイコンを隠してテキストのみ */
+  .btn-login svg { display: none; }
 }
 </style>
 
 <script is:inline>
-  function initGlobalScript() {
-    // 1. スクロールアニメーション（すべての .fade-in-up を監視）
-    const observer = new IntersectionObserver((entries, obs) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('is-visible');
-          obs.unobserve(entry.target);
-        }
-      });
-    }, { threshold: 0.1 });
-
-    document.querySelectorAll('.fade-in-up').forEach(el => observer.observe(el));
-
-    // 2. 星空アニメーション（IDがstarsの要素があれば生成）
-    const starsContainer = document.getElementById('stars');
-    if (starsContainer && starsContainer.children.length === 0) {
-      const starCount = window.innerWidth < 768 ? 40 : 80;
-      for (let i = 0; i < starCount; i++) {
-        const s = document.createElement('div');
-        const size = Math.random() * 2 + 0.5;
-        s.style.cssText = `
-          position: absolute; border-radius: 50%; background: #ffffff;
-          width: ${size}px; height: ${size}px;
-          top: ${Math.random() * 100}%; left: ${Math.random() * 100}%;
-          opacity: ${Math.random() * 0.5 + 0.1};
-          animation: twinkle ${3 + Math.random() * 4}s ease-in-out infinite;
-          animation-delay: ${Math.random() * 5}s;
-        `;
-        starsContainer.appendChild(s);
-      }
-    }
-  }
-
-  // 初回読み込み時とAstroページ遷移時の両方で発火
-  document.addEventListener('DOMContentLoaded', initGlobalScript);
-  document.addEventListener('astro:page-load', initGlobalScript);
-</script>
-
-<script>
-// ログアウト処理
 function logout() {
   localStorage.removeItem('kyusei_token');
   localStorage.removeItem('kyusei_user');
   window.location.href = '/';
 }
 
-// ナビゲーションの表示切り替え
 function updateNav() {
   const token = localStorage.getItem('kyusei_token');
   const guestNav = document.getElementById('auth-guest');
   const userNav = document.getElementById('auth-user');
-  
   if (token) {
-    // ログイン済み
     if (guestNav) guestNav.style.display = 'none';
     if (userNav) userNav.style.display = 'flex';
   } else {
-    // 未ログイン
     if (guestNav) guestNav.style.display = 'flex';
     if (userNav) userNav.style.display = 'none';
   }
 }
 
-// ページ読み込み時に実行
-document.addEventListener('DOMContentLoaded', updateNav);
+function initGlobalScript() {
+  // 1. スクロールアニメーション（.fade-in-up）
+  const observer = new IntersectionObserver((entries, obs) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('is-visible');
+        obs.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.fade-in-up').forEach(el => observer.observe(el));
+
+  // 2. 星空アニメーション
+  const starsContainer = document.getElementById('stars');
+  if (starsContainer && starsContainer.children.length === 0) {
+    const starCount = window.innerWidth < 768 ? 40 : 80;
+    for (let i = 0; i < starCount; i++) {
+      const s = document.createElement('div');
+      const size = Math.random() * 2 + 0.5;
+      s.style.cssText = `position: absolute; border-radius: 50%; background: #ffffff; width: ${size}px; height: ${size}px; top: ${Math.random() * 100}%; left: ${Math.random() * 100}%; opacity: ${Math.random() * 0.5 + 0.1}; animation: twinkle ${3 + Math.random() * 4}s ease-in-out infinite; animation-delay: ${Math.random() * 5}s;`;
+      starsContainer.appendChild(s);
+    }
+  }
+
+  // 3. フォームのエフェクト（入力のキラキラ＆ボタン準備完了の光）
+  const formCards = document.querySelectorAll('.form-card');
+  formCards.forEach(card => {
+    const inputs = card.querySelectorAll('input, select');
+    const submitBtn = card.querySelector('.btn-primary');
+    if (!submitBtn) return;
+
+    // 必須項目のID（占いによって追加）
+    const requiredIds = ['year', 'month', 'day', 'y1', 'm1', 'd1'];
+
+    const checkValidity = () => {
+      let isValid = true;
+      inputs.forEach(input => {
+        if (requiredIds.includes(input.id)) {
+          if (input.type === 'number') {
+            const val = parseInt(input.value);
+            if (!val || val < 1900 || val > 2050) isValid = false;
+          } else {
+            if (!input.value) isValid = false;
+          }
+        }
+      });
+      if (isValid) {
+        submitBtn.disabled = false;
+        submitBtn.classList.add('btn-ready');
+      } else {
+        submitBtn.disabled = true;
+        submitBtn.classList.remove('btn-ready');
+      }
+    };
+
+    checkValidity(); // 初期チェック
+
+    inputs.forEach(input => {
+      input.addEventListener('input', (e) => {
+        const target = e.target;
+        // 入力時のキラッとするエフェクト
+        target.classList.remove('input-shine');
+        void target.offsetWidth; // アニメーションリセット
+        target.classList.add('input-shine');
+        // 完了チェック
+        checkValidity();
+      });
+    });
+  });
+}
+
+// 初期ロード時
+document.addEventListener('DOMContentLoaded', () => {
+  updateNav();
+  initGlobalScript();
+});
+
+// Astroページ遷移対応
+document.addEventListener('astro:page-load', () => {
+  updateNav();
+  initGlobalScript();
+});
 </script>
