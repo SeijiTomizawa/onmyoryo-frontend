@@ -5,13 +5,36 @@ import '../../styles/global.css';
 
 <Layout title="易占い | 東洋占術">
   <div class="page">
+    <div class="stars" id="stars"></div>
     <div class="page-inner">
       <header class="page-header fade-in-up">
         <h1 class="page-title">易（周易）</h1>
         <p class="page-desc">心に迷いがある時、六十四の卦が今のあなたに啓示を与えます</p>
       </header>
 
-      <div class="glass-card fade-in-up delay-1" style="text-align:center;">
+      <div class="glass-card intro-card fade-in-up delay-1">
+        <h2 class="intro-title">「今」の迷いに答える神秘の卜術</h2>
+        <p class="intro-text">
+          易（周易）は、古代中国から伝わる、偶然の事象から必然を読み解く卜術（ぼくじゅつ）です。<br>
+          「A案とB案、どちらを選ぶべきか」「今、相手はどう思っているか」といった、現在直面している具体的な悩みや近い未来の選択に対して、六十四の卦（け）が白黒はっきりと明確な啓示を与えます。
+        </p>
+        <div class="intro-features">
+          <div class="intro-feature">
+            <span class="feature-icon">☯️</span>
+            <span><strong>森羅万象の法則</strong><br>陰と陽の組み合わせからなる64種類の「卦」が、今のあなたの状況を的確に言い当てます</span>
+          </div>
+          <div class="intro-feature">
+            <span class="feature-icon">🌿</span>
+            <span><strong>偶然という必然</strong><br>占う瞬間のあなたの心の波長が、画面越しに「筮竹（ぜいちく）」の結果へと反映されます</span>
+          </div>
+          <div class="intro-feature">
+            <span class="feature-icon">⚖️</span>
+            <span><strong>明確な行動指針</strong><br>「進むべきか、退くべきか」。遠い未来ではなく、直近のアクションへの最適な答えを導きます</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="glass-card form-card fade-in-up delay-2" style="text-align:center;">
         <p style="color:var(--text-main); margin-bottom:2rem; font-size:1.1rem;">
           占いたいこと（悩みや迷い）を心の中で強く念じてから、<br>下のボタンを押してください。
         </p>
@@ -19,11 +42,11 @@ import '../../styles/global.css';
       </div>
 
       <div id="result-section" style="display:none;">
-        <div class="glass-card result-item" style="text-align:center; border-top: 3px solid var(--gold);">
+        <div class="glass-card result-item" style="text-align:center; border-top: 3px solid #f59e0b;">
           <p class="result-subtitle">得られた啓示（六十四卦）</p>
-          <div style="font-size:3rem; margin:1rem 0; line-height:1;">䷀</div>
+          <div style="font-size:3rem; margin:1rem 0; line-height:1; color: var(--gold-light); text-shadow: 0 0 20px rgba(245, 158, 11, 0.5);">䷀</div>
           <h2 class="result-title" id="res-ke">乾為天 (けんいてん)</h2>
-          <p class="result-text" id="res-desc" style="text-align:left; margin-top:2rem; padding:1.5rem; background:rgba(212,175,55,0.05); border-radius:8px;">
+          <p class="result-text" id="res-desc" style="text-align:left; margin-top:2rem; padding:1.5rem; background:rgba(245, 158, 11, 0.05); border-radius:8px; border-left: 3px solid #f59e0b;">
             大いなる龍が天を飛ぶように、エネルギーに満ち溢れた力強い時期です。迷わず突き進んで良い時ですが、自信過剰にならないよう周囲への配慮を忘れずに。
           </p>
         </div>
@@ -31,6 +54,80 @@ import '../../styles/global.css';
     </div>
   </div>
 </Layout>
+
+<style>
+.page { padding: 3rem 1.5rem; min-height: 100vh; position: relative; }
+.stars { position: fixed; inset: 0; pointer-events: none; z-index: 0; }
+.page-inner { max-width: 680px; margin: 0 auto; position: relative; z-index: 1; }
+.page-header { text-align: center; margin-bottom: 2rem; }
+.page-title { font-family: 'Shippori Mincho', serif; font-size: 26px; margin-bottom: 0.5rem; }
+.page-desc { font-size: 14px; color: var(--text-secondary); }
+
+/* ✨ 説明文（イントロ）のスタイル */
+.intro-card {
+  text-align: center;
+  margin-bottom: 2rem;
+  border-top: 2px solid #f59e0b; /* 易のアンバーカラー */
+  background: linear-gradient(180deg, rgba(30,36,56,0.5) 0%, rgba(10,12,16,0.8) 100%);
+}
+.intro-title {
+  font-family: var(--font-mincho);
+  font-size: 1.4rem;
+  color: #fde68a;
+  margin-bottom: 1.25rem;
+  letter-spacing: 0.05em;
+}
+.intro-text {
+  font-size: 0.95rem;
+  color: var(--text-main);
+  line-height: 1.9;
+  margin-bottom: 2rem;
+}
+.intro-features {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+.intro-feature {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  text-align: left;
+  background: rgba(255,255,255,0.03);
+  padding: 1.25rem 1rem;
+  border-radius: var(--radius-md);
+  border: 1px solid rgba(255,255,255,0.05);
+  flex: 1;
+  min-width: 200px;
+}
+.feature-icon {
+  font-size: 1.4rem;
+  color: #f59e0b;
+  line-height: 1;
+}
+.intro-feature span {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+.intro-feature strong {
+  display: block;
+  color: #fff;
+  font-size: 1rem;
+  margin-bottom: 0.25rem;
+  font-family: var(--font-mincho);
+}
+
+.form-card { margin-bottom: 2rem; }
+
+/* 結果表示 */
+.result-subtitle { font-family: 'Shippori Mincho', serif; color: var(--gold); font-size: 16px; margin-bottom: 0.5rem; text-align: center; }
+
+@keyframes twinkle {
+  0%,100% { opacity: 0.2; } 50% { opacity: 0.8; }
+}
+</style>
 
 <script is:inline>
   window.runEki = function() {
@@ -49,4 +146,15 @@ import '../../styles/global.css';
       btn.textContent = '☯ もう一度占う'; btn.disabled = false;
     }, 1500);
   };
+
+  // 星背景（Layoutの共通スクリプトがない場合へのフォールバック）
+  const starsEl = document.getElementById('stars');
+  if (starsEl && starsEl.children.length === 0) {
+    for (let i = 0; i < 50; i++) {
+      const s = document.createElement('div');
+      const size = Math.random() * 2 + 1;
+      s.style.cssText = `position:absolute;border-radius:50%;background:#fff;width:${size}px;height:${size}px;top:${Math.random()*100}%;left:${Math.random()*100}%;opacity:${Math.random()*0.5+0.1};animation:twinkle ${2+Math.random()*3}s ease-in-out infinite;animation-delay:${Math.random()*3}s;`;
+      starsEl.appendChild(s);
+    }
+  }
 </script>

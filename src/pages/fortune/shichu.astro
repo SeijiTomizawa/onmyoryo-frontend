@@ -12,7 +12,29 @@ import '../../styles/global.css';
         <p class="page-desc">あなたの宿命の設計図と、真の才能を読み解きます</p>
       </header>
 
-      <div class="glass-card form-card fade-in-up delay-1">
+      <div class="glass-card intro-card fade-in-up delay-1">
+        <h2 class="intro-title">魂の設計図を解読する「占いの帝王」</h2>
+        <p class="intro-text">
+          四柱推命と算命学は、あなたがこの世に生まれ落ちた瞬間に刻まれた「宿命」を極めて緻密に割り出す東洋占術の最高峰です。<br>
+          大樹、太陽、宝石など、自然界のシンボルに例えられるあなたの本質と、人生に訪れる大きな転機を完全に紐解きます。
+        </p>
+        <div class="intro-features">
+          <div class="intro-feature">
+            <span class="feature-icon">🌳</span>
+            <span><strong>本質と真の才能</strong><br>「日干」が示すあなたの絶対的な性質と、隠された適性・魅力</span>
+          </div>
+          <div class="intro-feature">
+            <span class="feature-icon">🌊</span>
+            <span><strong>大運（10年の波）</strong><br>10年ごとに切り替わる人生のテーマと、成功を掴む黄金期</span>
+          </div>
+          <div class="intro-feature">
+            <span class="feature-icon">⛓️</span>
+            <span><strong>天中殺と宿命</strong><br>誰にでも訪れる「冬の時代」の過ごし方と、人生の使命</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="glass-card form-card fade-in-up delay-2">
         <div class="date-row">
           <div class="field"><label>生年</label><input type="number" id="year" placeholder="1990" min="1900" max="2010" /></div>
           <div class="field">
@@ -47,7 +69,6 @@ import '../../styles/global.css';
       <div id="result-section" style="display:none">
         <div class="result-grid">
 
-          <!-- 命式盤 -->
           <div class="glass-card result-item meishiki-card">
             <h3 class="card-subtitle">命式盤</h3>
             <div class="meishiki-table">
@@ -83,7 +104,6 @@ import '../../styles/global.css';
             </div>
           </div>
 
-          <!-- 日干 -->
           <div class="glass-card result-item nikkan-card">
             <p class="star-label" id="nikkan-label"></p>
             <h2 class="result-title" id="nikkan-name"></h2>
@@ -91,7 +111,6 @@ import '../../styles/global.css';
             <div class="personality-box" id="nikkan-personality"></div>
           </div>
 
-          <!-- 才能・弱点・恋愛・仕事 -->
           <div class="glass-card result-item">
             <h3 class="card-subtitle">才能・特性</h3>
             <div class="text-grid">
@@ -114,7 +133,6 @@ import '../../styles/global.css';
             </div>
           </div>
 
-          <!-- 算命学：天中殺 -->
           <div class="glass-card result-item">
             <h3 class="card-subtitle">算命学・天中殺</h3>
             <div class="tenchusatsu-box">
@@ -123,7 +141,6 @@ import '../../styles/global.css';
             </div>
           </div>
 
-          <!-- 大運 -->
           <div class="glass-card result-item">
             <h3 class="card-subtitle">大運（10年ごとの運勢）</h3>
             <div class="daiun-list" id="daiun-list"></div>
@@ -142,6 +159,63 @@ import '../../styles/global.css';
 .page-header { text-align: center; margin-bottom: 2rem; }
 .page-title { font-family: 'Shippori Mincho', serif; font-size: 26px; margin-bottom: 0.5rem; }
 .page-desc { font-size: 14px; color: var(--text-secondary); }
+
+/* ✨ 説明文（イントロ）のスタイル */
+.intro-card {
+  text-align: center;
+  margin-bottom: 2rem;
+  border-top: 2px solid var(--gold);
+  background: linear-gradient(180deg, rgba(30,36,56,0.5) 0%, rgba(10,12,16,0.8) 100%);
+}
+.intro-title {
+  font-family: var(--font-mincho);
+  font-size: 1.4rem;
+  color: var(--gold-light);
+  margin-bottom: 1.25rem;
+  letter-spacing: 0.05em;
+}
+.intro-text {
+  font-size: 0.95rem;
+  color: var(--text-main);
+  line-height: 1.9;
+  margin-bottom: 2rem;
+}
+.intro-features {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+.intro-feature {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  text-align: left;
+  background: rgba(255,255,255,0.03);
+  padding: 1.25rem 1rem;
+  border-radius: var(--radius-md);
+  border: 1px solid rgba(255,255,255,0.05);
+  flex: 1;
+  min-width: 200px;
+}
+.feature-icon {
+  font-size: 1.4rem;
+  color: var(--gold);
+  line-height: 1;
+}
+.intro-feature span {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+.intro-feature strong {
+  display: block;
+  color: #fff;
+  font-size: 1rem;
+  margin-bottom: 0.25rem;
+  font-family: var(--font-mincho);
+}
+
 .form-card { margin-bottom: 2rem; }
 .date-row { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 8px; margin-bottom: 1rem; }
 .field { display: flex; flex-direction: column; gap: 4px; }

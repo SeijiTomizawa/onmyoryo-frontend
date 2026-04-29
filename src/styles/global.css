@@ -1,4 +1,10 @@
 /* src/styles/global.css */
+
+/* 🌟 要素がはみ出さないようにするための魔法の1行 */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
 :root {
   --bg-dark: #0a0c10;
   --bg-gradient: radial-gradient(circle at top, #1a1c2e 0%, #050508 100%);
@@ -46,20 +52,19 @@ body {
 /* =========================================
    フォーム共通
    ========================================= */
-/* 要素の被りを防ぐ柔軟なFlexレイアウトに変更 */
 .date-row { 
   display: flex; 
   gap: 12px; 
   margin-bottom: 1.5rem; 
 }
 .date-row > .field {
-  flex: 1;
+  flex: 1; /* 月と日は均等に配置 */
   display: flex; 
   flex-direction: column; 
   gap: 6px;
   min-width: 0; /* はみ出し防止 */
 }
-/* 「年」の入力欄を少し狭めにとる */
+/* 年は4桁なので少しだけ狭く調整 */
 .date-row > .field:first-child {
   flex: 0.8;
 }

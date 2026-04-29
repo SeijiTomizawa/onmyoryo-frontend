@@ -5,21 +5,44 @@ import '../../styles/global.css';
 
 <Layout title="宿曜占星術 | 東洋占術">
   <div class="page">
+    <div class="stars" id="stars"></div>
     <div class="page-inner">
       <header class="page-header fade-in-up">
         <h1 class="page-title">宿曜占星術</h1>
         <p class="page-desc">月の周期が導き出す、究極の相性とご縁の深さ</p>
       </header>
 
-      <div class="glass-card fade-in-up delay-1">
-        <p style="color:var(--gold); font-size:0.9rem; margin-bottom:0.5rem;">あなたの生年月日</p>
+      <div class="glass-card intro-card fade-in-up delay-1">
+        <h2 class="intro-title">密教が伝える、禁断の「相性」占い</h2>
+        <p class="intro-text">
+          宿曜占星術は、月の運行を元にした27の「宿」から運命を読み解く、東洋最古の星占いの一つです。<br>
+          空海が日本に伝えたとされるこの占術は、個人の性格や才能はもちろん、他者との「相性」や「ご縁の深さ」を驚くほど正確に暴き出します。あまりの的中率に、歴史上の権力者たちが使用を禁じたとも言われています。
+        </p>
+        <div class="intro-features">
+          <div class="intro-feature">
+            <span class="feature-icon">🌙</span>
+            <span><strong>27の宿命（本命宿）</strong><br>月が教えるあなたの本当の性格と、前世から引き継いだカルマ（業）</span>
+          </div>
+          <div class="intro-feature">
+            <span class="feature-icon">🔗</span>
+            <span><strong>魂の繋がり（相性）</strong><br>惹かれ合う「栄親」、危険な「安壊」など、あの人との切っても切れない縁の正体</span>
+          </div>
+          <div class="intro-feature">
+            <span class="feature-icon">📅</span>
+            <span><strong>運命のバイオリズム</strong><br>いつ動き、いつ待つべきか。月が満ち欠けするように変化する日々の運勢サイクル</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="glass-card form-card fade-in-up delay-2">
+        <p style="color:var(--gold); font-size:0.9rem; margin-bottom:0.5rem; font-weight: bold;">あなたの生年月日</p>
         <div class="date-row" style="margin-bottom:2rem;">
           <div class="field"><input type="number" id="y1" placeholder="1990" /></div>
           <div class="field"><select id="m1">{Array.from({length:12},(_,i)=><option value={i+1}>{i+1}月</option>)}</select></div>
           <div class="field"><select id="d1">{Array.from({length:31},(_,i)=><option value={i+1}>{i+1}日</option>)}</select></div>
         </div>
 
-        <p style="color:var(--gold); font-size:0.9rem; margin-bottom:0.5rem;">お相手の生年月日（任意）</p>
+        <p style="color:var(--gold); font-size:0.9rem; margin-bottom:0.5rem; font-weight: bold;">お相手の生年月日（任意）</p>
         <div class="date-row">
           <div class="field"><input type="number" id="y2" placeholder="1992" /></div>
           <div class="field"><select id="m2">{Array.from({length:12},(_,i)=><option value={i+1}>{i+1}月</option>)}</select></div>
@@ -45,6 +68,82 @@ import '../../styles/global.css';
     </div>
   </div>
 </Layout>
+
+<style>
+.page { padding: 3rem 1.5rem; min-height: 100vh; position: relative; }
+.stars { position: fixed; inset: 0; pointer-events: none; z-index: 0; }
+.page-inner { max-width: 680px; margin: 0 auto; position: relative; z-index: 1; }
+.page-header { text-align: center; margin-bottom: 2rem; }
+.page-title { font-family: 'Shippori Mincho', serif; font-size: 26px; margin-bottom: 0.5rem; }
+.page-desc { font-size: 14px; color: var(--text-secondary); }
+
+/* ✨ 説明文（イントロ）のスタイル */
+.intro-card {
+  text-align: center;
+  margin-bottom: 2rem;
+  border-top: 2px solid #a855f7; /* 宿曜のアメジストカラー */
+  background: linear-gradient(180deg, rgba(30,36,56,0.5) 0%, rgba(10,12,16,0.8) 100%);
+}
+.intro-title {
+  font-family: var(--font-mincho);
+  font-size: 1.4rem;
+  color: #e9d5ff;
+  margin-bottom: 1.25rem;
+  letter-spacing: 0.05em;
+}
+.intro-text {
+  font-size: 0.95rem;
+  color: var(--text-main);
+  line-height: 1.9;
+  margin-bottom: 2rem;
+}
+.intro-features {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+.intro-feature {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  text-align: left;
+  background: rgba(255,255,255,0.03);
+  padding: 1.25rem 1rem;
+  border-radius: var(--radius-md);
+  border: 1px solid rgba(255,255,255,0.05);
+  flex: 1;
+  min-width: 200px;
+}
+.feature-icon {
+  font-size: 1.4rem;
+  color: #c084fc;
+  line-height: 1;
+}
+.intro-feature span {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+.intro-feature strong {
+  display: block;
+  color: #fff;
+  font-size: 1rem;
+  margin-bottom: 0.25rem;
+  font-family: var(--font-mincho);
+}
+
+.form-card { margin-bottom: 2rem; }
+.date-row { display: flex; gap: 8px; margin-bottom: 1rem; }
+.field { flex: 1; display: flex; flex-direction: column; gap: 4px; }
+
+/* 結果表示 */
+.result-subtitle { font-family: 'Shippori Mincho', serif; color: var(--gold); font-size: 16px; margin-bottom: 0.5rem; text-align: center; }
+
+@keyframes twinkle {
+  0%,100% { opacity: 0.2; } 50% { opacity: 0.8; }
+}
+</style>
 
 <script is:inline>
   window.runShukuyo = function() {
@@ -73,4 +172,15 @@ import '../../styles/global.css';
       btn.textContent = '✦ 宿と相性を占う'; btn.disabled = false;
     }, 800);
   };
+
+  // 星背景（Layoutの共通スクリプトがない場合へのフォールバック）
+  const starsEl = document.getElementById('stars');
+  if (starsEl && starsEl.children.length === 0) {
+    for (let i = 0; i < 50; i++) {
+      const s = document.createElement('div');
+      const size = Math.random() * 2 + 1;
+      s.style.cssText = `position:absolute;border-radius:50%;background:#fff;width:${size}px;height:${size}px;top:${Math.random()*100}%;left:${Math.random()*100}%;opacity:${Math.random()*0.5+0.1};animation:twinkle ${2+Math.random()*3}s ease-in-out infinite;animation-delay:${Math.random()*3}s;`;
+      starsEl.appendChild(s);
+    }
+  }
 </script>

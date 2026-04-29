@@ -13,7 +13,29 @@ import '../../styles/global.css';
         <p class="page-desc">生年月日から、あなたの運命の羅針盤を読み解きます</p>
       </header>
 
-      <div class="glass-card form-card fade-in-up delay-1">
+      <div class="glass-card intro-card fade-in-up delay-1">
+        <h2 class="intro-title">宇宙の「気」を読み解く運命学</h2>
+        <p class="intro-text">
+          九星気学は、古代中国を起源とする「気（エネルギー）」の法則です。<br>
+          あなたが生まれた瞬間に満ちていた宇宙のエネルギーを9つの星に分類し、生まれ持った宿命や才能、そして人生のバイオリズムを紐解きます。
+        </p>
+        <div class="intro-features">
+          <div class="intro-feature">
+            <span class="feature-icon">✧</span>
+            <span><strong>本質と才能</strong><br>本命星が示すあなたの真の姿と隠された裏の性格</span>
+          </div>
+          <div class="intro-feature">
+            <span class="feature-icon">🧭</span>
+            <span><strong>吉方位</strong><br>自ら動いて運を掴む、あなただけの最強パワースポット</span>
+          </div>
+          <div class="intro-feature">
+            <span class="feature-icon">⏳</span>
+            <span><strong>運命の波</strong><br>今は攻める時か、守る時か。人生の波を味方につける時期</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="glass-card form-card fade-in-up delay-2">
         <div class="date-row">
           <div class="field">
             <label>生年（西暦）</label>
@@ -112,6 +134,64 @@ import '../../styles/global.css';
 .stars { position: absolute; inset: 0; pointer-events: none; z-index: 0; }
 .result-grid { display: grid; gap: 1.5rem; margin-top: 3rem; }
 .card-subtitle { font-family: var(--font-mincho); color: var(--gold); font-size: 1.1rem; margin-bottom: 1.25rem; text-align: center; }
+
+/* ✨ 説明文（イントロ）のスタイル */
+.intro-card {
+  text-align: center;
+  margin-bottom: 2rem;
+  border-top: 2px solid var(--gold);
+  background: linear-gradient(180deg, rgba(30,36,56,0.5) 0%, rgba(10,12,16,0.8) 100%);
+}
+.intro-title {
+  font-family: var(--font-mincho);
+  font-size: 1.4rem;
+  color: var(--gold-light);
+  margin-bottom: 1.25rem;
+  letter-spacing: 0.05em;
+}
+.intro-text {
+  font-size: 0.95rem;
+  color: var(--text-main);
+  line-height: 1.9;
+  margin-bottom: 2rem;
+}
+.intro-features {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+.intro-feature {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  text-align: left;
+  background: rgba(255,255,255,0.03);
+  padding: 1.25rem 1rem;
+  border-radius: var(--radius-md);
+  border: 1px solid rgba(255,255,255,0.05);
+  flex: 1;
+  min-width: 200px;
+}
+.feature-icon {
+  font-size: 1.4rem;
+  color: var(--gold);
+  line-height: 1;
+}
+.intro-feature span {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+.intro-feature strong {
+  display: block;
+  color: #fff;
+  font-size: 1rem;
+  margin-bottom: 0.25rem;
+  font-family: var(--font-mincho);
+}
+
+/* 既存スタイル */
 .star-card { text-align: center; border-top: 3px solid var(--gold); padding: 2.5rem; margin-bottom:0; }
 .star-label { font-size: 0.75rem; color: var(--gold); letter-spacing: 0.2em; margin-bottom: 0.5rem; }
 .star-sub { font-size: 0.8rem; color: var(--text-secondary); margin-bottom: 2rem; }
@@ -222,13 +302,13 @@ window.runPreview = async function() {
     document.getElementById('unlucky-dirs').innerHTML =
       dirs.unlucky.map(d => `<span class="chip-unlucky">▼ ${d}</span>`).join('');
 
-    // 吉方位プレビュー（D1から取得）
+    // 吉方位プレビュー
     if (data.directionPreview) {
       document.getElementById('dir-preview').textContent = data.directionPreview;
       document.getElementById('dir-preview-box').style.display = 'block';
     }
 
-    // 年運（D1から取得）
+    // 年運
     const yf = data.yearFortune;
     document.getElementById('res-year-fortune-title').textContent =
       yf?.title || `${yf?.year || new Date().getFullYear()}年の全体運勢`;
