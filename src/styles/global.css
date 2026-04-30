@@ -149,3 +149,52 @@ select option { background-color: #111424; color: var(--gold-light); font-size: 
 .result-title { font-family: var(--font-mincho); font-size: 2.2rem; color: #fff; margin-bottom: 0.5rem; text-align: center;}
 .result-subtitle { font-size: 0.8rem; color: var(--gold); letter-spacing: 0.2em; text-align: center; margin-bottom: 1.5rem; }
 .result-text { font-size: 0.95rem; line-height: 1.9; color: var(--text-main); }
+
+/* =========================================
+   🔮 鑑定結果のテキスト（読みやすさ・雰囲気向上）
+   ========================================= */
+
+/* 結果のサブタイトル（「才能・特性」「二人の相性」など） */
+.result-subtitle,
+.card-subtitle { 
+  font-family: var(--font-mincho);
+  font-size: 1.15rem; /* 旧:0.8rem → 大幅に拡大 */
+  color: var(--gold); 
+  letter-spacing: 0.15em; 
+  text-align: center; 
+  margin-bottom: 1.5rem; 
+  font-weight: bold;
+}
+
+/* 鑑定結果の本文（説明文や長文テキスト） */
+.result-text,
+.personality-box,
+.text-body,
+.intro-text,
+.dir-preview-text {
+  font-family: var(--font-mincho); /* ゴシックから「占いらしい明朝体」へ変更 */
+  font-size: 1.1rem; /* 旧:0.95rem(約15px) → 1.1rem(約17.6px) に拡大 */
+  line-height: 2.1; /* 行間を広げて圧迫感をなくす */
+  letter-spacing: 0.05em; /* 文字同士の隙間を少し開ける */
+  color: #f8fafc; /* 文字色を少し明るくしてコントラストを高める */
+}
+
+/* 四柱推命などの小さなラベル（「才能」「日柱」など） */
+.text-label,
+.col-label,
+.mini-label,
+.star-label {
+  font-size: 0.85rem; /* 極小だった文字を読みやすいサイズへ */
+  letter-spacing: 0.1em;
+  opacity: 0.9;
+}
+
+/* 易などの大きな結果見出し */
+.result-title {
+  font-family: var(--font-mincho); 
+  font-size: 2.2rem; 
+  color: #fff; 
+  margin-bottom: 0.5rem; 
+  text-align: center;
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.2); /* 軽く光らせて視認性アップ */
+}
