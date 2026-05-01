@@ -2,11 +2,11 @@
 import Layout from '../../layouts/Layout.astro';
 import '../../styles/global.css';
 ---
-
 <Layout title="易占い | 東洋占術">
   <div class="page">
     <div class="stars" id="stars"></div>
     <div class="page-inner">
+
       <header class="page-header fade-in-up">
         <h1 class="page-title">易（周易）</h1>
         <p class="page-desc">心に迷いがある時、六十四の卦が今のあなたに啓示を与えます</p>
@@ -16,7 +16,7 @@ import '../../styles/global.css';
         <h2 class="intro-title">「今」の迷いに答える神秘の卜術</h2>
         <p class="intro-text">
           易（周易）は、古代中国から伝わる、偶然の事象から必然を読み解く卜術（ぼくじゅつ）です。<br>
-          「A案とB案、どちらを選ぶべきか」「今、相手はどう思っているか」といった、現在直面している具体的な悩みや近い未来の選択に対して、六十四の卦（け）が白黒はっきりと明確な啓示を与えます。
+          「A案とB案、どちらを選ぶべきか」「今、相手はどう思っているか」といった、現在直面している具体的な悩みや近い未来の選択に対して、六十四の卦（け）が明確な啓示を与えます。
         </p>
         <div class="intro-features">
           <div class="intro-feature">
@@ -34,22 +34,109 @@ import '../../styles/global.css';
         </div>
       </div>
 
-      <div class="glass-card form-card fade-in-up delay-2" style="text-align:center;">
-        <p style="color:var(--text-main); margin-bottom:2rem; font-size:1.1rem;">
-          占いたいこと（悩みや迷い）を心の中で強く念じてから、<br>下のボタンを押してください。
-        </p>
-        <button class="btn-primary" id="btn" onclick="runEki()" style="max-width:300px; padding:1.5rem; font-size:1.3rem;">☯ 卦を立てる</button>
+      <!-- コイン残高・ログイン状態 -->
+      <div class="coin-balance-bar" id="balance-bar" style="display:none">
+        <span class="balance-label">保有コイン</span>
+        <span class="balance-value" id="coin-balance">-- コイン</span>
+        <span class="balance-cost">1回 1コイン（¥100相当）</span>
       </div>
 
-      <div id="result-section" style="display:none;">
-        <div class="glass-card result-item" style="text-align:center; border-top: 3px solid #f59e0b;">
-          <p class="result-subtitle">得られた啓示（六十四卦）</p>
-          <div style="font-size:3rem; margin:1rem 0; line-height:1; color: var(--gold-light); text-shadow: 0 0 20px rgba(245, 158, 11, 0.5);">䷀</div>
-          <h2 class="result-title" id="res-ke">乾為天 (けんいてん)</h2>
-          <p class="result-text" id="res-desc" style="text-align:left; margin-top:2rem; padding:1.5rem; background:rgba(245, 158, 11, 0.05); border-radius:8px; border-left: 3px solid #f59e0b;">
-            大いなる龍が天を飛ぶように、エネルギーに満ち溢れた力強い時期です。迷わず突き進んで良い時ですが、自信過剰にならないよう周囲への配慮を忘れずに。
-          </p>
+      <div class="glass-card form-card fade-in-up delay-2" style="text-align:center;">
+        <p class="form-desc">
+          占いたいこと（悩みや迷い）を心の中で強く念じてから、<br>下のボタンを押してください。
+        </p>
+        <textarea id="question" placeholder="例：転職すべきか、この人と付き合うべきか..." rows="3"></textarea>
+        <p class="error-msg" id="form-error"></p>
+        <button class="btn-primary" id="btn" onclick="runEki()">☯ 卦を立てる（1コイン）</button>
+        <p class="login-note" id="login-note" style="display:none">
+          <a href="/login">ログイン</a>または<a href="/register">新規登録</a>してコインを購入してください（1コイン=¥100）
+        </p>
+      </div>
+
+      <!-- 結果セクション -->
+      <div id="result-section" style="display:none">
+
+        <!-- 質問 -->
+        <div class="glass-card result-item question-block">
+          <p class="result-subtitle">あなたの問い</p>
+          <p class="question-display" id="r-question"></p>
         </div>
+
+        <!-- 本卦 -->
+        <div class="glass-card result-item honke-block">
+          <p class="result-subtitle">得られた啓示（六十四卦）</p>
+          <div class="hexagram-display">
+            <div class="hexagram-lines" id="hexagram-lines"></div>
+            <div class="hexagram-info">
+              <p class="hexagram-num" id="r-honke-num"></p>
+              <h2 class="result-title" id="r-honke-name"></h2>
+              <p class="hexagram-trigrams" id="r-trigrams"></p>
+            </div>
+          </div>
+          <div class="kaji-box">
+            <p class="kaji-label">卦辞</p>
+            <p class="kaji-text" id="r-kaji"></p>
+          </div>
+          <p class="result-text" id="r-overview"></p>
+        </div>
+
+        <!-- 各分野 -->
+        <div class="glass-card result-item">
+          <p class="result-subtitle">各分野への示唆</p>
+          <div class="detail-grid">
+            <div class="detail-item">
+              <h4 class="detail-label">恋愛・人間関係</h4>
+              <p class="detail-text" id="r-love"></p>
+            </div>
+            <div class="detail-item">
+              <h4 class="detail-label">仕事・事業</h4>
+              <p class="detail-text" id="r-work"></p>
+            </div>
+            <div class="detail-item">
+              <h4 class="detail-label">金運・財運</h4>
+              <p class="detail-text" id="r-money"></p>
+            </div>
+            <div class="detail-item advice-item">
+              <h4 class="detail-label">アドバイス</h4>
+              <p class="detail-text" id="r-advice"></p>
+            </div>
+          </div>
+        </div>
+
+        <!-- 象辞 -->
+        <div class="glass-card result-item image-block">
+          <p class="result-subtitle">象辞（象に曰く）</p>
+          <p class="image-text" id="r-image"></p>
+        </div>
+
+        <!-- 之卦 -->
+        <div class="glass-card result-item" id="nouke-block" style="display:none">
+          <p class="result-subtitle">之卦（変化の先）</p>
+          <div class="nouke-header">
+            <span class="nouke-num" id="r-nouke-num"></span>
+            <h4 class="nouke-name" id="r-nouke-name"></h4>
+          </div>
+          <div class="kaji-box" style="margin-bottom:1rem">
+            <p class="kaji-label">卦辞</p>
+            <p class="kaji-text" id="r-nouke-kaji"></p>
+          </div>
+          <p class="detail-text" id="r-nouke-overview"></p>
+          <p class="detail-text advice-box" style="margin-top:1rem" id="r-nouke-advice"></p>
+        </div>
+
+        <!-- アフィリエイト -->
+        <div class="glass-card result-item affiliate-block">
+          <p class="result-subtitle">易をさらに深く学ぶ</p>
+          <p class="affiliate-desc">易経の世界をより深く理解するためのおすすめ書籍です。</p>
+          <div class="affiliate-list" id="affiliate-list"></div>
+        </div>
+
+        <!-- 再鑑定 -->
+        <div class="glass-card result-item" style="text-align:center">
+          <button class="btn-primary" onclick="resetReading()" style="max-width:300px">☯ もう一度占う</button>
+          <a href="/mypage" class="btn-outline" style="display:block;text-align:center;margin-top:0.75rem;max-width:300px;margin-left:auto;margin-right:auto">マイページへ</a>
+        </div>
+
       </div>
     </div>
   </div>
@@ -63,98 +150,293 @@ import '../../styles/global.css';
 .page-title { font-family: 'Shippori Mincho', serif; font-size: 26px; margin-bottom: 0.5rem; }
 .page-desc { font-size: 14px; color: var(--text-secondary); }
 
-/* ✨ 説明文（イントロ）のスタイル */
 .intro-card {
-  text-align: center;
-  margin-bottom: 2rem;
-  border-top: 2px solid #f59e0b; /* 易のアンバーカラー */
+  text-align: center; margin-bottom: 2rem;
+  border-top: 2px solid #f59e0b;
   background: linear-gradient(180deg, rgba(30,36,56,0.5) 0%, rgba(10,12,16,0.8) 100%);
 }
 .intro-title {
-  font-family: var(--font-mincho);
-  font-size: 1.4rem;
-  color: #fde68a;
-  margin-bottom: 1.25rem;
-  letter-spacing: 0.05em;
+  font-family: 'Shippori Mincho', serif;
+  font-size: 1.4rem; color: #fde68a;
+  margin-bottom: 1.25rem; letter-spacing: 0.05em;
 }
-.intro-text {
-  font-size: 0.95rem;
-  color: var(--text-main);
-  line-height: 1.9;
-  margin-bottom: 2rem;
-}
-.intro-features {
-  display: flex;
-  gap: 1rem;
-  justify-content: center;
-  flex-wrap: wrap;
-}
+.intro-text { font-size: 0.95rem; color: var(--text-secondary); line-height: 1.9; margin-bottom: 2rem; }
+.intro-features { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
 .intro-feature {
-  display: flex;
-  align-items: flex-start;
-  gap: 0.75rem;
-  text-align: left;
-  background: rgba(255,255,255,0.03);
-  padding: 1.25rem 1rem;
-  border-radius: var(--radius-md);
-  border: 1px solid rgba(255,255,255,0.05);
-  flex: 1;
-  min-width: 200px;
+  display: flex; align-items: flex-start; gap: 0.75rem; text-align: left;
+  background: rgba(255,255,255,0.03); padding: 1.25rem 1rem;
+  border-radius: var(--radius-md); border: 1px solid rgba(255,255,255,0.05);
+  flex: 1; min-width: 200px;
 }
-.feature-icon {
-  font-size: 1.4rem;
-  color: #f59e0b;
-  line-height: 1;
-}
-.intro-feature span {
-  font-size: 0.85rem;
-  color: var(--text-secondary);
-  line-height: 1.6;
-}
+.feature-icon { font-size: 1.4rem; color: #f59e0b; line-height: 1; }
+.intro-feature span { font-size: 0.85rem; color: var(--text-secondary); line-height: 1.6; }
 .intro-feature strong {
-  display: block;
-  color: #fff;
-  font-size: 1rem;
-  margin-bottom: 0.25rem;
-  font-family: var(--font-mincho);
+  display: block; color: #fff; font-size: 1rem;
+  margin-bottom: 0.25rem; font-family: 'Shippori Mincho', serif;
 }
+
+.coin-balance-bar {
+  display: flex; align-items: center; gap: 0.75rem;
+  margin-bottom: 1rem; background: var(--dark-card);
+  border: 0.5px solid #ffffff15; border-radius: var(--radius-md); padding: 0.6rem 1rem;
+}
+.balance-label { font-size: 12px; color: var(--text-secondary); }
+.balance-value { font-size: 16px; color: #f59e0b; font-weight: 500; }
+.balance-cost { font-size: 11px; color: var(--text-muted); margin-left: auto; }
 
 .form-card { margin-bottom: 2rem; }
-
-/* 結果表示 */
-.result-subtitle { font-family: 'Shippori Mincho', serif; color: var(--gold); font-size: 16px; margin-bottom: 0.5rem; text-align: center; }
-
-@keyframes twinkle {
-  0%,100% { opacity: 0.2; } 50% { opacity: 0.8; }
+.form-desc { color: var(--text-secondary); margin-bottom: 1.25rem; font-size: 1rem; line-height: 1.8; }
+textarea {
+  font-family: 'Noto Serif JP', serif;
+  background: #ffffff08; border: 0.5px solid #ffffff22;
+  border-radius: var(--radius-md); color: var(--text-primary);
+  padding: 0.875rem; font-size: 14px; line-height: 1.8;
+  width: 100%; resize: vertical; outline: none; margin-bottom: 1rem;
 }
+textarea:focus { border-color: #f59e0b; }
+.login-note { font-size: 13px; color: var(--text-secondary); margin-top: 0.75rem; }
+
+/* 結果 */
+.result-item { margin-bottom: 1.25rem; }
+.result-subtitle {
+  font-family: 'Shippori Mincho', serif; color: #f59e0b;
+  font-size: 14px; margin-bottom: 1rem; letter-spacing: 0.1em;
+}
+.question-block { border-left: 3px solid #f59e0b; }
+.question-display { font-size: 16px; line-height: 1.8; color: #f0e6d3; }
+
+.honke-block { text-align: center; border-top: 3px solid #f59e0b; }
+.hexagram-display { display: flex; gap: 1.5rem; align-items: center; justify-content: center; margin-bottom: 1.5rem; }
+.hexagram-lines { display: flex; flex-direction: column-reverse; gap: 8px; }
+.hex-line { font-size: 24px; color: #f59e0b; line-height: 1; letter-spacing: -2px; }
+.hex-line.changing { color: #ff8e8e; }
+.hexagram-info { text-align: left; }
+.hexagram-num { font-size: 11px; color: var(--text-secondary); margin-bottom: 4px; }
+.hexagram-trigrams { font-size: 12px; color: var(--text-secondary); margin-top: 0.5rem; }
+.kaji-box {
+  background: rgba(245,158,11,0.05); border-radius: var(--radius-md);
+  padding: 1rem; border-left: 3px solid #f59e0b; margin-bottom: 1.25rem; text-align: left;
+}
+.kaji-label { font-size: 10px; color: #f59e0b; margin-bottom: 6px; }
+.kaji-text { font-family: 'Shippori Mincho', serif; font-size: 15px; line-height: 1.9; color: #fde68a; }
+.result-text { font-size: 14px; color: var(--text-secondary); line-height: 1.9; text-align: left; }
+
+.detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+.detail-item { background: rgba(255,255,255,0.03); border-radius: var(--radius-md); padding: 1rem; }
+.advice-item { grid-column: 1 / -1; background: rgba(245,158,11,0.05); border-left: 2px solid #f59e0b; }
+.detail-label { font-size: 10px; color: #f59e0b; letter-spacing: 0.1em; margin-bottom: 0.5rem; }
+.detail-text { font-size: 13px; color: var(--text-secondary); line-height: 1.9; }
+.advice-box { background: rgba(245,158,11,0.05); border-left: 2px solid #f59e0b; padding: 0.75rem 1rem; border-radius: 0 var(--radius-sm) var(--radius-sm) 0; }
+
+.image-block { background: linear-gradient(135deg, #1a1225 0%, #0d1a2e 100%); }
+.image-text { font-family: 'Shippori Mincho', serif; font-size: 14px; color: #f59e0b; line-height: 2.2; text-align: center; letter-spacing: 0.1em; }
+
+.nouke-header { display: flex; align-items: baseline; gap: 1rem; margin-bottom: 1rem; }
+.nouke-num { font-size: 11px; color: var(--text-secondary); }
+.nouke-name { font-family: 'Shippori Mincho', serif; font-size: 22px; color: #f59e0b; }
+
+.affiliate-block {}
+.affiliate-desc { font-size: 13px; color: var(--text-secondary); margin-bottom: 1rem; }
+.affiliate-list { display: flex; flex-direction: column; gap: 0.75rem; }
+.affiliate-item {
+  display: flex; gap: 1rem; align-items: center;
+  background: #ffffff06; border-radius: var(--radius-md); padding: 0.875rem;
+  border: 0.5px solid #ffffff10; text-decoration: none; transition: border-color 0.2s;
+}
+.affiliate-item:hover { border-color: #f59e0b; }
+.affiliate-cover {
+  width: 48px; height: 64px; background: rgba(245,158,11,0.1);
+  border-radius: 4px; display: flex; align-items: center;
+  justify-content: center; font-size: 24px; flex-shrink: 0;
+}
+.affiliate-info { flex: 1; }
+.affiliate-title { font-size: 13px; color: #f0e6d3; margin-bottom: 4px; line-height: 1.5; }
+.affiliate-author { font-size: 11px; color: var(--text-secondary); margin-bottom: 4px; }
+.affiliate-link { font-size: 11px; color: #f59e0b; }
+
+.btn-outline {
+  background: transparent; color: #f59e0b;
+  border: 0.5px solid #f59e0b; border-radius: var(--radius-md);
+  padding: 0.6rem 1.5rem; font-size: 14px; cursor: pointer;
+  font-family: 'Noto Serif JP', serif; transition: all 0.2s;
+}
+.btn-outline:hover { background: #f59e0b; color: #000; }
+
+@keyframes twinkle { 0%,100% { opacity: 0.2; } 50% { opacity: 0.8; } }
+@keyframes pulse { 0%,100% { opacity: 0.5; } 50% { opacity: 1; } }
 </style>
 
 <script is:inline>
-  window.runEki = function() {
-    const btn = document.getElementById('btn');
-    btn.textContent = '筮竹を振っています...'; btn.disabled = true;
-    btn.style.animation = 'twinkle 0.5s infinite';
-    
-    setTimeout(() => {
-      btn.style.animation = 'none';
-      const res = document.getElementById('result-section');
-      res.style.display = 'block';
-      setTimeout(() => {
-        res.querySelectorAll('.result-item').forEach(el => el.classList.add('show'));
-        res.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }, 50);
-      btn.textContent = '☯ もう一度占う'; btn.disabled = false;
-    }, 1500);
-  };
+const WORKERS_URL = 'https://kyusei-api.seiji-tomizawa.workers.dev';
 
-  // 星背景（Layoutの共通スクリプトがない場合へのフォールバック）
-  const starsEl = document.getElementById('stars');
-  if (starsEl && starsEl.children.length === 0) {
-    for (let i = 0; i < 50; i++) {
-      const s = document.createElement('div');
-      const size = Math.random() * 2 + 1;
-      s.style.cssText = `position:absolute;border-radius:50%;background:#fff;width:${size}px;height:${size}px;top:${Math.random()*100}%;left:${Math.random()*100}%;opacity:${Math.random()*0.5+0.1};animation:twinkle ${2+Math.random()*3}s ease-in-out infinite;animation-delay:${Math.random()*3}s;`;
-      starsEl.appendChild(s);
-    }
+const AFFILIATE_BOOKS = [
+  {
+    title: '易経 上経・下経（岩波文庫）',
+    author: '高田真治・後藤基巳 訳注',
+    url: 'https://www.amazon.co.jp/dp/4003320816?tag=YOUR_ASSOCIATE_ID',
+    icon: '📖',
+  },
+  {
+    title: '易の話（岩波新書）',
+    author: '本田濟',
+    url: 'https://www.amazon.co.jp/dp/4004120799?tag=YOUR_ASSOCIATE_ID',
+    icon: '📚',
+  },
+  {
+    title: '入門 易経（講談社学術文庫）',
+    author: '後藤基巳',
+    url: 'https://www.amazon.co.jp/s?k=易経+入門&tag=YOUR_ASSOCIATE_ID',
+    icon: '🔮',
+  },
+];
+
+async function init() {
+  const token = localStorage.getItem('kyusei_token');
+  const balanceBar = document.getElementById('balance-bar');
+  const loginNote = document.getElementById('login-note');
+  const btn = document.getElementById('btn');
+
+  if (!token) {
+    btn.style.display = 'none';
+    loginNote.style.display = 'block';
+    return;
   }
+
+  balanceBar.style.display = 'flex';
+  loadBalance(token);
+}
+
+async function loadBalance(token) {
+  try {
+    const res = await fetch(`${WORKERS_URL}/api/coins/balance`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    const data = await res.json();
+    document.getElementById('coin-balance').textContent = `${data.coins} コイン`;
+  } catch {
+    document.getElementById('coin-balance').textContent = '-- コイン';
+  }
+}
+
+window.runEki = async function() {
+  const question = document.getElementById('question').value.trim();
+  const errEl = document.getElementById('form-error');
+  const token = localStorage.getItem('kyusei_token');
+
+  if (!token) { window.location.href = '/login'; return; }
+  if (!question) { errEl.textContent = '占いたいことを入力してください'; return; }
+  errEl.textContent = '';
+
+  const btn = document.getElementById('btn');
+  const originalText = btn.textContent;
+  btn.textContent = '筮竹を振っています...'; btn.disabled = true;
+  btn.style.animation = 'pulse 0.8s infinite';
+
+  try {
+    const res = await fetch(`${WORKERS_URL}/api/eki/reading`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+      body: JSON.stringify({ question }),
+    });
+    const data = await res.json();
+
+    if (!res.ok) {
+      errEl.textContent = data.error || 'エラーが発生しました';
+      return;
+    }
+
+    displayResult(data);
+  } catch {
+    errEl.textContent = '通信エラーが発生しました。しばらくしてお試しください。';
+  } finally {
+    btn.style.animation = 'none';
+    btn.textContent = originalText; btn.disabled = false;
+  }
+};
+
+function displayResult(data) {
+  // 質問
+  document.getElementById('r-question').textContent = data.question;
+
+  // 爻（下から上）
+  const linesEl = document.getElementById('hexagram-lines');
+  linesEl.innerHTML = data.hexagram.lineSymbols.map(l => {
+    const isChanging = data.hexagram.changingLines.includes(l.index);
+    const isYang = data.hexagram.lines[l.index] === 7 || data.hexagram.lines[l.index] === 9;
+    const sym = isYang ? '━━━━━' : '━━ ━━';
+    return `<div class="hex-line ${isChanging ? 'changing' : ''}">${sym}${isChanging ? ' ●' : ''}</div>`;
+  }).join('');
+
+  // 本卦
+  const h = data.honke;
+  document.getElementById('r-honke-num').textContent = `第${h.number}卦`;
+  document.getElementById('r-honke-name').textContent = `${h.name}（${h.reading}）`;
+  document.getElementById('r-trigrams').textContent = `上卦：${h.upper}　下卦：${h.lower}`;
+  document.getElementById('r-kaji').textContent = h.kaji;
+  document.getElementById('r-overview').textContent = h.overview;
+  document.getElementById('r-love').textContent = h.love;
+  document.getElementById('r-work').textContent = h.work;
+  document.getElementById('r-money').textContent = h.money;
+  document.getElementById('r-advice').textContent = h.advice;
+  document.getElementById('r-image').textContent = h.image;
+
+  // 之卦
+  if (data.nouke) {
+    const n = data.nouke;
+    document.getElementById('r-nouke-num').textContent = `第${n.number}卦`;
+    document.getElementById('r-nouke-name').textContent = `${n.name}（${n.reading}）`;
+    document.getElementById('r-nouke-kaji').textContent = n.kaji;
+    document.getElementById('r-nouke-overview').textContent = n.overview;
+    document.getElementById('r-nouke-advice').textContent = n.advice;
+    document.getElementById('nouke-block').style.display = 'block';
+  } else {
+    document.getElementById('nouke-block').style.display = 'none';
+  }
+
+  // アフィリエイト
+  document.getElementById('affiliate-list').innerHTML = AFFILIATE_BOOKS.map(book => `
+    <a href="${book.url}" target="_blank" rel="noopener sponsored" class="affiliate-item">
+      <div class="affiliate-cover">${book.icon}</div>
+      <div class="affiliate-info">
+        <p class="affiliate-title">${book.title}</p>
+        <p class="affiliate-author">${book.author}</p>
+        <p class="affiliate-link">Amazonで見る →</p>
+      </div>
+    </a>
+  `).join('');
+
+  // コイン残高更新
+  document.getElementById('coin-balance').textContent = `${data.remainingCoins} コイン`;
+
+  const section = document.getElementById('result-section');
+  section.style.display = 'block';
+  setTimeout(() => {
+    section.querySelectorAll('.result-item').forEach((el, i) => {
+      setTimeout(() => el.classList.add('show'), i * 150);
+    });
+    section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }, 50);
+}
+
+function resetReading() {
+  document.getElementById('result-section').style.display = 'none';
+  document.getElementById('nouke-block').style.display = 'none';
+  document.getElementById('question').value = '';
+  document.getElementById('form-error').textContent = '';
+  loadBalance(localStorage.getItem('kyusei_token'));
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// 星背景
+const starsEl = document.getElementById('stars');
+if (starsEl && starsEl.children.length === 0) {
+  for (let i = 0; i < 50; i++) {
+    const s = document.createElement('div');
+    const size = Math.random() * 2 + 1;
+    s.style.cssText = `position:absolute;border-radius:50%;background:#fff;width:${size}px;height:${size}px;top:${Math.random()*100}%;left:${Math.random()*100}%;opacity:${Math.random()*0.5+0.1};animation:twinkle ${2+Math.random()*3}s ease-in-out infinite;animation-delay:${Math.random()*3}s;`;
+    starsEl.appendChild(s);
+  }
+}
+
+init();
 </script>
