@@ -1,11 +1,11 @@
+<!-- register.astro -->
 ---
 import Layout from '../layouts/Layout.astro';
 ---
-<Layout title="新規登録 | 九星気学">
+<Layout title="新規登録 | 陰陽寮">
   <div class="page">
     <div class="page-inner">
       <h1 class="page-title">新規登録</h1>
-
       <div class="card">
         <div class="field">
           <label>メールアドレス</label>
@@ -53,17 +53,17 @@ import Layout from '../layouts/Layout.astro';
 .switch-link { font-size: 13px; color: var(--text-secondary); text-align: center; }
 </style>
 
-<script>
-const WORKERS_URL = import.meta.env.PUBLIC_WORKERS_URL;
+<script is:inline>
+const WORKERS_URL = 'https://kyusei-api.seiji-tomizawa.workers.dev';
 
-async function doRegister() {
-  const email = (document.getElementById('email') as HTMLInputElement).value;
-  const password = (document.getElementById('password') as HTMLInputElement).value;
-  const year = (document.getElementById('year') as HTMLInputElement).value;
-  const month = (document.getElementById('month') as HTMLSelectElement).value;
-  const day = (document.getElementById('day') as HTMLSelectElement).value;
-  const errEl = document.getElementById('error')!;
-  const btn = document.getElementById('register-btn') as HTMLButtonElement;
+window.doRegister = async function() {
+  const email = document.getElementById('email').value;
+  const password = document.getElementById('password').value;
+  const year = document.getElementById('year').value;
+  const month = document.getElementById('month').value;
+  const day = document.getElementById('day').value;
+  const errEl = document.getElementById('error');
+  const btn = document.getElementById('register-btn');
 
   if (!email || !password || !year) { errEl.textContent = '全ての項目を入力してください'; return; }
   if (password.length < 8) { errEl.textContent = 'パスワードは8文字以上にしてください'; return; }
@@ -79,7 +79,7 @@ async function doRegister() {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email, password, birth_date }),
     });
-    const data = await res.json() as any;
+    const data = await res.json();
     if (!res.ok) { errEl.textContent = data.error; return; }
     localStorage.setItem('kyusei_token', data.token);
     localStorage.setItem('kyusei_user', JSON.stringify(data.user));

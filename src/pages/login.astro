@@ -1,11 +1,11 @@
+<!-- login.astro -->
 ---
 import Layout from '../layouts/Layout.astro';
 ---
-<Layout title="ログイン | 九星気学">
+<Layout title="ログイン | 陰陽寮">
   <div class="page">
     <div class="page-inner">
       <h1 class="page-title">ログイン</h1>
-
       <div class="card">
         <div class="field">
           <label>メールアドレス</label>
@@ -36,14 +36,14 @@ import Layout from '../layouts/Layout.astro';
 .switch-link { font-size: 13px; color: var(--text-secondary); text-align: center; }
 </style>
 
-<script>
-const WORKERS_URL = import.meta.env.PUBLIC_WORKERS_URL;
+<script is:inline>
+const WORKERS_URL = 'https://kyusei-api.seiji-tomizawa.workers.dev';
 
-async function doLogin() {
-  const email = (document.getElementById('email') as HTMLInputElement).value;
-  const password = (document.getElementById('password') as HTMLInputElement).value;
-  const errEl = document.getElementById('error')!;
-  const btn = document.getElementById('login-btn') as HTMLButtonElement;
+window.doLogin = async function() {
+  const email = document.getElementById('email').value;
+  const password = document.getElementById('password').value;
+  const errEl = document.getElementById('error');
+  const btn = document.getElementById('login-btn');
 
   if (!email || !password) { errEl.textContent = 'メールアドレスとパスワードを入力してください'; return; }
   errEl.textContent = '';
@@ -55,7 +55,7 @@ async function doLogin() {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email, password }),
     });
-    const data = await res.json() as any;
+    const data = await res.json();
     if (!res.ok) { errEl.textContent = data.error; return; }
     localStorage.setItem('kyusei_token', data.token);
     localStorage.setItem('kyusei_user', JSON.stringify(data.user));
