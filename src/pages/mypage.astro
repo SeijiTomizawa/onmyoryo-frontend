@@ -1,3 +1,4 @@
+<!-- src/pages/mypage.astro -->
 ---
 import Layout from '../layouts/Layout.astro';
 import '../styles/global.css';
@@ -8,234 +9,405 @@ import '../styles/global.css';
     <div class="stars" id="stars"></div>
 
     <div class="page-inner" style="max-width: 860px;">
-      
+
+      <!-- ユーザーヘッダー -->
       <div class="user-header fade-in-up">
         <div class="user-info">
-          <div class="user-avatar">陰</div>
+          <div class="user-avatar" id="user-avatar">陰</div>
           <div>
-            <h1 class="page-title" style="font-size: 1.5rem; text-align: left; margin-bottom: 0;">ようこそ、ゲスト様</h1>
-            <p style="color: var(--gold); font-size: 0.85rem; margin: 0;">本命星：九紫火星 / 月命星：一白水星</p>
+            <h1 class="page-title" style="font-size: 1.5rem; text-align: left; margin-bottom: 0;" id="user-greeting">読み込み中...</h1>
+            <p style="color: var(--gold); font-size: 0.85rem; margin: 0;" id="user-stars">本命星：-- / 月命星：--</p>
           </div>
         </div>
         <div class="coin-balance glass-card">
           <p class="coin-label">保有コイン</p>
-          <p class="coin-amount">150<span>C</span></p>
-          <button class="btn-charge">チャージ</button>
+          <p class="coin-amount" id="coin-amount">--<span>C</span></p>
+          <button class="btn-charge" onclick="window.location.href='/mypage/charge'">チャージ</button>
         </div>
       </div>
 
-      <div class="alert-box glass-card fade-in-up delay-1" id="fate-alert" style="display: none;">
+      <!-- 運命の交差点アラート -->
+      <div class="alert-box glass-card fade-in-up delay-1" id="fate-alert" style="display:none">
         <div class="alert-icon">⚠️</div>
         <div class="alert-content">
           <h3 class="alert-title"><span id="fate-name">誰か</span>との運命の交差点まで、あと<span class="pulse-text" id="fate-days">0日</span></h3>
           <p class="alert-desc">恋愛運が劇的に動く「特別な星回り」が接近しています。この好機を逃さないために、あなたが取るべき具体的なアクションを確認してください。</p>
         </div>
-        <button class="btn-primary alert-btn" onclick="window.location.href='/menu/love'">詳細を鑑定する (300C)</button>
+        <button class="btn-primary alert-btn" onclick="window.location.href='/menu/love'">詳細を鑑定する (3C)</button>
       </div>
 
       <div class="dashboard-grid">
+
+        <!-- ワンオラクル -->
         <div class="glass-card oracle-section fade-in-up delay-2">
-          <h2 class="section-title" style="font-size: 1.3rem; margin-bottom: 0.5rem;">今日のワンオラクル</h2>
+          <h2 class="section-title">今日のワンオラクル</h2>
           <p class="text-muted" style="font-size: 0.8rem; margin-bottom: 1.5rem;">1日1回、今のあなたに必要な啓示を受け取れます。</p>
-          
           <div class="oracle-card-container" id="oracle-container" onclick="drawOracle()">
-            <div class="oracle-card">
+            <div class="oracle-card" id="oracle-card">
               <div class="card-face card-back">
                 <div class="card-pattern">☯</div>
                 <p>タップして<br>卦を立てる</p>
               </div>
               <div class="card-face card-front">
-                <div class="ke-symbol">䷀</div>
-                <h3 class="ke-name">乾為天</h3>
-                <p class="ke-desc">大いなる飛躍の時。自信を持って進んで吉。</p>
+                <div class="ke-symbol" id="oracle-symbol">䷀</div>
+                <h3 class="ke-name" id="oracle-name">--</h3>
+                <p class="ke-desc" id="oracle-desc">--</p>
                 <div class="bonus-get">ボーナス +2C 獲得！</div>
               </div>
             </div>
           </div>
         </div>
 
+        <!-- 秘密の相関図 -->
         <div class="glass-card relation-section fade-in-up delay-3">
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
-            <h2 class="section-title" style="font-size: 1.3rem; margin: 0;">秘密の相関図</h2>
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1.5rem">
+            <h2 class="section-title" style="margin:0">秘密の相関図</h2>
             <button class="btn-add" onclick="openModal()">＋ 追加</button>
           </div>
-          
-          <div class="relation-list" id="relation-list">
-            </div>
+          <div class="relation-list" id="relation-list"></div>
+        </div>
+
+      </div>
+
+      <!-- 鑑定履歴 -->
+      <div class="glass-card history-section fade-in-up delay-4">
+        <h2 class="section-title">鑑定履歴</h2>
+        <div id="history-list">
+          <p class="text-muted" style="text-align:center;padding:1rem">読み込み中...</p>
         </div>
       </div>
+
+      <!-- ログアウト -->
+      <div style="text-align:center;margin-top:2rem">
+        <button class="btn-logout" onclick="doLogout()">ログアウト</button>
+      </div>
+
     </div>
   </div>
 
+  <!-- パートナー追加モーダル -->
   <div class="modal-overlay" id="partner-modal">
     <div class="glass-card modal-content">
-      <h3 style="font-family: var(--font-mincho); color: #fff; margin-bottom: 0.5rem; font-size: 1.4rem;">お相手を顕現（登録）する</h3>
-      <p style="font-size: 0.8rem; color: #ff8e8e; margin-bottom: 1.5rem;">※ プライバシー保護のため、本名ではなく「ニックネーム（例：職場のAさん）」でご登録ください。</p>
-      
-      <div class="field" style="margin-bottom: 1rem;">
+      <h3 style="font-family:'Shippori Mincho',serif;color:#fff;margin-bottom:0.5rem;font-size:1.4rem">お相手を顕現（登録）する</h3>
+      <p style="font-size:0.8rem;color:#ff8e8e;margin-bottom:1.5rem">※ プライバシー保護のため、ニックネームでご登録ください</p>
+      <div class="field" style="margin-bottom:1rem">
         <label>ニックネーム</label>
         <input type="text" id="partner-name" placeholder="例：Aくん" autocomplete="off" />
       </div>
-      <div class="field" style="margin-bottom: 2rem;">
+      <div class="field" style="margin-bottom:2rem">
         <label>生年（西暦）</label>
         <input type="number" id="partner-year" placeholder="1995" min="1900" max="2020" />
       </div>
-      
-      <div style="display: flex; gap: 12px;">
-        <button class="btn-primary" onclick="savePartner()" style="flex: 2;">想いを同期する</button>
-        <button class="btn-primary" onclick="closeModal()" style="flex: 1; background: transparent; border-color: rgba(255,255,255,0.2); color: var(--text-secondary);">取消</button>
+      <div style="display:flex;gap:12px">
+        <button class="btn-primary" onclick="savePartner()" style="flex:2">想いを同期する</button>
+        <button class="btn-primary" onclick="closeModal()" style="flex:1;background:transparent;border-color:rgba(255,255,255,0.2);color:var(--text-secondary)">取消</button>
       </div>
     </div>
   </div>
 </Layout>
 
 <style>
-/* 既存のスタイル */
+.page { padding: 2rem 1.5rem; min-height: 100vh; position: relative; }
+.stars { position: fixed; inset: 0; pointer-events: none; z-index: 0; }
+.page-inner { margin: 0 auto; position: relative; z-index: 1; }
+
 .user-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; flex-wrap: wrap; gap: 1rem; }
 .user-info { display: flex; align-items: center; gap: 1rem; }
-.user-avatar { width: 50px; height: 50px; border-radius: 50%; background: linear-gradient(135deg, var(--gold), #8b6d20); display: flex; align-items: center; justify-content: center; font-size: 1.5rem; font-family: var(--font-mincho); color: #000; font-weight: bold; }
-.coin-balance { margin-bottom: 0; padding: 1rem 1.5rem; display: flex; align-items: center; gap: 1.5rem; background: rgba(20, 24, 39, 0.8); }
+.user-avatar {
+  width: 50px; height: 50px; border-radius: 50%;
+  background: linear-gradient(135deg, var(--gold), #8b6d20);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.5rem; font-family: 'Shippori Mincho', serif;
+  color: #000; font-weight: bold;
+}
+.page-title { font-family: 'Shippori Mincho', serif; }
+.coin-balance {
+  margin-bottom: 0; padding: 1rem 1.5rem;
+  display: flex; align-items: center; gap: 1.5rem;
+  background: rgba(20,24,39,0.8);
+}
 .coin-label { font-size: 0.75rem; color: var(--text-secondary); margin: 0; }
-.coin-amount { font-size: 1.8rem; font-weight: bold; color: var(--gold-light); margin: 0; line-height: 1; }
+.coin-amount { font-size: 1.8rem; font-weight: bold; color: #d4af37; margin: 0; line-height: 1; }
 .coin-amount span { font-size: 1rem; color: var(--gold); margin-left: 2px; }
-.btn-charge { background: var(--gold); border: none; color: #000; padding: 6px 12px; border-radius: 6px; font-weight: bold; font-size: 0.8rem; cursor: pointer; transition: 0.3s; }
-.btn-charge:hover { box-shadow: 0 0 10px rgba(212, 175, 55, 0.5); transform: translateY(-2px); }
+.btn-charge {
+  background: var(--gold); border: none; color: #000;
+  padding: 6px 12px; border-radius: 6px; font-weight: bold;
+  font-size: 0.8rem; cursor: pointer; transition: 0.3s;
+}
+.btn-charge:hover { box-shadow: 0 0 10px rgba(212,175,55,0.5); transform: translateY(-2px); }
 
-/* アラートボックス */
-.alert-box { margin-bottom: 2rem; padding: 2rem; border-left: 4px solid #f43f5e; background: linear-gradient(90deg, rgba(244, 63, 94, 0.1) 0%, rgba(20, 24, 39, 0.6) 100%); display: flex; align-items: center; gap: 1.5rem; }
+.alert-box {
+  margin-bottom: 2rem; padding: 2rem;
+  border-left: 4px solid #f43f5e;
+  background: linear-gradient(90deg, rgba(244,63,94,0.1) 0%, rgba(20,24,39,0.6) 100%);
+  display: flex; align-items: center; gap: 1.5rem;
+}
 .alert-icon { font-size: 3rem; animation: float 3s ease-in-out infinite; }
 .alert-content { flex: 1; }
-.alert-title { font-family: var(--font-mincho); font-size: 1.4rem; color: #fff; margin: 0 0 0.5rem 0; }
-.pulse-text { color: #f43f5e; font-weight: bold; font-size: 1.8rem; text-shadow: 0 0 10px rgba(244, 63, 94, 0.5); animation: pulse 1.5s infinite; }
-.alert-desc { font-size: 0.9rem; color: var(--text-main); margin: 0; line-height: 1.6; }
-.alert-btn { width: auto; padding: 1rem 2rem; border-color: #f43f5e; color: #fff; background: rgba(244, 63, 94, 0.2); }
-.alert-btn:hover { background: #f43f5e; box-shadow: 0 0 20px rgba(244, 63, 94, 0.4); }
+.alert-title { font-family: 'Shippori Mincho', serif; font-size: 1.3rem; color: #fff; margin: 0 0 0.5rem; }
+.pulse-text { color: #f43f5e; font-weight: bold; font-size: 1.8rem; text-shadow: 0 0 10px rgba(244,63,94,0.5); animation: pulse 1.5s infinite; }
+.alert-desc { font-size: 0.9rem; color: var(--text-secondary); margin: 0; line-height: 1.6; }
+.alert-btn { width: auto; padding: 1rem 2rem; border-color: #f43f5e; color: #fff; background: rgba(244,63,94,0.2); }
+.alert-btn:hover { background: #f43f5e; }
 
-.dashboard-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+.dashboard-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 1.5rem; }
 @media (max-width: 768px) { .dashboard-grid { grid-template-columns: 1fr; } .alert-box { flex-direction: column; text-align: center; } }
 
+.section-title { font-family: 'Shippori Mincho', serif; font-size: 1.3rem; margin-bottom: 0.5rem; }
+
 /* ワンオラクル */
-.oracle-section { text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+.oracle-section { text-align: center; display: flex; flex-direction: column; align-items: center; }
 .oracle-card-container { perspective: 1000px; width: 160px; height: 240px; cursor: pointer; margin: 0 auto; }
-.oracle-card { width: 100%; height: 100%; position: relative; transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275); transform-style: preserve-3d; }
+.oracle-card { width: 100%; height: 100%; position: relative; transition: transform 0.8s cubic-bezier(0.175,0.885,0.32,1.275); transform-style: preserve-3d; }
 .oracle-card.is-flipped { transform: rotateY(180deg); }
-.card-face { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; border-radius: 12px; display: flex; flex-direction: column; align-items: center; justify-content: center; border: 1px solid rgba(212, 175, 55, 0.3); }
+.card-face { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; border-radius: 12px; display: flex; flex-direction: column; align-items: center; justify-content: center; border: 1px solid rgba(212,175,55,0.3); }
 .card-back { background: linear-gradient(135deg, #1a1c2e, #0a0c10); color: var(--gold); }
 .card-pattern { font-size: 4rem; margin-bottom: 1rem; opacity: 0.8; }
-.card-back p { font-size: 0.85rem; font-weight: bold; letter-spacing: 0.1em; line-height: 1.5; margin:0;}
-.card-front { background: linear-gradient(135deg, rgba(212, 175, 55, 0.1), rgba(10, 12, 16, 0.9)); transform: rotateY(180deg); padding: 1rem; text-align: center; }
-.ke-symbol { font-size: 4rem; line-height: 1; color: var(--gold-light); margin-bottom: 0.5rem; text-shadow: 0 0 15px rgba(212, 175, 55, 0.5); }
-.ke-name { font-family: var(--font-mincho); font-size: 1.2rem; color: #fff; margin: 0 0 0.5rem 0; }
-.ke-desc { font-size: 0.75rem; color: var(--text-main); margin: 0 0 1rem 0; line-height: 1.4; }
+.card-back p { font-size: 0.85rem; font-weight: bold; letter-spacing: 0.1em; line-height: 1.5; margin: 0; }
+.card-front { background: linear-gradient(135deg, rgba(212,175,55,0.1), rgba(10,12,16,0.9)); transform: rotateY(180deg); padding: 1rem; text-align: center; }
+.ke-symbol { font-size: 4rem; line-height: 1; color: #d4af37; margin-bottom: 0.5rem; text-shadow: 0 0 15px rgba(212,175,55,0.5); }
+.ke-name { font-family: 'Shippori Mincho', serif; font-size: 1.2rem; color: #fff; margin: 0 0 0.5rem; }
+.ke-desc { font-size: 0.75rem; color: var(--text-secondary); margin: 0 0 1rem; line-height: 1.4; }
 .bonus-get { background: var(--gold); color: #000; font-size: 0.7rem; font-weight: bold; padding: 4px 8px; border-radius: 20px; animation: bounce 1s infinite; }
 
 /* 相関図 */
-.btn-add { background: transparent; border: 1px solid var(--text-secondary); color: var(--text-secondary); padding: 4px 12px; border-radius: 20px; font-size: 0.8rem; cursor: pointer; transition: 0.3s; }
+.btn-add { background: transparent; border: 1px solid var(--text-secondary); color: var(--text-secondary); padding: 4px 12px; border-radius: 20px; font-size: 0.8rem; cursor: pointer; transition: 0.3s; font-family: 'Noto Serif JP', serif; }
 .btn-add:hover { border-color: var(--gold); color: var(--gold); }
 .relation-list { display: flex; flex-direction: column; gap: 1rem; max-height: 400px; overflow-y: auto; padding-right: 5px; }
-.relation-item { display: flex; align-items: center; gap: 1rem; padding: 1rem; background: rgba(255, 255, 255, 0.03); border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.05); transition: 0.3s; cursor: pointer; }
-.relation-item:hover { background: rgba(255, 255, 255, 0.08); transform: translateX(5px); border-color: rgba(212, 175, 55, 0.2); }
+.relation-item { display: flex; align-items: center; gap: 1rem; padding: 1rem; background: rgba(255,255,255,0.03); border-radius: 12px; border: 1px solid rgba(255,255,255,0.05); transition: 0.3s; cursor: pointer; }
+.relation-item:hover { background: rgba(255,255,255,0.08); transform: translateX(5px); border-color: rgba(212,175,55,0.2); }
 .person-icon { width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 1.2rem; }
 .person-info { flex: 1; }
-.person-name { font-size: 1rem; color: #fff; margin: 0 0 0.25rem 0; font-weight: bold; }
+.person-name { font-size: 1rem; color: #fff; margin: 0 0 0.25rem; font-weight: bold; }
 .person-star { font-size: 0.75rem; color: var(--text-secondary); margin: 0; }
+.action-tag { font-size: 0.85rem; color: #fff; margin-top: 6px; display: inline-flex; align-items: center; gap: 6px; background: rgba(0,0,0,0.3); padding: 4px 8px; border-radius: 6px; }
 .relation-badge { font-size: 0.8rem; font-weight: bold; padding: 4px 10px; border-radius: 6px; text-align: center; min-width: 50px; }
-.badge-danger { background: rgba(244, 63, 94, 0.15); color: #fb7185; border: 1px solid rgba(244, 63, 94, 0.3); }
-.badge-good { background: rgba(59, 130, 246, 0.15); color: #93c5fd; border: 1px solid rgba(59, 130, 246, 0.3); }
-.badge-normal { background: rgba(16, 185, 129, 0.15); color: #6ee7b7; border: 1px solid rgba(16, 185, 129, 0.3); }
+.badge-danger { background: rgba(244,63,94,0.15); color: #fb7185; border: 1px solid rgba(244,63,94,0.3); }
+.badge-good { background: rgba(59,130,246,0.15); color: #93c5fd; border: 1px solid rgba(59,130,246,0.3); }
+.badge-normal { background: rgba(16,185,129,0.15); color: #6ee7b7; border: 1px solid rgba(16,185,129,0.3); }
 
-/* モーダル用 */
+/* 履歴 */
+.history-section { margin-bottom: 1.5rem; }
+.history-item {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0.75rem 0; border-bottom: 0.5px solid #ffffff10;
+}
+.history-item:last-child { border-bottom: none; }
+.history-type { font-size: 13px; color: #f0e6d3; }
+.history-date { font-size: 11px; color: var(--text-secondary); margin-top: 2px; }
+.history-cost { font-size: 12px; color: var(--gold); }
+
+/* モーダル */
 .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.8); backdrop-filter: blur(5px); z-index: 1000; display: none; align-items: center; justify-content: center; padding: 1.5rem; }
-.modal-content { width: 100%; max-width: 400px; padding: 2rem; background: #0a0c10; animation: fadeInDown 0.3s ease-out; }
+.modal-content { width: 100%; max-width: 400px; padding: 2rem; }
+.field { display: flex; flex-direction: column; gap: 4px; }
+.field label { font-size: 12px; color: var(--text-secondary); }
 
-/* スクロールバー装飾 */
+.btn-logout { background: transparent; border: 0.5px solid #ffffff22; color: var(--text-secondary); padding: 0.5rem 2rem; border-radius: var(--radius-md); font-size: 13px; cursor: pointer; font-family: 'Noto Serif JP', serif; }
+
 .relation-list::-webkit-scrollbar { width: 6px; }
 .relation-list::-webkit-scrollbar-track { background: rgba(255,255,255,0.05); border-radius: 10px; }
-.relation-list::-webkit-scrollbar-thumb { background: rgba(212, 175, 55, 0.3); border-radius: 10px; }
+.relation-list::-webkit-scrollbar-thumb { background: rgba(212,175,55,0.3); border-radius: 10px; }
 
-/* アニメーション */
-@keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
-@keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.6; } }
-@keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
+@keyframes float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+@keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.6; } }
+@keyframes bounce { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
+@keyframes twinkle { 0%,100% { opacity: 0.2; } 50% { opacity: 0.8; } }
 </style>
 
 <script is:inline>
-// ==========================================
-// 🔮 計算ロジック・マスタデータ
-// ==========================================
-const MY_YEAR = 1991; // ゲスト様（九紫火星）の仮の生年
+const WORKERS_URL = 'https://kyusei-api.seiji-tomizawa.workers.dev';
 
 const STARS = [
-  { id: 1, name: '一白水星', element: 'water' }, { id: 2, name: '二黒土星', element: 'earth' },
-  { id: 3, name: '三碧木星', element: 'wood' },  { id: 4, name: '四緑木星', element: 'wood' },
-  { id: 5, name: '五黄土星', element: 'earth' }, { id: 6, name: '六白金星', element: 'metal' },
-  { id: 7, name: '七赤金星', element: 'metal' }, { id: 8, name: '八白土星', element: 'earth' },
-  { id: 9, name: '九紫火星', element: 'fire' }
+  { id:1, name:'一白水星', element:'water', char:'水' },
+  { id:2, name:'二黒土星', element:'earth', char:'土' },
+  { id:3, name:'三碧木星', element:'wood',  char:'木' },
+  { id:4, name:'四緑木星', element:'wood',  char:'木' },
+  { id:5, name:'五黄土星', element:'earth', char:'土' },
+  { id:6, name:'六白金星', element:'metal', char:'金' },
+  { id:7, name:'七赤金星', element:'metal', char:'金' },
+  { id:8, name:'八白土星', element:'earth', char:'土' },
+  { id:9, name:'九紫火星', element:'fire',  char:'火' },
 ];
 
-const COMPATIBILITY_MATRIX = {
-  water: { water: 'good', wood: 'best', fire: 'bad', earth: 'worst', metal: 'best' },
-  wood:  { water: 'best', wood: 'good', fire: 'best', earth: 'bad', metal: 'worst' },
-  fire:  { water: 'worst', wood: 'best', fire: 'good', earth: 'best', metal: 'bad' },
-  earth: { water: 'bad', wood: 'worst', fire: 'best', earth: 'good', metal: 'best' },
-  metal: { water: 'best', wood: 'bad', fire: 'worst', earth: 'best', metal: 'good' }
+const COMPAT = {
+  water: { water:'good', wood:'best', fire:'bad',  earth:'worst', metal:'best' },
+  wood:  { water:'best', wood:'good', fire:'best', earth:'bad',   metal:'worst' },
+  fire:  { water:'worst',wood:'best', fire:'good', earth:'best',  metal:'bad' },
+  earth: { water:'bad',  wood:'worst',fire:'best', earth:'good',  metal:'best' },
+  metal: { water:'best', wood:'bad',  fire:'worst',earth:'best',  metal:'good' },
 };
-
-const COMPATIBILITY_TEXTS = {
-  best:  { badge: '大吉', color: 'badge-good' },
-  good:  { badge: '吉', color: 'badge-normal' },
-  bad:   { badge: '波乱', color: 'badge-danger' },
-  worst: { badge: '試練', color: 'badge-danger' }
+const COMPAT_TEXT = {
+  best:  { badge:'大吉', cls:'badge-good' },
+  good:  { badge:'吉',   cls:'badge-normal' },
+  bad:   { badge:'波乱', cls:'badge-danger' },
+  worst: { badge:'試練', cls:'badge-danger' },
 };
 
 const DAILY_ACTIONS = [
-  { type: 'start', icon: '💬', title: '連絡吉', score: 80 },
-  { type: 'wait', icon: '☕', title: '様子見', score: 40 },
-  { type: 'active', icon: '🎟️', title: '誘い吉', score: 90 },
-  { type: 'harmony', icon: '📞', title: '長話吉', score: 75 },
-  { type: 'chaos', icon: '⚠️', title: 'すれ違い', score: 10 },
-  { type: 'progress', icon: '🌱', title: '歩み寄り', score: 70 },
-  { type: 'fun', icon: '🍽️', title: '共有吉', score: 85 },
-  { type: 'change', icon: '✨', title: '変化吉', score: 60 },
-  { type: 'passion', icon: '👑', title: '勝負日', score: 100 } // ★運命の日
+  { icon:'💬', title:'連絡吉',   score:80 },
+  { icon:'☕', title:'様子見',   score:40 },
+  { icon:'🎟️', title:'誘い吉',  score:90 },
+  { icon:'📞', title:'長話吉',   score:75 },
+  { icon:'⚠️', title:'すれ違い', score:10 },
+  { icon:'🌱', title:'歩み寄り', score:70 },
+  { icon:'🍽️', title:'共有吉',  score:85 },
+  { icon:'✨', title:'変化吉',   score:60 },
+  { icon:'👑', title:'勝負日',   score:100 },
 ];
 
-function getHonmeiseiId(year) {
+const ORACLE_LIST = [
+  { symbol:'䷀', name:'乾為天', desc:'大いなる飛躍の時。自信を持って進んで吉。' },
+  { symbol:'䷁', name:'坤為地', desc:'誠実に地道に進む時。焦らず着実に。' },
+  { symbol:'䷂', name:'水雷屯', desc:'困難の始まり。しかし芽吹く力がある。' },
+  { symbol:'䷃', name:'山水蒙', desc:'謙虚に学ぶ時。素直さが道を開く。' },
+  { symbol:'䷄', name:'水天需', desc:'待つことが吉。時機を見極めよ。' },
+  { symbol:'䷅', name:'天水訟', desc:'争いを避けよ。和解が最善策。' },
+  { symbol:'䷆', name:'地水師', desc:'力を結集せよ。チームワークが鍵。' },
+  { symbol:'䷇', name:'水地比', desc:'人との絆を深める時。協力が吉。' },
+  { symbol:'䷈', name:'風天小畜', desc:'小さな積み重ねが実を結ぶ。' },
+  { symbol:'䷉', name:'天沢履', desc:'礼節を守れば吉。慎重に歩め。' },
+];
+
+function getHonmeiNum(year) {
   let h = (11 - (year % 9)) % 9;
   return h === 0 ? 9 : h;
 }
 
-function calculateCompatibility(userYear, targetYear) {
-  const userEl = STARS[getHonmeiseiId(userYear) - 1].element;
-  const targetStar = STARS[getHonmeiseiId(targetYear) - 1];
-  const compKey = COMPATIBILITY_MATRIX[userEl][targetStar.element];
-  return { targetStar, result: COMPATIBILITY_TEXTS[compKey] };
+function calcTsuki(honmei, month, day) {
+  const setsuiri = {1:6,2:4,3:6,4:5,5:6,6:6,7:7,8:8,9:8,10:8,11:7,12:7};
+  let m = month;
+  if (day < (setsuiri[month] ?? 6)) m = month === 1 ? 12 : month - 1;
+  const group = (honmei - 1) % 3;
+  const base = [8,2,5][group];
+  const offset = (m === 1 ? 13 : m) - 2;
+  return ((base - offset - 1 + 90) % 9) + 1;
 }
 
-function getDailyAction(userYear, targetYear, date = new Date()) {
-  const magic = (getHonmeiseiId(userYear) * 7) + (getHonmeiseiId(targetYear) * 3);
-  const dayNumber = Math.floor(date.getTime() / (1000 * 60 * 60 * 24));
-  return DAILY_ACTIONS[(dayNumber + magic) % 9];
-}
-
-// ==========================================
-// ⚙️ 画面制御・ローカルストレージ操作
-// ==========================================
+let myHonmei = 1;
 let partners = JSON.parse(localStorage.getItem('onmyoryo_partners') || '[]');
 
+async function init() {
+  const token = localStorage.getItem('kyusei_token');
+  const user = JSON.parse(localStorage.getItem('kyusei_user') || 'null');
+  if (!token || !user) { window.location.href = '/login'; return; }
+
+  // ユーザー情報表示
+  const [y, m, d] = user.birth_date.split('-').map(Number);
+  myHonmei = getHonmeiNum(y);
+  const tsuki = calcTsuki(myHonmei, m, d);
+  const honmeiName = STARS[myHonmei - 1].name;
+  const tsukiName = STARS[tsuki - 1].name;
+  const avatarChar = STARS[myHonmei - 1].char;
+
+  document.getElementById('user-avatar').textContent = avatarChar;
+  document.getElementById('user-greeting').textContent = `ようこそ、${user.email.split('@')[0]}様`;
+  document.getElementById('user-stars').textContent = `本命星：${honmeiName} / 月命星：${tsukiName}`;
+
+  // コイン残高
+  loadBalance(token);
+
+  // 鑑定履歴
+  loadHistory(token);
+
+  // パートナーリスト
+  renderPartners();
+
+  // ワンオラクル（今日分をチェック）
+  checkOracleToday();
+}
+
+async function loadBalance(token) {
+  try {
+    const res = await fetch(`${WORKERS_URL}/api/coins/balance`, { headers: { Authorization: `Bearer ${token}` } });
+    const data = await res.json();
+    document.getElementById('coin-amount').innerHTML = `${data.coins}<span>C</span>`;
+  } catch {}
+}
+
+async function loadHistory(token) {
+  try {
+    const [r1, r2] = await Promise.all([
+      fetch(`${WORKERS_URL}/api/fortune/history`, { headers: { Authorization: `Bearer ${token}` } }).then(r => r.json()),
+      fetch(`${WORKERS_URL}/api/eki/history`, { headers: { Authorization: `Bearer ${token}` } }).then(r => r.json()),
+    ]);
+
+    const TYPE_LABEL = { basic:'九星気学 基本鑑定', monthly:'九星気学 月運鑑定', yearly:'九星気学 年運鑑定' };
+    const fortune = (r1.readings || []).map(r => ({ ...r, label: TYPE_LABEL[r.reading_type] || r.reading_type }));
+    const eki = (r2.readings || []).map(r => ({ ...r, label: `易占い：${r.question?.slice(0,12)}...` }));
+    const all = [...fortune, ...eki].sort((a, b) => new Date(b.created_at) - new Date(a.created_at)).slice(0, 10);
+
+    const listEl = document.getElementById('history-list');
+    if (all.length === 0) {
+      listEl.innerHTML = '<p class="text-muted" style="text-align:center;padding:1rem">まだ鑑定履歴がありません</p>';
+      return;
+    }
+    listEl.innerHTML = all.map(r => `
+      <div class="history-item">
+        <div>
+          <p class="history-type">${r.label}</p>
+          <p class="history-date">${new Date(r.created_at).toLocaleDateString('ja-JP')}</p>
+        </div>
+        <span class="history-cost">-${r.coins_used}C</span>
+      </div>
+    `).join('');
+  } catch {
+    document.getElementById('history-list').innerHTML = '<p class="text-muted" style="text-align:center;padding:1rem">履歴の取得に失敗しました</p>';
+  }
+}
+
+function checkOracleToday() {
+  const today = new Date().toDateString();
+  const lastOracle = localStorage.getItem('oracle_date');
+  if (lastOracle === today) {
+    // 今日分は取得済み → めくった状態で表示
+    const savedIdx = parseInt(localStorage.getItem('oracle_idx') || '0');
+    showOracleResult(savedIdx, false);
+  }
+}
+
+function drawOracle() {
+  const card = document.getElementById('oracle-card');
+  if (card.classList.contains('is-flipped')) return;
+
+  const today = new Date().toDateString();
+  const dayNum = Math.floor(new Date().getTime() / (1000 * 60 * 60 * 24));
+  const idx = (dayNum + myHonmei) % ORACLE_LIST.length;
+
+  localStorage.setItem('oracle_date', today);
+  localStorage.setItem('oracle_idx', idx.toString());
+
+  showOracleResult(idx, true);
+}
+
+function showOracleResult(idx, addBonus) {
+  const oracle = ORACLE_LIST[idx];
+  document.getElementById('oracle-symbol').textContent = oracle.symbol;
+  document.getElementById('oracle-name').textContent = oracle.name;
+  document.getElementById('oracle-desc').textContent = oracle.desc;
+
+  const card = document.getElementById('oracle-card');
+  card.classList.add('is-flipped');
+
+  if (addBonus) {
+    setTimeout(() => {
+      const coinEl = document.getElementById('coin-amount');
+      const current = parseInt(coinEl.textContent) || 0;
+      coinEl.innerHTML = `${current + 2}<span>C</span>`;
+    }, 800);
+  }
+}
+
+// パートナー管理
 function openModal() { document.getElementById('partner-modal').style.display = 'flex'; }
 function closeModal() { document.getElementById('partner-modal').style.display = 'none'; }
 
 function savePartner() {
-  const name = document.getElementById('partner-name').value;
+  const name = document.getElementById('partner-name').value.trim();
   const year = parseInt(document.getElementById('partner-year').value);
-  if (!name || !year || year < 1900) return alert('ニックネームと正しい生年を入力してください。');
-  
-  // 保存
+  if (!name || !year || year < 1900) { alert('ニックネームと正しい生年を入力してください'); return; }
   partners.push({ id: Date.now(), name, year });
   localStorage.setItem('onmyoryo_partners', JSON.stringify(partners));
-  
-  // UI更新
   document.getElementById('partner-name').value = '';
   document.getElementById('partner-year').value = '';
   closeModal();
@@ -244,90 +416,80 @@ function savePartner() {
 
 function renderPartners() {
   const list = document.getElementById('relation-list');
-  
   if (partners.length === 0) {
     list.innerHTML = `
-      <div style="text-align: center; padding: 3rem 1rem;">
-        <div style="font-size: 3rem; color: rgba(255,255,255,0.1); margin-bottom: 1rem;">👥</div>
-        <p class="text-muted">まだ誰も登録されていません。<br>「＋ 追加」からお相手を登録すると、毎日の恋のアクションが確認できます。</p>
+      <div style="text-align:center;padding:3rem 1rem">
+        <div style="font-size:3rem;color:rgba(255,255,255,0.1);margin-bottom:1rem">👥</div>
+        <p class="text-muted" style="font-size:13px">まだ誰も登録されていません。<br>「＋ 追加」からお相手を登録すると、<br>毎日の恋のアクションが確認できます。</p>
       </div>`;
     document.getElementById('fate-alert').style.display = 'none';
     return;
   }
 
-  // 登録された人をHTML化
+  const user = JSON.parse(localStorage.getItem('kyusei_user') || 'null');
+  const [y] = (user?.birth_date || '1990-1-1').split('-').map(Number);
+  const myEl = STARS[getHonmeiNum(y) - 1].element;
+
   list.innerHTML = partners.map(p => {
-    const comp = calculateCompatibility(MY_YEAR, p.year);
-    const todayAction = getDailyAction(MY_YEAR, p.year);
-    // ランダムな色をつけるための簡単なハッシュ
-    const hue = (p.year * 137) % 360; 
-    
+    const pHonmei = getHonmeiNum(p.year);
+    const pStar = STARS[pHonmei - 1];
+    const compKey = COMPAT[myEl][pStar.element];
+    const comp = COMPAT_TEXT[compKey];
+    const dayNum = Math.floor(Date.now() / (1000 * 60 * 60 * 24));
+    const magic = (getHonmeiNum(y) * 7) + (pHonmei * 3);
+    const action = DAILY_ACTIONS[(dayNum + magic) % 9];
+    const hue = (p.year * 137) % 360;
     return `
       <div class="relation-item">
-        <div class="person-icon" style="background: hsla(${hue}, 70%, 50%, 0.2); color: hsl(${hue}, 80%, 70%);">
-          ${p.name.charAt(0)}
-        </div>
+        <div class="person-icon" style="background:hsla(${hue},70%,50%,0.2);color:hsl(${hue},80%,70%)">${p.name.charAt(0)}</div>
         <div class="person-info">
           <h4 class="person-name">${p.name}</h4>
-          <p class="person-star">${comp.targetStar.name} / 相性：${comp.result.badge}</p>
-          <div style="font-size: 0.85rem; color: #fff; margin-top: 6px; display: flex; align-items: center; gap: 6px; background: rgba(0,0,0,0.3); padding: 4px 8px; border-radius: 6px; display: inline-flex;">
-            <span style="font-size: 1rem;">${todayAction.icon}</span> 今日は「${todayAction.title}」
-          </div>
+          <p class="person-star">${pStar.name} / 相性：${comp.badge}</p>
+          <div class="action-tag"><span>${action.icon}</span> 今日は「${action.title}」</div>
         </div>
-        <div class="relation-badge ${comp.result.color}">${todayAction.score}点</div>
-      </div>
-    `;
+        <div class="relation-badge ${comp.cls}">${action.score}点</div>
+      </div>`;
   }).join('');
 
-  // 運命の日のアラート計算
-  calculateFateDay();
+  calculateFateDay(y);
 }
 
-function calculateFateDay() {
-  let closestDays = 999;
-  let fatePartner = null;
+function calculateFateDay(myYear) {
+  let closest = 999, fatePartner = null;
   const today = new Date();
-
-  // 全パートナーの中で、一番近い「勝負日(score=100)」を探す
   partners.forEach(p => {
     for (let i = 0; i <= 9; i++) {
-      const checkDate = new Date(today);
-      checkDate.setDate(today.getDate() + i);
-      const action = getDailyAction(MY_YEAR, p.year, checkDate);
-      
-      if (action.score === 100 && i < closestDays) {
-        closestDays = i;
-        fatePartner = p;
-      }
+      const d = new Date(today); d.setDate(today.getDate() + i);
+      const dayNum = Math.floor(d.getTime() / (1000 * 60 * 60 * 24));
+      const magic = (getHonmeiNum(myYear) * 7) + (getHonmeiNum(p.year) * 3);
+      const action = DAILY_ACTIONS[(dayNum + magic) % 9];
+      if (action.score === 100 && i < closest) { closest = i; fatePartner = p; }
     }
   });
-
-  const alertBox = document.getElementById('fate-alert');
-  if (fatePartner && closestDays <= 3) {
+  const alert = document.getElementById('fate-alert');
+  if (fatePartner && closest <= 3) {
     document.getElementById('fate-name').textContent = fatePartner.name;
-    document.getElementById('fate-days').textContent = closestDays === 0 ? "今日！" : `${closestDays}日`;
-    alertBox.style.display = 'flex';
+    document.getElementById('fate-days').textContent = closest === 0 ? '今日！' : `${closest}日`;
+    alert.style.display = 'flex';
   } else {
-    alertBox.style.display = 'none';
+    alert.style.display = 'none';
   }
 }
 
-// ワンオラクルのアニメーション
-function drawOracle() {
-  const card = document.querySelector('.oracle-card');
-  if (!card.classList.contains('is-flipped')) {
-    card.classList.add('is-flipped');
-    setTimeout(() => {
-      const coinAmount = document.querySelector('.coin-amount');
-      if(coinAmount) {
-        coinAmount.innerHTML = '152<span>C</span>';
-        coinAmount.style.animation = 'textShine 1s ease-out';
-      }
-    }, 600);
-  }
+function doLogout() {
+  localStorage.removeItem('kyusei_token');
+  localStorage.removeItem('kyusei_user');
+  window.location.href = '/';
 }
 
-// 初回ロード時にリストを描画
-document.addEventListener('DOMContentLoaded', renderPartners);
-document.addEventListener('astro:page-load', renderPartners);
+// 星背景
+const starsEl = document.getElementById('stars');
+for (let i = 0; i < 50; i++) {
+  const s = document.createElement('div');
+  const size = Math.random() * 2 + 1;
+  s.style.cssText = `position:absolute;border-radius:50%;background:#fff;width:${size}px;height:${size}px;top:${Math.random()*100}%;left:${Math.random()*100}%;opacity:${Math.random()*0.4+0.1};animation:twinkle ${2+Math.random()*3}s ease-in-out infinite;animation-delay:${Math.random()*3}s;`;
+  starsEl.appendChild(s);
+}
+
+init();
 </script>
