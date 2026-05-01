@@ -1,3 +1,4 @@
+<!-- src/pages/fortune/eki.astro -->
 ---
 import Layout from '../../layouts/Layout.astro';
 import '../../styles/global.css';
@@ -34,109 +35,149 @@ import '../../styles/global.css';
         </div>
       </div>
 
-      <!-- コイン残高・ログイン状態 -->
+      <!-- コイン残高 -->
       <div class="coin-balance-bar" id="balance-bar" style="display:none">
         <span class="balance-label">保有コイン</span>
         <span class="balance-value" id="coin-balance">-- コイン</span>
         <span class="balance-cost">1回 1コイン（¥100相当）</span>
       </div>
 
-      <div class="glass-card form-card fade-in-up delay-2" style="text-align:center;">
-        <p class="form-desc">
-          占いたいこと（悩みや迷い）を心の中で強く念じてから、<br>下のボタンを押してください。
-        </p>
-        <textarea id="question" placeholder="例：転職すべきか、この人と付き合うべきか..." rows="3"></textarea>
-        <p class="error-msg" id="form-error"></p>
-        <button class="btn-primary" id="btn" onclick="runEki()">☯ 卦を立てる（1コイン）</button>
-        <p class="login-note" id="login-note" style="display:none">
-          <a href="/login">ログイン</a>または<a href="/register">新規登録</a>してコインを購入してください（1コイン=¥100）
-        </p>
+      <!-- カテゴリ選択 -->
+      <div id="category-section">
+        <div class="glass-card form-card fade-in-up delay-2" style="text-align:center;">
+          <p class="form-desc">
+            占いたいことを選んでから、心の中で強く念じてください。
+          </p>
+          <div class="category-grid">
+            <button class="category-btn" onclick="selectCategory('love')" data-cat="love">
+              <span class="cat-icon">❤️</span>
+              <span class="cat-name">恋愛・相性・復縁</span>
+              <span class="cat-desc">恋愛の行方、相手の気持ち、復縁の可能性</span>
+            </button>
+            <button class="category-btn" onclick="selectCategory('work')" data-cat="work">
+              <span class="cat-icon">💼</span>
+              <span class="cat-name">仕事・天職・転機</span>
+              <span class="cat-desc">転職・起業・天職・今の仕事への迷い</span>
+            </button>
+            <button class="category-btn" onclick="selectCategory('money')" data-cat="money">
+              <span class="cat-icon">💰</span>
+              <span class="cat-name">金運・財運・投資</span>
+              <span class="cat-desc">投資・財運・お金にまつわる決断</span>
+            </button>
+            <button class="category-btn" onclick="selectCategory('life')" data-cat="life">
+              <span class="cat-icon">🌟</span>
+              <span class="cat-name">人生・総合運</span>
+              <span class="cat-desc">人生の岐路・総合的な運勢・今後の方向性</span>
+            </button>
+          </div>
+          <p class="error-msg" id="form-error"></p>
+          <p class="login-note" id="login-note" style="display:none">
+            <a href="/login">ログイン</a>または<a href="/register">新規登録</a>してコインを購入してください（1コイン=¥100）
+          </p>
+        </div>
+
+        <!-- 選択後：確認ボタン -->
+        <div class="glass-card confirm-card" id="confirm-card" style="display:none; text-align:center;">
+          <p class="confirm-label">選択したカテゴリ</p>
+          <div class="confirm-cat" id="confirm-cat"></div>
+          <p class="confirm-desc">心の中で問いを念じながら、下のボタンを押してください。</p>
+          <button class="btn-primary cast-btn" id="cast-btn" onclick="runEki()">☯ 卦を立てる（1コイン）</button>
+          <button class="change-btn" onclick="resetCategory()">カテゴリを変える</button>
+        </div>
       </div>
 
       <!-- 結果セクション -->
       <div id="result-section" style="display:none">
+        <div class="result-grid">
 
-        <!-- 質問 -->
-        <div class="glass-card result-item question-block">
-          <p class="result-subtitle">あなたの問い</p>
-          <p class="question-display" id="r-question"></p>
-        </div>
+          <!-- カテゴリ・質問 -->
+          <div class="glass-card result-item question-block">
+            <p class="result-subtitle">占ったこと</p>
+            <div class="question-cat-display" id="r-category-display"></div>
+          </div>
 
-        <!-- 本卦 -->
-        <div class="glass-card result-item honke-block">
-          <p class="result-subtitle">得られた啓示（六十四卦）</p>
-          <div class="hexagram-display">
-            <div class="hexagram-lines" id="hexagram-lines"></div>
-            <div class="hexagram-info">
-              <p class="hexagram-num" id="r-honke-num"></p>
-              <h2 class="result-title" id="r-honke-name"></h2>
-              <p class="hexagram-trigrams" id="r-trigrams"></p>
+          <!-- 本卦 -->
+          <div class="glass-card result-item honke-block">
+            <p class="result-subtitle">得られた啓示（六十四卦）</p>
+            <div class="hexagram-display">
+              <div class="hexagram-lines" id="hexagram-lines"></div>
+              <div class="hexagram-info">
+                <p class="hexagram-num" id="r-honke-num"></p>
+                <h2 class="result-title" id="r-honke-name"></h2>
+                <p class="hexagram-trigrams" id="r-trigrams"></p>
+              </div>
+            </div>
+            <div class="kaji-box">
+              <p class="kaji-label">卦辞</p>
+              <p class="kaji-text" id="r-kaji"></p>
+            </div>
+            <p class="result-text" id="r-overview"></p>
+          </div>
+
+          <!-- カテゴリ別メイン解釈 -->
+          <div class="glass-card result-item main-interp-block">
+            <p class="result-subtitle" id="r-main-label"></p>
+            <p class="result-text main-text" id="r-main-text"></p>
+          </div>
+
+          <!-- 各分野 -->
+          <div class="glass-card result-item">
+            <p class="result-subtitle">各分野への示唆</p>
+            <div class="detail-grid">
+              <div class="detail-item">
+                <h4 class="detail-label">恋愛・人間関係</h4>
+                <p class="detail-text" id="r-love"></p>
+              </div>
+              <div class="detail-item">
+                <h4 class="detail-label">仕事・事業</h4>
+                <p class="detail-text" id="r-work"></p>
+              </div>
+              <div class="detail-item">
+                <h4 class="detail-label">金運・財運</h4>
+                <p class="detail-text" id="r-money"></p>
+              </div>
+              <div class="detail-item advice-item">
+                <h4 class="detail-label">アドバイス</h4>
+                <p class="detail-text" id="r-advice"></p>
+              </div>
             </div>
           </div>
-          <div class="kaji-box">
-            <p class="kaji-label">卦辞</p>
-            <p class="kaji-text" id="r-kaji"></p>
+
+          <!-- 象辞 -->
+          <div class="glass-card result-item image-block">
+            <p class="result-subtitle">象辞（象に曰く）</p>
+            <p class="image-text" id="r-image"></p>
           </div>
-          <p class="result-text" id="r-overview"></p>
-        </div>
 
-        <!-- 各分野 -->
-        <div class="glass-card result-item">
-          <p class="result-subtitle">各分野への示唆</p>
-          <div class="detail-grid">
-            <div class="detail-item">
-              <h4 class="detail-label">恋愛・人間関係</h4>
-              <p class="detail-text" id="r-love"></p>
+          <!-- 之卦 -->
+          <div class="glass-card result-item" id="nouke-block" style="display:none">
+            <p class="result-subtitle">之卦（変化の先）</p>
+            <div class="nouke-header">
+              <span class="nouke-num" id="r-nouke-num"></span>
+              <h4 class="nouke-name" id="r-nouke-name"></h4>
             </div>
-            <div class="detail-item">
-              <h4 class="detail-label">仕事・事業</h4>
-              <p class="detail-text" id="r-work"></p>
+            <div class="kaji-box" style="margin-bottom:1rem">
+              <p class="kaji-label">卦辞</p>
+              <p class="kaji-text" id="r-nouke-kaji"></p>
             </div>
-            <div class="detail-item">
-              <h4 class="detail-label">金運・財運</h4>
-              <p class="detail-text" id="r-money"></p>
-            </div>
-            <div class="detail-item advice-item">
-              <h4 class="detail-label">アドバイス</h4>
-              <p class="detail-text" id="r-advice"></p>
-            </div>
+            <p class="detail-text" id="r-nouke-overview"></p>
+            <p class="detail-text advice-box" style="margin-top:1rem" id="r-nouke-advice"></p>
           </div>
-        </div>
 
-        <!-- 象辞 -->
-        <div class="glass-card result-item image-block">
-          <p class="result-subtitle">象辞（象に曰く）</p>
-          <p class="image-text" id="r-image"></p>
-        </div>
-
-        <!-- 之卦 -->
-        <div class="glass-card result-item" id="nouke-block" style="display:none">
-          <p class="result-subtitle">之卦（変化の先）</p>
-          <div class="nouke-header">
-            <span class="nouke-num" id="r-nouke-num"></span>
-            <h4 class="nouke-name" id="r-nouke-name"></h4>
+          <!-- アフィリエイト -->
+          <div class="glass-card result-item affiliate-block">
+            <p class="result-subtitle">易をさらに深く学ぶ</p>
+            <p class="affiliate-desc">易経の世界をより深く理解するためのおすすめ書籍です。</p>
+            <div class="affiliate-list" id="affiliate-list"></div>
           </div>
-          <div class="kaji-box" style="margin-bottom:1rem">
-            <p class="kaji-label">卦辞</p>
-            <p class="kaji-text" id="r-nouke-kaji"></p>
+
+          <!-- 再鑑定 -->
+          <div class="glass-card result-item" style="text-align:center">
+            <button class="btn-primary" onclick="resetAll()" style="max-width:300px">☯ もう一度占う</button>
+            <a href="/mypage" class="btn-outline" style="display:block;text-align:center;margin-top:0.75rem;max-width:300px;margin-left:auto;margin-right:auto">マイページへ</a>
           </div>
-          <p class="detail-text" id="r-nouke-overview"></p>
-          <p class="detail-text advice-box" style="margin-top:1rem" id="r-nouke-advice"></p>
-        </div>
 
-        <!-- アフィリエイト -->
-        <div class="glass-card result-item affiliate-block">
-          <p class="result-subtitle">易をさらに深く学ぶ</p>
-          <p class="affiliate-desc">易経の世界をより深く理解するためのおすすめ書籍です。</p>
-          <div class="affiliate-list" id="affiliate-list"></div>
         </div>
-
-        <!-- 再鑑定 -->
-        <div class="glass-card result-item" style="text-align:center">
-          <button class="btn-primary" onclick="resetReading()" style="max-width:300px">☯ もう一度占う</button>
-          <a href="/mypage" class="btn-outline" style="display:block;text-align:center;margin-top:0.75rem;max-width:300px;margin-left:auto;margin-right:auto">マイページへ</a>
-        </div>
-
       </div>
     </div>
   </div>
@@ -155,11 +196,7 @@ import '../../styles/global.css';
   border-top: 2px solid #f59e0b;
   background: linear-gradient(180deg, rgba(30,36,56,0.5) 0%, rgba(10,12,16,0.8) 100%);
 }
-.intro-title {
-  font-family: 'Shippori Mincho', serif;
-  font-size: 1.4rem; color: #fde68a;
-  margin-bottom: 1.25rem; letter-spacing: 0.05em;
-}
+.intro-title { font-family: 'Shippori Mincho', serif; font-size: 1.4rem; color: #fde68a; margin-bottom: 1.25rem; letter-spacing: 0.05em; }
 .intro-text { font-size: 0.95rem; color: var(--text-secondary); line-height: 1.9; margin-bottom: 2rem; }
 .intro-features { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
 .intro-feature {
@@ -168,47 +205,70 @@ import '../../styles/global.css';
   border-radius: var(--radius-md); border: 1px solid rgba(255,255,255,0.05);
   flex: 1; min-width: 200px;
 }
-.feature-icon { font-size: 1.4rem; color: #f59e0b; line-height: 1; }
+.feature-icon { font-size: 1.4rem; line-height: 1; }
 .intro-feature span { font-size: 0.85rem; color: var(--text-secondary); line-height: 1.6; }
-.intro-feature strong {
-  display: block; color: #fff; font-size: 1rem;
-  margin-bottom: 0.25rem; font-family: 'Shippori Mincho', serif;
-}
+.intro-feature strong { display: block; color: #fff; font-size: 1rem; margin-bottom: 0.25rem; font-family: 'Shippori Mincho', serif; }
 
 .coin-balance-bar {
-  display: flex; align-items: center; gap: 0.75rem;
-  margin-bottom: 1rem; background: var(--dark-card);
-  border: 0.5px solid #ffffff15; border-radius: var(--radius-md); padding: 0.6rem 1rem;
+  display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1rem;
+  background: var(--dark-card); border: 0.5px solid #ffffff15;
+  border-radius: var(--radius-md); padding: 0.6rem 1rem;
 }
 .balance-label { font-size: 12px; color: var(--text-secondary); }
 .balance-value { font-size: 16px; color: #f59e0b; font-weight: 500; }
 .balance-cost { font-size: 11px; color: var(--text-muted); margin-left: auto; }
 
-.form-card { margin-bottom: 2rem; }
-.form-desc { color: var(--text-secondary); margin-bottom: 1.25rem; font-size: 1rem; line-height: 1.8; }
-textarea {
+.form-card { margin-bottom: 1rem; }
+.form-desc { color: var(--text-secondary); margin-bottom: 1.5rem; font-size: 14px; line-height: 1.8; }
+
+/* カテゴリグリッド */
+.category-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 1rem; }
+.category-btn {
+  display: flex; flex-direction: column; align-items: center; gap: 8px;
+  background: #ffffff06; border: 1px solid #ffffff15;
+  border-radius: var(--radius-lg); padding: 1.25rem 1rem;
+  cursor: pointer; transition: all 0.2s; text-align: center;
   font-family: 'Noto Serif JP', serif;
-  background: #ffffff08; border: 0.5px solid #ffffff22;
-  border-radius: var(--radius-md); color: var(--text-primary);
-  padding: 0.875rem; font-size: 14px; line-height: 1.8;
-  width: 100%; resize: vertical; outline: none; margin-bottom: 1rem;
 }
-textarea:focus { border-color: #f59e0b; }
-.login-note { font-size: 13px; color: var(--text-secondary); margin-top: 0.75rem; }
+.category-btn:hover { border-color: #f59e0b; background: rgba(245,158,11,0.08); transform: translateY(-2px); }
+.category-btn.selected { border-color: #f59e0b; background: rgba(245,158,11,0.12); box-shadow: 0 0 16px rgba(245,158,11,0.2); }
+.cat-icon { font-size: 28px; line-height: 1; }
+.cat-name { font-family: 'Shippori Mincho', serif; font-size: 14px; color: #f0e6d3; font-weight: 500; }
+.cat-desc { font-size: 11px; color: var(--text-secondary); line-height: 1.5; }
+
+/* 確認カード */
+.confirm-card { margin-bottom: 1rem; }
+.confirm-label { font-size: 11px; color: #f59e0b; letter-spacing: 0.15em; margin-bottom: 0.75rem; }
+.confirm-cat {
+  display: flex; align-items: center; gap: 0.75rem; justify-content: center;
+  margin-bottom: 1.25rem; padding: 1rem;
+  background: rgba(245,158,11,0.08); border-radius: var(--radius-md);
+  border: 1px solid rgba(245,158,11,0.3);
+}
+.confirm-cat-icon { font-size: 28px; }
+.confirm-cat-name { font-family: 'Shippori Mincho', serif; font-size: 18px; color: #fde68a; }
+.confirm-desc { font-size: 13px; color: var(--text-secondary); margin-bottom: 1.25rem; line-height: 1.7; }
+.cast-btn { max-width: 300px; padding: 1rem 2rem; font-size: 1.1rem; }
+.change-btn {
+  display: block; margin: 0.75rem auto 0; background: none; border: none;
+  color: var(--text-secondary); font-size: 13px; cursor: pointer;
+  font-family: 'Noto Serif JP', serif; text-decoration: underline;
+}
+.login-note { font-size: 13px; color: var(--text-secondary); margin-top: 1rem; }
 
 /* 結果 */
-.result-item { margin-bottom: 1.25rem; }
-.result-subtitle {
-  font-family: 'Shippori Mincho', serif; color: #f59e0b;
-  font-size: 14px; margin-bottom: 1rem; letter-spacing: 0.1em;
-}
+.result-grid { display: flex; flex-direction: column; gap: 1.25rem; margin-top: 2rem; }
+.result-item { }
+.result-subtitle { font-family: 'Shippori Mincho', serif; color: #f59e0b; font-size: 14px; margin-bottom: 1rem; letter-spacing: 0.1em; }
 .question-block { border-left: 3px solid #f59e0b; }
-.question-display { font-size: 16px; line-height: 1.8; color: #f0e6d3; }
+.question-cat-display { display: flex; align-items: center; gap: 0.75rem; }
+.q-cat-icon { font-size: 24px; }
+.q-cat-name { font-family: 'Shippori Mincho', serif; font-size: 18px; color: #fde68a; }
 
 .honke-block { text-align: center; border-top: 3px solid #f59e0b; }
 .hexagram-display { display: flex; gap: 1.5rem; align-items: center; justify-content: center; margin-bottom: 1.5rem; }
 .hexagram-lines { display: flex; flex-direction: column-reverse; gap: 8px; }
-.hex-line { font-size: 24px; color: #f59e0b; line-height: 1; letter-spacing: -2px; }
+.hex-line { font-size: 22px; color: #f59e0b; line-height: 1; letter-spacing: -2px; }
 .hex-line.changing { color: #ff8e8e; }
 .hexagram-info { text-align: left; }
 .hexagram-num { font-size: 11px; color: var(--text-secondary); margin-bottom: 4px; }
@@ -220,6 +280,9 @@ textarea:focus { border-color: #f59e0b; }
 .kaji-label { font-size: 10px; color: #f59e0b; margin-bottom: 6px; }
 .kaji-text { font-family: 'Shippori Mincho', serif; font-size: 15px; line-height: 1.9; color: #fde68a; }
 .result-text { font-size: 14px; color: var(--text-secondary); line-height: 1.9; text-align: left; }
+
+.main-interp-block { border-left: 3px solid #f59e0b; background: rgba(245,158,11,0.04); }
+.main-text { font-size: 15px; line-height: 2; color: #f0e6d3; }
 
 .detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
 .detail-item { background: rgba(255,255,255,0.03); border-radius: var(--radius-md); padding: 1rem; }
@@ -235,7 +298,6 @@ textarea:focus { border-color: #f59e0b; }
 .nouke-num { font-size: 11px; color: var(--text-secondary); }
 .nouke-name { font-family: 'Shippori Mincho', serif; font-size: 22px; color: #f59e0b; }
 
-.affiliate-block {}
 .affiliate-desc { font-size: 13px; color: var(--text-secondary); margin-bottom: 1rem; }
 .affiliate-list { display: flex; flex-direction: column; gap: 0.75rem; }
 .affiliate-item {
@@ -255,10 +317,9 @@ textarea:focus { border-color: #f59e0b; }
 .affiliate-link { font-size: 11px; color: #f59e0b; }
 
 .btn-outline {
-  background: transparent; color: #f59e0b;
-  border: 0.5px solid #f59e0b; border-radius: var(--radius-md);
-  padding: 0.6rem 1.5rem; font-size: 14px; cursor: pointer;
-  font-family: 'Noto Serif JP', serif; transition: all 0.2s;
+  background: transparent; color: #f59e0b; border: 0.5px solid #f59e0b;
+  border-radius: var(--radius-md); padding: 0.6rem 1.5rem; font-size: 14px;
+  cursor: pointer; font-family: 'Noto Serif JP', serif; transition: all 0.2s;
 }
 .btn-outline:hover { background: #f59e0b; color: #000; }
 
@@ -269,48 +330,53 @@ textarea:focus { border-color: #f59e0b; }
 <script is:inline>
 const WORKERS_URL = 'https://kyusei-api.seiji-tomizawa.workers.dev';
 
+const CATEGORIES = {
+  love:  { icon: '❤️', name: '恋愛・相性・復縁',  question: '恋愛・相性・復縁について教えてください' },
+  work:  { icon: '💼', name: '仕事・天職・転機',  question: '仕事・天職・転機について教えてください' },
+  money: { icon: '💰', name: '金運・財運・投資',  question: '金運・財運・投資について教えてください' },
+  life:  { icon: '🌟', name: '人生・総合運',      question: '人生・総合運について教えてください' },
+};
+
+const MAIN_LABELS = {
+  love:  '恋愛・相性・復縁への示唆',
+  work:  '仕事・天職・転機への示唆',
+  money: '金運・財運・投資への示唆',
+  life:  '人生・総合運への示唆',
+};
+
+const MAIN_FIELDS = {
+  love:  'love',
+  work:  'work',
+  money: 'money',
+  life:  'overview',
+};
+
 const AFFILIATE_BOOKS = [
-  {
-    title: '易経 上経・下経（岩波文庫）',
-    author: '高田真治・後藤基巳 訳注',
-    url: 'https://www.amazon.co.jp/dp/4003320816?tag=YOUR_ASSOCIATE_ID',
-    icon: '📖',
-  },
-  {
-    title: '易の話（岩波新書）',
-    author: '本田濟',
-    url: 'https://www.amazon.co.jp/dp/4004120799?tag=YOUR_ASSOCIATE_ID',
-    icon: '📚',
-  },
-  {
-    title: '入門 易経（講談社学術文庫）',
-    author: '後藤基巳',
-    url: 'https://www.amazon.co.jp/s?k=易経+入門&tag=YOUR_ASSOCIATE_ID',
-    icon: '🔮',
-  },
+  { title: '易経 上経・下経（岩波文庫）', author: '高田真治・後藤基巳 訳注', url: 'https://www.amazon.co.jp/dp/4003320816?tag=YOUR_ASSOCIATE_ID', icon: '📖' },
+  { title: '易の話（岩波新書）', author: '本田濟', url: 'https://www.amazon.co.jp/dp/4004120799?tag=YOUR_ASSOCIATE_ID', icon: '📚' },
+  { title: '入門 易経（講談社学術文庫）', author: '後藤基巳', url: 'https://www.amazon.co.jp/s?k=易経+入門&tag=YOUR_ASSOCIATE_ID', icon: '🔮' },
 ];
 
-async function init() {
+let selectedCategory = null;
+
+function init() {
   const token = localStorage.getItem('kyusei_token');
   const balanceBar = document.getElementById('balance-bar');
   const loginNote = document.getElementById('login-note');
-  const btn = document.getElementById('btn');
+  const castBtn = document.getElementById('cast-btn');
 
   if (!token) {
-    btn.style.display = 'none';
+    if (castBtn) castBtn.style.display = 'none';
     loginNote.style.display = 'block';
     return;
   }
-
   balanceBar.style.display = 'flex';
   loadBalance(token);
 }
 
 async function loadBalance(token) {
   try {
-    const res = await fetch(`${WORKERS_URL}/api/coins/balance`, {
-      headers: { Authorization: `Bearer ${token}` },
-    });
+    const res = await fetch(`${WORKERS_URL}/api/coins/balance`, { headers: { Authorization: `Bearer ${token}` } });
     const data = await res.json();
     document.getElementById('coin-balance').textContent = `${data.coins} コイン`;
   } catch {
@@ -318,21 +384,43 @@ async function loadBalance(token) {
   }
 }
 
+window.selectCategory = function(cat) {
+  selectedCategory = cat;
+  // ボタンのactive状態
+  document.querySelectorAll('.category-btn').forEach(b => b.classList.remove('selected'));
+  document.querySelector(`[data-cat="${cat}"]`).classList.add('selected');
+
+  // 確認カード表示
+  const info = CATEGORIES[cat];
+  document.getElementById('confirm-cat').innerHTML = `
+    <span class="confirm-cat-icon">${info.icon}</span>
+    <span class="confirm-cat-name">${info.name}</span>
+  `;
+  document.getElementById('confirm-card').style.display = 'block';
+  document.getElementById('confirm-card').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+};
+
+window.resetCategory = function() {
+  selectedCategory = null;
+  document.querySelectorAll('.category-btn').forEach(b => b.classList.remove('selected'));
+  document.getElementById('confirm-card').style.display = 'none';
+};
+
 window.runEki = async function() {
-  const question = document.getElementById('question').value.trim();
-  const errEl = document.getElementById('form-error');
   const token = localStorage.getItem('kyusei_token');
+  const errEl = document.getElementById('form-error');
 
   if (!token) { window.location.href = '/login'; return; }
-  if (!question) { errEl.textContent = '占いたいことを入力してください'; return; }
+  if (!selectedCategory) { errEl.textContent = 'カテゴリを選択してください'; return; }
   errEl.textContent = '';
 
-  const btn = document.getElementById('btn');
+  const btn = document.getElementById('cast-btn');
   const originalText = btn.textContent;
   btn.textContent = '筮竹を振っています...'; btn.disabled = true;
   btn.style.animation = 'pulse 0.8s infinite';
 
   try {
+    const question = CATEGORIES[selectedCategory].question;
     const res = await fetch(`${WORKERS_URL}/api/eki/reading`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
@@ -355,10 +443,15 @@ window.runEki = async function() {
 };
 
 function displayResult(data) {
-  // 質問
-  document.getElementById('r-question').textContent = data.question;
+  const cat = CATEGORIES[selectedCategory];
 
-  // 爻（下から上）
+  // カテゴリ表示
+  document.getElementById('r-category-display').innerHTML = `
+    <span class="q-cat-icon">${cat.icon}</span>
+    <span class="q-cat-name">${cat.name}</span>
+  `;
+
+  // 爻
   const linesEl = document.getElementById('hexagram-lines');
   linesEl.innerHTML = data.hexagram.lineSymbols.map(l => {
     const isChanging = data.hexagram.changingLines.includes(l.index);
@@ -379,6 +472,11 @@ function displayResult(data) {
   document.getElementById('r-money').textContent = h.money;
   document.getElementById('r-advice').textContent = h.advice;
   document.getElementById('r-image').textContent = h.image;
+
+  // カテゴリ別メイン解釈
+  document.getElementById('r-main-label').textContent = MAIN_LABELS[selectedCategory];
+  const mainField = MAIN_FIELDS[selectedCategory];
+  document.getElementById('r-main-text').textContent = h[mainField];
 
   // 之卦
   if (data.nouke) {
@@ -408,24 +506,29 @@ function displayResult(data) {
   // コイン残高更新
   document.getElementById('coin-balance').textContent = `${data.remainingCoins} コイン`;
 
+  // カテゴリ選択セクションを隠して結果を表示
+  document.getElementById('category-section').style.display = 'none';
   const section = document.getElementById('result-section');
   section.style.display = 'block';
   setTimeout(() => {
     section.querySelectorAll('.result-item').forEach((el, i) => {
       setTimeout(() => el.classList.add('show'), i * 150);
     });
-    section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }, 50);
 }
 
-function resetReading() {
-  document.getElementById('result-section').style.display = 'none';
+window.resetAll = function() {
+  selectedCategory = null;
+  document.querySelectorAll('.category-btn').forEach(b => b.classList.remove('selected'));
+  document.getElementById('confirm-card').style.display = 'none';
   document.getElementById('nouke-block').style.display = 'none';
-  document.getElementById('question').value = '';
+  document.getElementById('result-section').style.display = 'none';
+  document.getElementById('category-section').style.display = 'block';
   document.getElementById('form-error').textContent = '';
   loadBalance(localStorage.getItem('kyusei_token'));
   window.scrollTo({ top: 0, behavior: 'smooth' });
-}
+};
 
 // 星背景
 const starsEl = document.getElementById('stars');
