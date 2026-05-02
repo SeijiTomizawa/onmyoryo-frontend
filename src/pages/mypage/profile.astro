@@ -218,6 +218,11 @@ async function init() {
       document.getElementById('birth-month').value = m;
       document.getElementById('birth-day').value = d;
     }
+    // 性別をセット
+    setGender(u.gender || 'f');
+
+    // 性別をセット
+    setGender(u.gender || 'f');
 
     // アカウント情報
     document.getElementById('coin-count').textContent = `${u.coins} コイン`;
