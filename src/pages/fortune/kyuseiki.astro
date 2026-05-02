@@ -349,10 +349,12 @@ function calcTsuki(honmei, month, day) {
   return ((base - offset - 1 + 90) % 9) + 1;
 }
 
-// 自動入力
+// ログイン済みユーザーは自動鑑定
 (function() {
+  const token = localStorage.getItem('kyusei_token');
   const user = JSON.parse(localStorage.getItem('kyusei_user') || 'null');
-  if (!user || !user.birth_date) return;
+  if (!token || !user || !user.birth_date) return;
+
   const [y, m, d] = user.birth_date.split('-').map(Number);
   const yearEl = document.getElementById('year');
   if (yearEl) yearEl.value = y;
@@ -360,13 +362,47 @@ function calcTsuki(honmei, month, day) {
   if (monthEl) monthEl.value = m;
   const dayEl = document.getElementById('day');
   if (dayEl) dayEl.value = d;
-  const banner = document.getElementById('autofill-banner');
-  if (banner) {
-    const name = user.display_name || user.email.split('@')[0];
-    banner.textContent = `${name}さんの生年月日（${y}年${m}月${d}日）を自動入力しました`;
-    banner.style.display = 'block';
-  }
+
+  // フォームセクションを隠して自動鑑定
+  const formCard = document.querySelector('.form-card');
+  if (formCard) formCard.style.display = 'none';
+
+  // 自動で鑑定実行
+  const name = user.display_name || user.email.split('@')[0];
+  autoRunPreview(y, m, d, name);
 })();
+
+async function autoRunPreview(year, month, day, name) {
+  try {
+    const res = await fetch(
+      'https://kyusei-api.seiji-tomizawa.workers.dev/api/fortune/preview?year=' + year + '&month=' + month + '&day=' + day
+    );
+    const data = await res.json();
+    const h = data.honmeiseiNumber || 1;
+    const starName = data.honmeisei || STARS[h-1];
+
+    document.getElementById('res-star-num').textContent = '第' + h + '星 · 本命星';
+    document.getElementById('res-star-name').textContent = starName;
+    document.getElementById('res-tsuki').textContent = STARS[calcTsuki(h, month, day) - 1];
+    document.getElementById('res-birth').textContent = year + '年' + month + '月' + day + '日';
+    document.getElementById('res-keisha').textContent = data.keishakyuu || '';
+    document.getElementById('res-personality').textContent = data.personality;
+
+    // ログイン済みなので詳細メニューを表示
+    document.querySelector('.premium-cta').style.display = 'none';
+    document.getElementById('paid-menu').style.display = 'block';
+
+    const section = document.getElementById('result-section');
+    section.style.display = 'block';
+    section.querySelectorAll('.result-item').forEach((item, idx) => {
+      setTimeout(() => item.classList.add('show'), idx * 150);
+    });
+  } catch(e) {
+    // エラー時はフォームを再表示
+    const formCard = document.querySelector('.form-card');
+    if (formCard) formCard.style.display = 'block';
+  }
+}
 
 window.runPreview = async function() {
   const year = document.getElementById('year').value;
