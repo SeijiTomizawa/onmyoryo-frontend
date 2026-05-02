@@ -1,4 +1,4 @@
-<!-- src/pages/mypage.astro -->
+<!-- /src/pages/mypage.astro -->
 ---
 import Layout from '../layouts/Layout.astro';
 import '../styles/global.css';
@@ -7,27 +7,53 @@ import '../styles/global.css';
 <Layout title="マイページ | 陰陽寮">
   <div class="page">
     <div class="stars" id="stars"></div>
-
-    <div class="page-inner" style="max-width: 860px;">
+    <div class="page-inner">
 
       <!-- ユーザーヘッダー -->
       <div class="user-header fade-in-up">
         <div class="user-info">
           <div class="user-avatar" id="user-avatar">陰</div>
           <div>
-            <h1 class="page-title" style="font-size: 1.5rem; text-align: left; margin-bottom: 0;" id="user-greeting">読み込み中...</h1>
-            <p style="color: var(--gold); font-size: 0.85rem; margin: 0;" id="user-stars">本命星：-- / 月命星：--</p>
+            <p class="user-welcome">ようこそ</p>
+            <h1 class="user-name" id="user-greeting">--様</h1>
+            <p class="user-stars" id="user-stars">本命星：-- / 月命星：--</p>
           </div>
         </div>
-        <div class="coin-balance glass-card">
-          <p class="coin-label">保有コイン</p>
-          <p class="coin-amount" id="coin-amount">--<span>C</span></p>
-          <button class="btn-charge" onclick="window.location.href='/mypage/charge'">チャージ</button>
+        <div class="coin-card glass-card">
+          <div class="coin-info">
+            <p class="coin-label">保有コイン</p>
+            <p class="coin-amount" id="coin-amount">--<span>C</span></p>
+            <p class="coin-rate">1C = ¥100</p>
+          </div>
+          <button class="btn-charge" onclick="window.location.href='/mypage/charge'">
+            ＋ チャージ
+          </button>
+        </div>
+      </div>
+
+      <!-- 今日の運勢バナー -->
+      <div class="today-fortune glass-card fade-in-up delay-1" id="today-fortune">
+        <div class="fortune-left">
+          <p class="fortune-date" id="fortune-date"></p>
+          <h2 class="fortune-title">今日の運勢</h2>
+          <p class="fortune-star" id="fortune-star"></p>
+        </div>
+        <div class="fortune-right">
+          <div class="fortune-score-ring">
+            <svg viewBox="0 0 80 80" class="ring-svg">
+              <circle cx="40" cy="40" r="34" fill="none" stroke="#ffffff15" stroke-width="6"/>
+              <circle cx="40" cy="40" r="34" fill="none" stroke="var(--gold)" stroke-width="6"
+                stroke-dasharray="213.6" stroke-dashoffset="64" stroke-linecap="round"
+                transform="rotate(-90 40 40)" id="score-circle"/>
+            </svg>
+            <div class="ring-score" id="fortune-score">--</div>
+          </div>
+          <p class="fortune-label">運気スコア</p>
         </div>
       </div>
 
       <!-- 運命の交差点アラート -->
-      <div class="alert-box glass-card fade-in-up delay-1" id="fate-alert" style="display:none">
+      <div class="alert-box glass-card fade-in-up" id="fate-alert" style="display:none">
         <div class="alert-icon">⚠️</div>
         <div class="alert-content">
           <h3 class="alert-title"><span id="fate-name">誰か</span>との運命の交差点まで、あと<span class="pulse-text" id="fate-days">0日</span></h3>
@@ -36,12 +62,39 @@ import '../styles/global.css';
         <button class="btn-primary alert-btn" onclick="window.location.href='/menu/love'">詳細を鑑定する (3C)</button>
       </div>
 
+      <!-- クイックアクセス -->
+      <div class="quick-access fade-in-up delay-2">
+        <p class="section-label">占術メニュー</p>
+        <div class="quick-grid">
+          <a href="/fortune/kyuseiki" class="quick-btn">
+            <span class="quick-icon">☯</span>
+            <span class="quick-name">九星気学</span>
+            <span class="quick-free">無料</span>
+          </a>
+          <a href="/fortune/shichu" class="quick-btn">
+            <span class="quick-icon">🌳</span>
+            <span class="quick-name">四柱推命</span>
+            <span class="quick-free">無料</span>
+          </a>
+          <a href="/fortune/sukuyo" class="quick-btn">
+            <span class="quick-icon">🌙</span>
+            <span class="quick-name">宿曜占星術</span>
+            <span class="quick-cost">2C</span>
+          </a>
+          <a href="/fortune/eki" class="quick-btn">
+            <span class="quick-icon">☰</span>
+            <span class="quick-name">易占い</span>
+            <span class="quick-cost">1C</span>
+          </a>
+        </div>
+      </div>
+
       <div class="dashboard-grid">
 
         <!-- ワンオラクル -->
         <div class="glass-card oracle-section fade-in-up delay-2">
           <h2 class="section-title">今日のワンオラクル</h2>
-          <p class="text-muted" style="font-size: 0.8rem; margin-bottom: 1.5rem;">1日1回、今のあなたに必要な啓示を受け取れます。</p>
+          <p class="section-sub">1日1回、今のあなたに必要な啓示</p>
           <div class="oracle-card-container" id="oracle-container" onclick="drawOracle()">
             <div class="oracle-card" id="oracle-card">
               <div class="card-face card-back">
@@ -60,8 +113,11 @@ import '../styles/global.css';
 
         <!-- 秘密の相関図 -->
         <div class="glass-card relation-section fade-in-up delay-3">
-          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1.5rem">
-            <h2 class="section-title" style="margin:0">秘密の相関図</h2>
+          <div class="section-header">
+            <div>
+              <h2 class="section-title" style="margin:0">秘密の相関図</h2>
+              <p class="section-sub" style="margin:0">気になる人との相性を確認</p>
+            </div>
             <button class="btn-add" onclick="openModal()">＋ 追加</button>
           </div>
           <div class="relation-list" id="relation-list"></div>
@@ -70,15 +126,20 @@ import '../styles/global.css';
       </div>
 
       <!-- 鑑定履歴 -->
-      <div class="glass-card history-section fade-in-up delay-4">
-        <h2 class="section-title">鑑定履歴</h2>
+      <div class="glass-card history-section fade-in-up">
+        <div class="section-header">
+          <div>
+            <h2 class="section-title" style="margin:0">鑑定履歴</h2>
+            <p class="section-sub" style="margin:0">直近10件の鑑定記録</p>
+          </div>
+        </div>
         <div id="history-list">
           <p class="text-muted" style="text-align:center;padding:1rem">読み込み中...</p>
         </div>
       </div>
 
       <!-- ログアウト -->
-      <div style="text-align:center;margin-top:2rem">
+      <div style="text-align:center;margin-top:2rem;padding-bottom:2rem">
         <button class="btn-logout" onclick="doLogout()">ログアウト</button>
       </div>
 
@@ -88,19 +149,19 @@ import '../styles/global.css';
   <!-- パートナー追加モーダル -->
   <div class="modal-overlay" id="partner-modal">
     <div class="glass-card modal-content">
-      <h3 style="font-family:'Shippori Mincho',serif;color:#fff;margin-bottom:0.5rem;font-size:1.4rem">お相手を顕現（登録）する</h3>
-      <p style="font-size:0.8rem;color:#ff8e8e;margin-bottom:1.5rem">※ プライバシー保護のため、ニックネームでご登録ください</p>
-      <div class="field" style="margin-bottom:1rem">
+      <h3 class="modal-title">お相手を顕現（登録）する</h3>
+      <p class="modal-note">※ プライバシー保護のため、ニックネームでご登録ください</p>
+      <div class="field">
         <label>ニックネーム</label>
         <input type="text" id="partner-name" placeholder="例：Aくん" autocomplete="off" />
       </div>
-      <div class="field" style="margin-bottom:2rem">
+      <div class="field">
         <label>生年（西暦）</label>
         <input type="number" id="partner-year" placeholder="1995" min="1900" max="2020" />
       </div>
-      <div style="display:flex;gap:12px">
+      <div class="modal-actions">
         <button class="btn-primary" onclick="savePartner()" style="flex:2">想いを同期する</button>
-        <button class="btn-primary" onclick="closeModal()" style="flex:1;background:transparent;border-color:rgba(255,255,255,0.2);color:var(--text-secondary)">取消</button>
+        <button class="btn-cancel" onclick="closeModal()">取消</button>
       </div>
     </div>
   </div>
@@ -109,109 +170,171 @@ import '../styles/global.css';
 <style>
 .page { padding: 2rem 1.5rem; min-height: 100vh; position: relative; }
 .stars { position: fixed; inset: 0; pointer-events: none; z-index: 0; }
-.page-inner { margin: 0 auto; position: relative; z-index: 1; }
+.page-inner { max-width: 860px; margin: 0 auto; position: relative; z-index: 1; }
 
-.user-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; flex-wrap: wrap; gap: 1rem; }
+/* ユーザーヘッダー */
+.user-header {
+  display: flex; justify-content: space-between; align-items: center;
+  margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem;
+}
 .user-info { display: flex; align-items: center; gap: 1rem; }
 .user-avatar {
-  width: 50px; height: 50px; border-radius: 50%;
+  width: 56px; height: 56px; border-radius: 50%;
   background: linear-gradient(135deg, var(--gold), #8b6d20);
   display: flex; align-items: center; justify-content: center;
-  font-size: 1.5rem; font-family: 'Shippori Mincho', serif;
+  font-size: 1.6rem; font-family: 'Shippori Mincho', serif;
   color: #000; font-weight: bold;
+  box-shadow: 0 0 20px rgba(212,175,55,0.3);
 }
-.page-title { font-family: 'Shippori Mincho', serif; }
-.coin-balance {
-  margin-bottom: 0; padding: 1rem 1.5rem;
-  display: flex; align-items: center; gap: 1.5rem;
-  background: rgba(20,24,39,0.8);
-}
-.coin-label { font-size: 0.75rem; color: var(--text-secondary); margin: 0; }
-.coin-amount { font-size: 1.8rem; font-weight: bold; color: #d4af37; margin: 0; line-height: 1; }
-.coin-amount span { font-size: 1rem; color: var(--gold); margin-left: 2px; }
-.btn-charge {
-  background: var(--gold); border: none; color: #000;
-  padding: 6px 12px; border-radius: 6px; font-weight: bold;
-  font-size: 0.8rem; cursor: pointer; transition: 0.3s;
-}
-.btn-charge:hover { box-shadow: 0 0 10px rgba(212,175,55,0.5); transform: translateY(-2px); }
+.user-welcome { font-size: 11px; color: var(--text-secondary); margin: 0; letter-spacing: 0.1em; }
+.user-name { font-family: 'Shippori Mincho', serif; font-size: 1.5rem; margin: 0; color: #f0e6d3; }
+.user-stars { font-size: 12px; color: var(--gold); margin: 0; }
 
+.coin-card {
+  display: flex; align-items: center; gap: 1.5rem;
+  padding: 1rem 1.5rem; margin-bottom: 0;
+  background: linear-gradient(135deg, rgba(30,25,10,0.9), rgba(20,18,10,0.9));
+  border: 0.5px solid rgba(212,175,55,0.3);
+}
+.coin-info { text-align: center; }
+.coin-label { font-size: 10px; color: var(--text-secondary); margin: 0; letter-spacing: 0.1em; }
+.coin-amount { font-size: 2rem; font-weight: bold; color: #d4af37; margin: 0; line-height: 1.2; }
+.coin-amount span { font-size: 1rem; color: var(--gold); margin-left: 2px; }
+.coin-rate { font-size: 10px; color: var(--text-muted); margin: 0; }
+.btn-charge {
+  background: linear-gradient(135deg, var(--gold), #8b6d20);
+  border: none; color: #000; padding: 8px 16px; border-radius: 8px;
+  font-weight: bold; font-size: 13px; cursor: pointer;
+  font-family: 'Noto Serif JP', serif; white-space: nowrap;
+  transition: all 0.2s;
+}
+.btn-charge:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(212,175,55,0.4); }
+
+/* 今日の運勢 */
+.today-fortune {
+  display: flex; justify-content: space-between; align-items: center;
+  margin-bottom: 1.25rem; padding: 1.5rem 2rem;
+  background: linear-gradient(135deg, rgba(20,20,40,0.9), rgba(10,12,20,0.9));
+  border: 0.5px solid rgba(212,175,55,0.2);
+  border-left: 3px solid var(--gold);
+}
+.fortune-left { flex: 1; }
+.fortune-date { font-size: 11px; color: var(--text-secondary); margin: 0 0 4px; letter-spacing: 0.1em; }
+.fortune-title { font-family: 'Shippori Mincho', serif; font-size: 20px; color: #f0e6d3; margin: 0 0 4px; }
+.fortune-star { font-size: 13px; color: var(--gold); margin: 0; }
+.fortune-right { display: flex; flex-direction: column; align-items: center; gap: 4px; }
+.fortune-score-ring { position: relative; width: 80px; height: 80px; }
+.ring-svg { width: 80px; height: 80px; }
+.ring-score {
+  position: absolute; inset: 0; display: flex; align-items: center;
+  justify-content: center; font-size: 20px; font-weight: bold; color: var(--gold);
+}
+.fortune-label { font-size: 10px; color: var(--text-secondary); margin: 0; }
+
+/* アラート */
 .alert-box {
-  margin-bottom: 2rem; padding: 2rem;
+  margin-bottom: 1.25rem; padding: 1.5rem 2rem;
   border-left: 4px solid #f43f5e;
   background: linear-gradient(90deg, rgba(244,63,94,0.1) 0%, rgba(20,24,39,0.6) 100%);
   display: flex; align-items: center; gap: 1.5rem;
 }
-.alert-icon { font-size: 3rem; animation: float 3s ease-in-out infinite; }
+.alert-icon { font-size: 2.5rem; animation: float 3s ease-in-out infinite; flex-shrink: 0; }
 .alert-content { flex: 1; }
-.alert-title { font-family: 'Shippori Mincho', serif; font-size: 1.3rem; color: #fff; margin: 0 0 0.5rem; }
-.pulse-text { color: #f43f5e; font-weight: bold; font-size: 1.8rem; text-shadow: 0 0 10px rgba(244,63,94,0.5); animation: pulse 1.5s infinite; }
-.alert-desc { font-size: 0.9rem; color: var(--text-secondary); margin: 0; line-height: 1.6; }
-.alert-btn { width: auto; padding: 1rem 2rem; border-color: #f43f5e; color: #fff; background: rgba(244,63,94,0.2); }
+.alert-title { font-family: 'Shippori Mincho', serif; font-size: 1.1rem; color: #fff; margin: 0 0 0.4rem; }
+.pulse-text { color: #f43f5e; font-weight: bold; font-size: 1.4rem; animation: pulse 1.5s infinite; }
+.alert-desc { font-size: 12px; color: var(--text-secondary); margin: 0; line-height: 1.6; }
+.alert-btn { white-space: nowrap; padding: 0.75rem 1.25rem; background: rgba(244,63,94,0.2); border-color: #f43f5e; }
 .alert-btn:hover { background: #f43f5e; }
 
-.dashboard-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 1.5rem; }
-@media (max-width: 768px) { .dashboard-grid { grid-template-columns: 1fr; } .alert-box { flex-direction: column; text-align: center; } }
+/* クイックアクセス */
+.quick-access { margin-bottom: 1.25rem; }
+.section-label { font-size: 11px; color: var(--text-secondary); letter-spacing: 0.15em; margin-bottom: 0.75rem; }
+.quick-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+.quick-btn {
+  display: flex; flex-direction: column; align-items: center; gap: 6px;
+  padding: 1rem 0.5rem; background: var(--dark-card);
+  border: 0.5px solid #ffffff15; border-radius: var(--radius-lg);
+  text-decoration: none; transition: all 0.2s; cursor: pointer;
+}
+.quick-btn:hover { border-color: var(--gold); transform: translateY(-2px); background: rgba(212,175,55,0.05); }
+.quick-icon { font-size: 24px; line-height: 1; }
+.quick-name { font-family: 'Shippori Mincho', serif; font-size: 12px; color: #f0e6d3; text-align: center; }
+.quick-free { font-size: 10px; background: rgba(29,158,117,0.2); color: #1d9e75; padding: 2px 8px; border-radius: 999px; border: 0.5px solid rgba(29,158,117,0.3); }
+.quick-cost { font-size: 10px; background: rgba(212,175,55,0.15); color: var(--gold); padding: 2px 8px; border-radius: 999px; border: 0.5px solid rgba(212,175,55,0.3); }
 
-.section-title { font-family: 'Shippori Mincho', serif; font-size: 1.3rem; margin-bottom: 0.5rem; }
+/* ダッシュボード */
+.dashboard-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; margin-bottom: 1.25rem; }
+@media (max-width: 768px) {
+  .dashboard-grid { grid-template-columns: 1fr; }
+  .alert-box { flex-direction: column; text-align: center; }
+  .quick-grid { grid-template-columns: repeat(2, 1fr); }
+  .today-fortune { flex-direction: column; gap: 1rem; text-align: center; }
+}
+
+.section-title { font-family: 'Shippori Mincho', serif; font-size: 1.1rem; margin-bottom: 0.25rem; }
+.section-sub { font-size: 11px; color: var(--text-secondary); margin-bottom: 1rem; }
+.section-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1.25rem; }
 
 /* ワンオラクル */
 .oracle-section { text-align: center; display: flex; flex-direction: column; align-items: center; }
-.oracle-card-container { perspective: 1000px; width: 160px; height: 240px; cursor: pointer; margin: 0 auto; }
+.oracle-card-container { perspective: 1000px; width: 150px; height: 220px; cursor: pointer; margin: 0 auto; }
 .oracle-card { width: 100%; height: 100%; position: relative; transition: transform 0.8s cubic-bezier(0.175,0.885,0.32,1.275); transform-style: preserve-3d; }
 .oracle-card.is-flipped { transform: rotateY(180deg); }
 .card-face { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; border-radius: 12px; display: flex; flex-direction: column; align-items: center; justify-content: center; border: 1px solid rgba(212,175,55,0.3); }
 .card-back { background: linear-gradient(135deg, #1a1c2e, #0a0c10); color: var(--gold); }
-.card-pattern { font-size: 4rem; margin-bottom: 1rem; opacity: 0.8; }
-.card-back p { font-size: 0.85rem; font-weight: bold; letter-spacing: 0.1em; line-height: 1.5; margin: 0; }
+.card-pattern { font-size: 3.5rem; margin-bottom: 0.75rem; opacity: 0.8; }
+.card-back p { font-size: 0.8rem; font-weight: bold; letter-spacing: 0.1em; line-height: 1.5; margin: 0; }
 .card-front { background: linear-gradient(135deg, rgba(212,175,55,0.1), rgba(10,12,16,0.9)); transform: rotateY(180deg); padding: 1rem; text-align: center; }
-.ke-symbol { font-size: 4rem; line-height: 1; color: #d4af37; margin-bottom: 0.5rem; text-shadow: 0 0 15px rgba(212,175,55,0.5); }
-.ke-name { font-family: 'Shippori Mincho', serif; font-size: 1.2rem; color: #fff; margin: 0 0 0.5rem; }
-.ke-desc { font-size: 0.75rem; color: var(--text-secondary); margin: 0 0 1rem; line-height: 1.4; }
-.bonus-get { background: var(--gold); color: #000; font-size: 0.7rem; font-weight: bold; padding: 4px 8px; border-radius: 20px; animation: bounce 1s infinite; }
+.ke-symbol { font-size: 3.5rem; line-height: 1; color: #d4af37; margin-bottom: 0.5rem; text-shadow: 0 0 15px rgba(212,175,55,0.5); }
+.ke-name { font-family: 'Shippori Mincho', serif; font-size: 1.1rem; color: #fff; margin: 0 0 0.4rem; }
+.ke-desc { font-size: 0.75rem; color: var(--text-secondary); margin: 0 0 0.75rem; line-height: 1.5; }
+.bonus-get { background: var(--gold); color: #000; font-size: 0.65rem; font-weight: bold; padding: 3px 8px; border-radius: 20px; animation: bounce 1s infinite; }
 
 /* 相関図 */
-.btn-add { background: transparent; border: 1px solid var(--text-secondary); color: var(--text-secondary); padding: 4px 12px; border-radius: 20px; font-size: 0.8rem; cursor: pointer; transition: 0.3s; font-family: 'Noto Serif JP', serif; }
+.btn-add { background: transparent; border: 1px solid var(--text-secondary); color: var(--text-secondary); padding: 4px 12px; border-radius: 20px; font-size: 0.8rem; cursor: pointer; transition: 0.3s; font-family: 'Noto Serif JP', serif; flex-shrink: 0; }
 .btn-add:hover { border-color: var(--gold); color: var(--gold); }
-.relation-list { display: flex; flex-direction: column; gap: 1rem; max-height: 400px; overflow-y: auto; padding-right: 5px; }
-.relation-item { display: flex; align-items: center; gap: 1rem; padding: 1rem; background: rgba(255,255,255,0.03); border-radius: 12px; border: 1px solid rgba(255,255,255,0.05); transition: 0.3s; cursor: pointer; }
-.relation-item:hover { background: rgba(255,255,255,0.08); transform: translateX(5px); border-color: rgba(212,175,55,0.2); }
-.person-icon { width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 1.2rem; }
-.person-info { flex: 1; }
-.person-name { font-size: 1rem; color: #fff; margin: 0 0 0.25rem; font-weight: bold; }
-.person-star { font-size: 0.75rem; color: var(--text-secondary); margin: 0; }
-.action-tag { font-size: 0.85rem; color: #fff; margin-top: 6px; display: inline-flex; align-items: center; gap: 6px; background: rgba(0,0,0,0.3); padding: 4px 8px; border-radius: 6px; }
-.relation-badge { font-size: 0.8rem; font-weight: bold; padding: 4px 10px; border-radius: 6px; text-align: center; min-width: 50px; }
+.relation-list { display: flex; flex-direction: column; gap: 0.75rem; max-height: 350px; overflow-y: auto; padding-right: 4px; }
+.relation-item { display: flex; align-items: center; gap: 0.875rem; padding: 0.875rem; background: rgba(255,255,255,0.03); border-radius: 10px; border: 1px solid rgba(255,255,255,0.05); transition: 0.2s; cursor: pointer; }
+.relation-item:hover { background: rgba(255,255,255,0.07); transform: translateX(4px); border-color: rgba(212,175,55,0.2); }
+.person-icon { width: 38px; height: 38px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 1.1rem; flex-shrink: 0; }
+.person-info { flex: 1; min-width: 0; }
+.person-name { font-size: 14px; color: #fff; margin: 0 0 2px; font-weight: bold; }
+.person-star { font-size: 11px; color: var(--text-secondary); margin: 0 0 4px; }
+.action-tag { font-size: 12px; color: #f0e6d3; display: inline-flex; align-items: center; gap: 4px; background: rgba(0,0,0,0.3); padding: 3px 8px; border-radius: 6px; }
+.relation-badge { font-size: 12px; font-weight: bold; padding: 4px 10px; border-radius: 6px; text-align: center; min-width: 48px; flex-shrink: 0; }
 .badge-danger { background: rgba(244,63,94,0.15); color: #fb7185; border: 1px solid rgba(244,63,94,0.3); }
 .badge-good { background: rgba(59,130,246,0.15); color: #93c5fd; border: 1px solid rgba(59,130,246,0.3); }
 .badge-normal { background: rgba(16,185,129,0.15); color: #6ee7b7; border: 1px solid rgba(16,185,129,0.3); }
 
 /* 履歴 */
-.history-section { margin-bottom: 1.5rem; }
-.history-item {
-  display: flex; align-items: center; justify-content: space-between;
-  padding: 0.75rem 0; border-bottom: 0.5px solid #ffffff10;
-}
+.history-section { margin-bottom: 1.25rem; }
+.history-item { display: flex; align-items: center; gap: 1rem; padding: 0.875rem 0; border-bottom: 0.5px solid #ffffff0d; }
 .history-item:last-child { border-bottom: none; }
-.history-type { font-size: 13px; color: #f0e6d3; }
-.history-date { font-size: 11px; color: var(--text-secondary); margin-top: 2px; }
-.history-cost { font-size: 12px; color: var(--gold); }
+.history-icon { width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 16px; background: rgba(212,175,55,0.1); flex-shrink: 0; }
+.history-info { flex: 1; }
+.history-type { font-size: 13px; color: #f0e6d3; margin: 0 0 2px; }
+.history-date { font-size: 11px; color: var(--text-secondary); margin: 0; }
+.history-cost { font-size: 13px; color: var(--gold); font-weight: 500; flex-shrink: 0; }
 
 /* モーダル */
-.modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.8); backdrop-filter: blur(5px); z-index: 1000; display: none; align-items: center; justify-content: center; padding: 1.5rem; }
+.modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.85); backdrop-filter: blur(8px); z-index: 1000; display: none; align-items: center; justify-content: center; padding: 1.5rem; }
 .modal-content { width: 100%; max-width: 400px; padding: 2rem; }
-.field { display: flex; flex-direction: column; gap: 4px; }
+.modal-title { font-family: 'Shippori Mincho', serif; color: #fff; margin-bottom: 0.5rem; font-size: 1.4rem; }
+.modal-note { font-size: 0.8rem; color: #ff8e8e; margin-bottom: 1.5rem; }
+.field { display: flex; flex-direction: column; gap: 4px; margin-bottom: 1rem; }
 .field label { font-size: 12px; color: var(--text-secondary); }
+.modal-actions { display: flex; gap: 12px; margin-top: 0.5rem; }
+.btn-cancel { flex: 1; background: transparent; border: 0.5px solid rgba(255,255,255,0.2); color: var(--text-secondary); padding: 0.6rem; border-radius: var(--radius-md); cursor: pointer; font-family: 'Noto Serif JP', serif; font-size: 14px; }
 
 .btn-logout { background: transparent; border: 0.5px solid #ffffff22; color: var(--text-secondary); padding: 0.5rem 2rem; border-radius: var(--radius-md); font-size: 13px; cursor: pointer; font-family: 'Noto Serif JP', serif; }
 
-.relation-list::-webkit-scrollbar { width: 6px; }
-.relation-list::-webkit-scrollbar-track { background: rgba(255,255,255,0.05); border-radius: 10px; }
-.relation-list::-webkit-scrollbar-thumb { background: rgba(212,175,55,0.3); border-radius: 10px; }
+.relation-list::-webkit-scrollbar { width: 4px; }
+.relation-list::-webkit-scrollbar-track { background: rgba(255,255,255,0.03); }
+.relation-list::-webkit-scrollbar-thumb { background: rgba(212,175,55,0.2); border-radius: 10px; }
 
-@keyframes float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+@keyframes float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
 @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.6; } }
-@keyframes bounce { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
+@keyframes bounce { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-4px); } }
 @keyframes twinkle { 0%,100% { opacity: 0.2; } 50% { opacity: 0.8; } }
 </style>
 
@@ -269,22 +392,13 @@ const ORACLE_LIST = [
   { symbol:'䷉', name:'天沢履', desc:'礼節を守れば吉。慎重に歩め。' },
 ];
 
-function getHonmeiNum(year) {
-  let h = (11 - (year % 9)) % 9;
-  return h === 0 ? 9 : h;
-}
-
-function calcTsuki(honmei, month, day) {
-  const setsuiri = {1:6,2:4,3:6,4:5,5:6,6:6,7:7,8:8,9:8,10:8,11:7,12:7};
-  let m = month;
-  if (day < (setsuiri[month] ?? 6)) m = month === 1 ? 12 : month - 1;
-  const group = (honmei - 1) % 3;
-  const base = [8,2,5][group];
-  const offset = (m === 1 ? 13 : m) - 2;
-  return ((base - offset - 1 + 90) % 9) + 1;
-}
+const HISTORY_ICONS = {
+  basic:'☯', monthly:'☯', yearly:'☯',
+  eki:'☰', sukuyo:'🌙', shichu:'🌳',
+};
 
 let myHonmei = 1;
+let myYear = 1990;
 let partners = JSON.parse(localStorage.getItem('onmyoryo_partners') || '[]');
 
 async function init() {
@@ -292,29 +406,44 @@ async function init() {
   const user = JSON.parse(localStorage.getItem('kyusei_user') || 'null');
   if (!token || !user) { window.location.href = '/login'; return; }
 
-  // ユーザー情報表示
   const [y, m, d] = user.birth_date.split('-').map(Number);
+  myYear = y;
   myHonmei = getHonmeiNum(y);
   const tsuki = calcTsuki(myHonmei, m, d);
-  const honmeiName = STARS[myHonmei - 1].name;
-  const tsukiName = STARS[tsuki - 1].name;
-  const avatarChar = STARS[myHonmei - 1].char;
 
-  document.getElementById('user-avatar').textContent = avatarChar;
-  document.getElementById('user-greeting').textContent = `ようこそ、${user.email.split('@')[0]}様`;
-  document.getElementById('user-stars').textContent = `本命星：${honmeiName} / 月命星：${tsukiName}`;
+  document.getElementById('user-avatar').textContent = STARS[myHonmei - 1].char;
+  document.getElementById('user-greeting').textContent = `${user.email.split('@')[0]}様`;
+  document.getElementById('user-stars').textContent = `本命星：${STARS[myHonmei-1].name} / 月命星：${STARS[tsuki-1].name}`;
 
-  // コイン残高
+  // 今日の運勢
+  setTodayFortune(myHonmei);
+
+  // 各データ取得
   loadBalance(token);
-
-  // 鑑定履歴
   loadHistory(token);
-
-  // パートナーリスト
   renderPartners();
-
-  // ワンオラクル（今日分をチェック）
   checkOracleToday();
+}
+
+function setTodayFortune(honmei) {
+  const now = new Date();
+  const days = ['日','月','火','水','木','金','土'];
+  document.getElementById('fortune-date').textContent =
+    `${now.getFullYear()}年${now.getMonth()+1}月${now.getDate()}日（${days[now.getDay()]}）`;
+
+  const dayNum = Math.floor(now.getTime() / (1000 * 60 * 60 * 24));
+  const score = ((dayNum * honmei * 7) % 40) + 55; // 55〜94のスコア
+  document.getElementById('fortune-score').textContent = score;
+  document.getElementById('fortune-star').textContent = STARS[honmei-1].name;
+
+  // スコアリングに応じてリングの色を変える
+  const circle = document.getElementById('score-circle');
+  const circumference = 213.6;
+  const offset = circumference - (circumference * score / 100);
+  circle.setAttribute('stroke-dashoffset', offset.toString());
+  if (score >= 80) circle.setAttribute('stroke', '#1d9e75');
+  else if (score >= 60) circle.setAttribute('stroke', '#d4af37');
+  else circle.setAttribute('stroke', '#f43f5e');
 }
 
 async function loadBalance(token) {
@@ -331,20 +460,20 @@ async function loadHistory(token) {
       fetch(`${WORKERS_URL}/api/fortune/history`, { headers: { Authorization: `Bearer ${token}` } }).then(r => r.json()),
       fetch(`${WORKERS_URL}/api/eki/history`, { headers: { Authorization: `Bearer ${token}` } }).then(r => r.json()),
     ]);
-
     const TYPE_LABEL = { basic:'九星気学 基本鑑定', monthly:'九星気学 月運鑑定', yearly:'九星気学 年運鑑定' };
-    const fortune = (r1.readings || []).map(r => ({ ...r, label: TYPE_LABEL[r.reading_type] || r.reading_type }));
-    const eki = (r2.readings || []).map(r => ({ ...r, label: `易占い：${r.question?.slice(0,12)}...` }));
-    const all = [...fortune, ...eki].sort((a, b) => new Date(b.created_at) - new Date(a.created_at)).slice(0, 10);
+    const fortune = (r1.readings || []).map(r => ({ ...r, label: TYPE_LABEL[r.reading_type] || r.reading_type, icon: '☯' }));
+    const eki = (r2.readings || []).map(r => ({ ...r, label: `易占い：${(r.question||'').slice(0,15)}`, icon: '☰' }));
+    const all = [...fortune, ...eki].sort((a,b) => new Date(b.created_at) - new Date(a.created_at)).slice(0,10);
 
     const listEl = document.getElementById('history-list');
     if (all.length === 0) {
-      listEl.innerHTML = '<p class="text-muted" style="text-align:center;padding:1rem">まだ鑑定履歴がありません</p>';
+      listEl.innerHTML = '<p class="text-muted" style="text-align:center;padding:1.5rem">まだ鑑定履歴がありません</p>';
       return;
     }
     listEl.innerHTML = all.map(r => `
       <div class="history-item">
-        <div>
+        <div class="history-icon">${r.icon}</div>
+        <div class="history-info">
           <p class="history-type">${r.label}</p>
           <p class="history-date">${new Date(r.created_at).toLocaleDateString('ja-JP')}</p>
         </div>
@@ -356,11 +485,25 @@ async function loadHistory(token) {
   }
 }
 
+function getHonmeiNum(year) {
+  let h = (11 - (year % 9)) % 9;
+  return h === 0 ? 9 : h;
+}
+
+function calcTsuki(honmei, month, day) {
+  const setsuiri = {1:6,2:4,3:6,4:5,5:6,6:6,7:7,8:8,9:8,10:8,11:7,12:7};
+  let m = month;
+  if (day < (setsuiri[month] ?? 6)) m = month === 1 ? 12 : month - 1;
+  const group = (honmei - 1) % 3;
+  const base = [8,2,5][group];
+  const offset = (m === 1 ? 13 : m) - 2;
+  return ((base - offset - 1 + 90) % 9) + 1;
+}
+
 function checkOracleToday() {
   const today = new Date().toDateString();
   const lastOracle = localStorage.getItem('oracle_date');
   if (lastOracle === today) {
-    // 今日分は取得済み → めくった状態で表示
     const savedIdx = parseInt(localStorage.getItem('oracle_idx') || '0');
     showOracleResult(savedIdx, false);
   }
@@ -369,14 +512,11 @@ function checkOracleToday() {
 function drawOracle() {
   const card = document.getElementById('oracle-card');
   if (card.classList.contains('is-flipped')) return;
-
   const today = new Date().toDateString();
   const dayNum = Math.floor(new Date().getTime() / (1000 * 60 * 60 * 24));
   const idx = (dayNum + myHonmei) % ORACLE_LIST.length;
-
   localStorage.setItem('oracle_date', today);
   localStorage.setItem('oracle_idx', idx.toString());
-
   showOracleResult(idx, true);
 }
 
@@ -385,10 +525,7 @@ function showOracleResult(idx, addBonus) {
   document.getElementById('oracle-symbol').textContent = oracle.symbol;
   document.getElementById('oracle-name').textContent = oracle.name;
   document.getElementById('oracle-desc').textContent = oracle.desc;
-
-  const card = document.getElementById('oracle-card');
-  card.classList.add('is-flipped');
-
+  document.getElementById('oracle-card').classList.add('is-flipped');
   if (addBonus) {
     setTimeout(() => {
       const coinEl = document.getElementById('coin-amount');
@@ -398,7 +535,6 @@ function showOracleResult(idx, addBonus) {
   }
 }
 
-// パートナー管理
 function openModal() { document.getElementById('partner-modal').style.display = 'flex'; }
 function closeModal() { document.getElementById('partner-modal').style.display = 'none'; }
 
@@ -418,9 +554,9 @@ function renderPartners() {
   const list = document.getElementById('relation-list');
   if (partners.length === 0) {
     list.innerHTML = `
-      <div style="text-align:center;padding:3rem 1rem">
-        <div style="font-size:3rem;color:rgba(255,255,255,0.1);margin-bottom:1rem">👥</div>
-        <p class="text-muted" style="font-size:13px">まだ誰も登録されていません。<br>「＋ 追加」からお相手を登録すると、<br>毎日の恋のアクションが確認できます。</p>
+      <div style="text-align:center;padding:2rem 1rem">
+        <div style="font-size:2.5rem;color:rgba(255,255,255,0.1);margin-bottom:0.75rem">👥</div>
+        <p class="text-muted" style="font-size:12px;line-height:1.7">まだ誰も登録されていません。<br>「＋ 追加」からお相手を登録すると、<br>毎日の恋のアクションが確認できます。</p>
       </div>`;
     document.getElementById('fate-alert').style.display = 'none';
     return;
@@ -466,13 +602,13 @@ function calculateFateDay(myYear) {
       if (action.score === 100 && i < closest) { closest = i; fatePartner = p; }
     }
   });
-  const alert = document.getElementById('fate-alert');
+  const alertEl = document.getElementById('fate-alert');
   if (fatePartner && closest <= 3) {
     document.getElementById('fate-name').textContent = fatePartner.name;
     document.getElementById('fate-days').textContent = closest === 0 ? '今日！' : `${closest}日`;
-    alert.style.display = 'flex';
+    alertEl.style.display = 'flex';
   } else {
-    alert.style.display = 'none';
+    alertEl.style.display = 'none';
   }
 }
 
@@ -484,7 +620,7 @@ function doLogout() {
 
 // 星背景
 const starsEl = document.getElementById('stars');
-for (let i = 0; i < 50; i++) {
+for (let i = 0; i < 60; i++) {
   const s = document.createElement('div');
   const size = Math.random() * 2 + 1;
   s.style.cssText = `position:absolute;border-radius:50%;background:#fff;width:${size}px;height:${size}px;top:${Math.random()*100}%;left:${Math.random()*100}%;opacity:${Math.random()*0.4+0.1};animation:twinkle ${2+Math.random()*3}s ease-in-out infinite;animation-delay:${Math.random()*3}s;`;
