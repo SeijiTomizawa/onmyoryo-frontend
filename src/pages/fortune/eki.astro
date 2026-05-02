@@ -327,7 +327,7 @@ import '../../styles/global.css';
 @keyframes pulse { 0%,100% { opacity: 0.5; } 50% { opacity: 1; } }
 </style>
 
-<script is:inline>
+<!-- <script is:inline>
 const WORKERS_URL = 'https://kyusei-api.seiji-tomizawa.workers.dev';
 
 const CATEGORIES = {
@@ -527,6 +527,201 @@ window.resetAll = function() {
   document.getElementById('category-section').style.display = 'block';
   document.getElementById('form-error').textContent = '';
   loadBalance(localStorage.getItem('kyusei_token'));
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+};
+
+// 星背景
+const starsEl = document.getElementById('stars');
+if (starsEl && starsEl.children.length === 0) {
+  for (let i = 0; i < 50; i++) {
+    const s = document.createElement('div');
+    const size = Math.random() * 2 + 1;
+    s.style.cssText = `position:absolute;border-radius:50%;background:#fff;width:${size}px;height:${size}px;top:${Math.random()*100}%;left:${Math.random()*100}%;opacity:${Math.random()*0.5+0.1};animation:twinkle ${2+Math.random()*3}s ease-in-out infinite;animation-delay:${Math.random()*3}s;`;
+    starsEl.appendChild(s);
+  }
+}
+
+init();
+</script> -->
+
+<script is:inline>
+const CATEGORIES = {
+  love:  { icon: '❤️', name: '恋愛・相性・復縁',  question: '恋愛・相性・復縁について教えてください' },
+  work:  { icon: '💼', name: '仕事・天職・転機',  question: '仕事・天職・転機について教えてください' },
+  money: { icon: '💰', name: '金運・財運・投資',  question: '金運・財運・投資について教えてください' },
+  life:  { icon: '🌟', name: '人生・総合運',      question: '人生・総合運について教えてください' },
+};
+
+const MAIN_LABELS = {
+  love:  '恋愛・相性・復縁への示唆',
+  work:  '仕事・天職・転機への示唆',
+  money: '金運・財運・投資への示唆',
+  life:  '人生・総合運への示唆',
+};
+
+const MAIN_FIELDS = {
+  love:  'love',
+  work:  'work',
+  money: 'money',
+  life:  'overview',
+};
+
+const AFFILIATE_BOOKS = [
+  { title: '易経 上経・下経（岩波文庫）', author: '高田真治・後藤基巳 訳注', url: '#', icon: '📖' },
+  { title: '易の話（岩波新書）', author: '本田濟', url: '#', icon: '📚' },
+  { title: '入門 易経（講談社学術文庫）', author: '後藤基巳', url: '#', icon: '🔮' },
+];
+
+let selectedCategory = null;
+
+function init() {
+  // 🌟 修正ポイント1：API・ログインチェックを一時的に無効化し、UIを表示
+  const balanceBar = document.getElementById('balance-bar');
+  balanceBar.style.display = 'flex';
+  document.getElementById('coin-balance').textContent = `150 コイン`; // ダミー残高
+}
+
+window.selectCategory = function(cat) {
+  selectedCategory = cat;
+  document.querySelectorAll('.category-btn').forEach(b => b.classList.remove('selected'));
+  document.querySelector(`[data-cat="${cat}"]`).classList.add('selected');
+
+  const info = CATEGORIES[cat];
+  document.getElementById('confirm-cat').innerHTML = `
+    <span class="confirm-cat-icon">${info.icon}</span>
+    <span class="confirm-cat-name">${info.name}</span>
+  `;
+  document.getElementById('confirm-card').style.display = 'block';
+  document.getElementById('confirm-card').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+};
+
+window.resetCategory = function() {
+  selectedCategory = null;
+  document.querySelectorAll('.category-btn').forEach(b => b.classList.remove('selected'));
+  document.getElementById('confirm-card').style.display = 'none';
+};
+
+window.runEki = function() {
+  const errEl = document.getElementById('form-error');
+
+  if (!selectedCategory) { errEl.textContent = 'カテゴリを選択してください'; return; }
+  errEl.textContent = '';
+
+  const btn = document.getElementById('cast-btn');
+  const originalText = btn.textContent;
+  btn.textContent = '筮竹を振っています...'; btn.disabled = true;
+  btn.style.animation = 'pulse 0.8s infinite';
+
+  // 🌟 修正ポイント2：fetch(API通信)をやめ、setTimeoutでダミーデータを返す
+  setTimeout(() => {
+    const dummyData = {
+      remainingCoins: 149,
+      hexagram: {
+        // 下から上へ(初爻〜上爻)の並び
+        lineSymbols: [{index: 5}, {index: 4}, {index: 3}, {index: 2}, {index: 1}, {index: 0}],
+        changingLines: [],
+        lines: [7, 7, 7, 7, 7, 7] // 全て陽（乾為天）
+      },
+      honke: {
+        number: 1,
+        name: '乾為天',
+        reading: 'けんいてん',
+        upper: '天',
+        lower: '天',
+        kaji: '乾は、元（おおおい）に亨（とお）る。貞（ただ）しきに利（よろ）し。',
+        overview: '大いなる龍が天を飛ぶように、エネルギーに満ち溢れた力強い時期です。迷わず突き進んで良い時ですが、自信過剰にならないよう周囲への配慮を忘れずに。',
+        love: '強気なアプローチになりがちです。相手のペースを尊重しましょう。',
+        work: 'リーダーシップを発揮して大きな成果を上げられる絶好調の時期です。',
+        money: '大きな収入が期待できますが、強気の投資は慎重に。',
+        advice: '実力は十分にあります。あとは周囲との調和を心がけるだけで万事うまくいきます。',
+        image: '天の運行は健（すこ）やかである。君子はこの自然の姿を見て、自ら努め励んで怠らない。'
+      }
+    };
+
+    btn.style.animation = 'none';
+    btn.textContent = originalText;
+    btn.disabled = false;
+
+    displayResult(dummyData);
+  }, 1500);
+};
+
+function displayResult(data) {
+  const cat = CATEGORIES[selectedCategory];
+
+  document.getElementById('r-category-display').innerHTML = `
+    <span class="q-cat-icon">${cat.icon}</span>
+    <span class="q-cat-name">${cat.name}</span>
+  `;
+
+  const linesEl = document.getElementById('hexagram-lines');
+  linesEl.innerHTML = data.hexagram.lineSymbols.map(l => {
+    const isChanging = data.hexagram.changingLines.includes(l.index);
+    const isYang = data.hexagram.lines[l.index] === 7 || data.hexagram.lines[l.index] === 9;
+    const sym = isYang ? '━━━━━' : '━━ ━━';
+    return `<div class="hex-line ${isChanging ? 'changing' : ''}">${sym}${isChanging ? ' ●' : ''}</div>`;
+  }).join('');
+
+  const h = data.honke;
+  document.getElementById('r-honke-num').textContent = `第${h.number}卦`;
+  document.getElementById('r-honke-name').textContent = `${h.name}（${h.reading}）`;
+  document.getElementById('r-trigrams').textContent = `上卦：${h.upper}　下卦：${h.lower}`;
+  document.getElementById('r-kaji').textContent = h.kaji;
+  document.getElementById('r-overview').textContent = h.overview;
+  document.getElementById('r-love').textContent = h.love;
+  document.getElementById('r-work').textContent = h.work;
+  document.getElementById('r-money').textContent = h.money;
+  document.getElementById('r-advice').textContent = h.advice;
+  document.getElementById('r-image').textContent = h.image;
+
+  document.getElementById('r-main-label').textContent = MAIN_LABELS[selectedCategory];
+  const mainField = MAIN_FIELDS[selectedCategory];
+  document.getElementById('r-main-text').textContent = h[mainField];
+
+  if (data.nouke) {
+    const n = data.nouke;
+    document.getElementById('r-nouke-num').textContent = `第${n.number}卦`;
+    document.getElementById('r-nouke-name').textContent = `${n.name}（${n.reading}）`;
+    document.getElementById('r-nouke-kaji').textContent = n.kaji;
+    document.getElementById('r-nouke-overview').textContent = n.overview;
+    document.getElementById('r-nouke-advice').textContent = n.advice;
+    document.getElementById('nouke-block').style.display = 'block';
+  } else {
+    document.getElementById('nouke-block').style.display = 'none';
+  }
+
+  document.getElementById('affiliate-list').innerHTML = AFFILIATE_BOOKS.map(book => `
+    <a href="${book.url}" target="_blank" rel="noopener sponsored" class="affiliate-item">
+      <div class="affiliate-cover">${book.icon}</div>
+      <div class="affiliate-info">
+        <p class="affiliate-title">${book.title}</p>
+        <p class="affiliate-author">${book.author}</p>
+        <p class="affiliate-link">Amazonで見る →</p>
+      </div>
+    </a>
+  `).join('');
+
+  document.getElementById('coin-balance').textContent = `${data.remainingCoins} コイン`;
+
+  document.getElementById('category-section').style.display = 'none';
+  const section = document.getElementById('result-section');
+  section.style.display = 'block';
+  setTimeout(() => {
+    section.querySelectorAll('.result-item').forEach((el, i) => {
+      setTimeout(() => el.classList.add('show'), i * 150);
+    });
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, 50);
+}
+
+window.resetAll = function() {
+  selectedCategory = null;
+  document.querySelectorAll('.category-btn').forEach(b => b.classList.remove('selected'));
+  document.getElementById('confirm-card').style.display = 'none';
+  document.getElementById('nouke-block').style.display = 'none';
+  document.getElementById('result-section').style.display = 'none';
+  document.getElementById('category-section').style.display = 'block';
+  document.getElementById('form-error').textContent = '';
   window.scrollTo({ top: 0, behavior: 'smooth' });
 };
 

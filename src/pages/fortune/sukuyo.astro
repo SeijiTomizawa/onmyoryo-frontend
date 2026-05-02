@@ -1,0 +1,441 @@
+<!-- src/pages/fortune/sukuyo.astro -->
+---
+import Layout from '../../layouts/Layout.astro';
+import '../../styles/global.css';
+---
+<Layout title="宿曜占星術 | 東洋占術">
+  <div class="page">
+    <div class="stars" id="stars"></div>
+    <div class="page-inner">
+
+      <header class="page-header fade-in-up">
+        <h1 class="page-title">宿曜占星術</h1>
+        <p class="page-desc">古代インドから伝わる二十七宿が、あなたの宿命と本質を照らします</p>
+      </header>
+
+      <div class="glass-card intro-card fade-in-up delay-1">
+        <h2 class="intro-title">月の軌道が刻む、あなたの宿命</h2>
+        <p class="intro-text">
+          宿曜占星術は、平安時代に空海が日本に伝えた古代インド由来の占術です。<br>
+          月が通る27の「宿（しゅく）」のうち、生まれた日の月の位置から「本宿（ほんしゅく）」を算出し、あなたの本質・才能・宿命を読み解きます。
+        </p>
+        <div class="intro-features">
+          <div class="intro-feature">
+            <span class="feature-icon">🌙</span>
+            <span><strong>二十七宿</strong><br>月の軌道を27に分けた宿から、生まれ持った本質と才能を読み解きます</span>
+          </div>
+          <div class="intro-feature">
+            <span class="feature-icon">⭐</span>
+            <span><strong>相性鑑定</strong><br>安宿・栄宿・友宿など、あなたと相性の良い宿を特定します</span>
+          </div>
+          <div class="intro-feature">
+            <span class="feature-icon">🔮</span>
+            <span><strong>詳細鑑定</strong><br>才能・弱点・恋愛・仕事・吉方位など、詳細な鑑定を提供します</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- コイン残高 -->
+      <div class="coin-balance-bar" id="balance-bar" style="display:none">
+        <span class="balance-label">保有コイン</span>
+        <span class="balance-value" id="coin-balance">-- コイン</span>
+        <span class="balance-cost">詳細鑑定 2コイン（¥200相当）</span>
+      </div>
+
+      <!-- 入力フォーム -->
+      <div id="form-section">
+        <div class="glass-card form-card fade-in-up delay-2">
+          <p class="form-label">生年月日を入力してください</p>
+          <div class="date-row">
+            <div class="field">
+              <label>生年（西暦）</label>
+              <input type="number" id="year" placeholder="1990" min="1900" max="2010" />
+            </div>
+            <div class="field">
+              <label>月</label>
+              <select id="month">
+                {Array.from({length:12},(_,i)=>(
+                  <option value={i+1}>{i+1}月</option>
+                ))}
+              </select>
+            </div>
+            <div class="field">
+              <label>日</label>
+              <select id="day">
+                {Array.from({length:31},(_,i)=>(
+                  <option value={i+1}>{i+1}日</option>
+                ))}
+              </select>
+            </div>
+          </div>
+          <p class="error-msg" id="form-error"></p>
+          <button class="btn-primary" id="preview-btn" onclick="runPreview()">✦ 無料で本宿を調べる</button>
+        </div>
+
+        <!-- 無料プレビュー結果 -->
+        <div class="glass-card preview-card" id="preview-card" style="display:none">
+          <div class="preview-header">
+            <p class="preview-label">あなたの本宿</p>
+            <div class="shuku-display">
+              <span class="shuku-symbol" id="p-symbol"></span>
+              <div>
+                <h2 class="shuku-name" id="p-name"></h2>
+                <p class="shuku-element" id="p-element"></p>
+              </div>
+            </div>
+          </div>
+          <div class="preview-teaser">
+            <p class="teaser-text" id="p-personality"></p>
+            <div class="teaser-lock">
+              <p class="lock-text">✦ 才能・弱点・恋愛・仕事・吉方位・相性は詳細鑑定で公開</p>
+            </div>
+          </div>
+          <button class="btn-primary reading-btn" id="reading-btn" onclick="runReading()">
+            🔮 詳細鑑定を受ける（2コイン）
+          </button>
+          <p class="login-note" id="login-note" style="display:none">
+            <a href="/login">ログイン</a>または<a href="/register">新規登録</a>してコインを購入してください
+          </p>
+        </div>
+      </div>
+
+      <!-- 詳細鑑定結果 -->
+      <div id="result-section" style="display:none">
+        <div class="result-grid">
+
+          <!-- 本宿カード -->
+          <div class="glass-card result-block shuku-card">
+            <div class="shuku-hero">
+              <span class="hero-symbol" id="r-symbol"></span>
+              <div>
+                <p class="hero-label" id="r-index"></p>
+                <h2 class="hero-name" id="r-name"></h2>
+                <p class="hero-element" id="r-element"></p>
+              </div>
+            </div>
+            <p class="hero-birth" id="r-birth"></p>
+          </div>
+
+          <!-- 性格・特徴 -->
+          <div class="glass-card result-block">
+            <h3 class="block-title">✦ 本質・性格</h3>
+            <p class="text-body" id="r-personality"></p>
+          </div>
+
+          <!-- 才能・弱点 -->
+          <div class="glass-card result-block">
+            <h3 class="block-title">✦ 才能と弱点</h3>
+            <div class="two-col">
+              <div class="col-item">
+                <h4 class="col-label talent">才能</h4>
+                <p class="text-body" id="r-talent"></p>
+              </div>
+              <div class="col-item">
+                <h4 class="col-label weakness">弱点</h4>
+                <p class="text-body" id="r-weakness"></p>
+              </div>
+            </div>
+          </div>
+
+          <!-- 恋愛・仕事 -->
+          <div class="glass-card result-block">
+            <h3 class="block-title">✦ 恋愛・仕事</h3>
+            <div class="two-col">
+              <div class="col-item">
+                <h4 class="col-label love">恋愛</h4>
+                <p class="text-body" id="r-love"></p>
+              </div>
+              <div class="col-item">
+                <h4 class="col-label work">仕事</h4>
+                <p class="text-body" id="r-work"></p>
+              </div>
+            </div>
+          </div>
+
+          <!-- 吉方位・ラッキー -->
+          <div class="glass-card result-block lucky-block">
+            <h3 class="block-title">✦ 吉日・ラッキー</h3>
+            <div class="lucky-chips" id="r-lucky"></div>
+          </div>
+
+          <!-- 相性 -->
+          <div class="glass-card result-block">
+            <h3 class="block-title">✦ 宿曜相性</h3>
+            <div class="compat-list" id="r-compat"></div>
+          </div>
+
+          <!-- 再鑑定 -->
+          <div class="glass-card result-block" style="text-align:center">
+            <button class="btn-primary" onclick="resetReading()" style="max-width:300px">別の生年月日で調べる</button>
+            <a href="/mypage" class="btn-outline" style="display:block;text-align:center;margin-top:0.75rem;max-width:300px;margin-left:auto;margin-right:auto">マイページへ</a>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+</Layout>
+
+<style>
+.page { padding: 3rem 1.5rem; min-height: 100vh; position: relative; }
+.stars { position: fixed; inset: 0; pointer-events: none; z-index: 0; }
+.page-inner { max-width: 680px; margin: 0 auto; position: relative; z-index: 1; }
+.page-header { text-align: center; margin-bottom: 2rem; }
+.page-title { font-family: 'Shippori Mincho', serif; font-size: 26px; margin-bottom: 0.5rem; }
+.page-desc { font-size: 14px; color: var(--text-secondary); }
+
+.intro-card {
+  text-align: center; margin-bottom: 2rem;
+  border-top: 2px solid #7c6fcd;
+  background: linear-gradient(180deg, rgba(20,20,50,0.6) 0%, rgba(10,12,16,0.8) 100%);
+}
+.intro-title { font-family: 'Shippori Mincho', serif; font-size: 1.3rem; color: #c4b5fd; margin-bottom: 1rem; }
+.intro-text { font-size: 0.9rem; color: var(--text-secondary); line-height: 1.9; margin-bottom: 1.5rem; }
+.intro-features { display: flex; gap: 1rem; flex-wrap: wrap; }
+.intro-feature {
+  flex: 1; min-width: 180px; display: flex; align-items: flex-start; gap: 0.75rem;
+  background: rgba(255,255,255,0.03); padding: 1rem; border-radius: var(--radius-md);
+  border: 1px solid rgba(255,255,255,0.05); text-align: left;
+}
+.feature-icon { font-size: 1.4rem; line-height: 1; }
+.intro-feature span { font-size: 0.85rem; color: var(--text-secondary); line-height: 1.6; }
+.intro-feature strong { display: block; color: #c4b5fd; font-size: 0.95rem; margin-bottom: 0.25rem; font-family: 'Shippori Mincho', serif; }
+
+.coin-balance-bar {
+  display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1rem;
+  background: var(--dark-card); border: 0.5px solid #ffffff15;
+  border-radius: var(--radius-md); padding: 0.6rem 1rem;
+}
+.balance-label { font-size: 12px; color: var(--text-secondary); }
+.balance-value { font-size: 16px; color: #c4b5fd; font-weight: 500; }
+.balance-cost { font-size: 11px; color: var(--text-muted); margin-left: auto; }
+
+.form-card { margin-bottom: 1rem; }
+.form-label { font-size: 13px; color: var(--text-secondary); margin-bottom: 1rem; }
+.date-row { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 8px; margin-bottom: 1rem; }
+.field { display: flex; flex-direction: column; gap: 4px; }
+.field label { font-size: 11px; color: var(--text-secondary); }
+
+/* プレビュー */
+.preview-card { margin-bottom: 1rem; border-top: 2px solid #7c6fcd; }
+.preview-label { font-size: 11px; color: #c4b5fd; letter-spacing: 0.15em; margin-bottom: 0.75rem; }
+.shuku-display { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.25rem; }
+.shuku-symbol { font-size: 36px; color: #c4b5fd; }
+.shuku-name { font-family: 'Shippori Mincho', serif; font-size: 26px; margin-bottom: 4px; }
+.shuku-element { font-size: 12px; color: var(--text-secondary); }
+.preview-teaser { margin-bottom: 1.25rem; }
+.teaser-text { font-size: 13px; color: var(--text-secondary); line-height: 1.9; margin-bottom: 0.75rem; }
+.teaser-lock {
+  background: rgba(124,111,205,0.08); border: 1px dashed rgba(124,111,205,0.3);
+  border-radius: var(--radius-md); padding: 0.75rem; text-align: center;
+}
+.lock-text { font-size: 12px; color: #c4b5fd; }
+.reading-btn { max-width: 300px; }
+.login-note { font-size: 13px; color: var(--text-secondary); text-align: center; margin-top: 0.75rem; }
+
+/* 結果 */
+.result-grid { display: flex; flex-direction: column; gap: 1.25rem; margin-top: 2rem; }
+.result-block { padding: 1.75rem; }
+.block-title {
+  font-family: 'Shippori Mincho', serif; font-size: 16px;
+  color: #c4b5fd; margin-bottom: 1.25rem;
+  padding-bottom: 0.75rem; border-bottom: 0.5px solid rgba(124,111,205,0.3);
+}
+
+.shuku-card { border-top: 3px solid #7c6fcd; text-align: center; }
+.shuku-hero { display: flex; align-items: center; gap: 1.25rem; justify-content: center; margin-bottom: 0.75rem; }
+.hero-symbol { font-size: 48px; color: #c4b5fd; }
+.hero-label { font-size: 11px; color: #c4b5fd; margin-bottom: 4px; }
+.hero-name { font-family: 'Shippori Mincho', serif; font-size: 32px; margin-bottom: 4px; }
+.hero-element { font-size: 13px; color: var(--text-secondary); }
+.hero-birth { font-size: 12px; color: var(--text-muted); }
+
+.text-body { font-size: 13px; color: var(--text-secondary); line-height: 1.9; }
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+.col-item { background: rgba(255,255,255,0.03); border-radius: var(--radius-md); padding: 1rem; }
+.col-label { font-size: 10px; letter-spacing: 0.1em; margin-bottom: 0.5rem; }
+.col-label.talent { color: #5ef0c5; }
+.col-label.weakness { color: #ff8e8e; }
+.col-label.love { color: #f9a8d4; }
+.col-label.work { color: #93c5fd; }
+
+.lucky-block { background: linear-gradient(135deg, rgba(20,20,50,0.8), rgba(10,12,16,0.8)); }
+.lucky-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.lucky-chip {
+  font-size: 13px; padding: 6px 14px; border-radius: 999px;
+  background: rgba(124,111,205,0.15); color: #c4b5fd;
+  border: 0.5px solid rgba(124,111,205,0.3);
+}
+
+.compat-list { display: flex; flex-direction: column; gap: 0.75rem; }
+.compat-item {
+  display: flex; align-items: center; gap: 1rem;
+  background: rgba(255,255,255,0.03); border-radius: var(--radius-md);
+  padding: 0.875rem; border: 0.5px solid rgba(255,255,255,0.08);
+}
+.compat-name { font-family: 'Shippori Mincho', serif; font-size: 16px; color: #f0e6d3; min-width: 80px; }
+.compat-relation { font-size: 11px; color: #c4b5fd; margin-bottom: 4px; }
+.compat-desc { font-size: 12px; color: var(--text-secondary); }
+
+.btn-outline {
+  background: transparent; color: #c4b5fd; border: 0.5px solid #c4b5fd;
+  border-radius: var(--radius-md); padding: 0.6rem 1.5rem; font-size: 14px;
+  cursor: pointer; font-family: 'Noto Serif JP', serif; transition: all 0.2s;
+}
+.btn-outline:hover { background: #7c6fcd; color: #fff; }
+
+@keyframes twinkle { 0%,100% { opacity: 0.2; } 50% { opacity: 0.8; } }
+</style>
+
+<script is:inline>
+const WORKERS_URL = 'https://kyusei-api.seiji-tomizawa.workers.dev';
+
+async function init() {
+  const token = localStorage.getItem('kyusei_token');
+  const balanceBar = document.getElementById('balance-bar');
+  if (token) {
+    balanceBar.style.display = 'flex';
+    loadBalance(token);
+  }
+}
+
+async function loadBalance(token) {
+  try {
+    const res = await fetch(`${WORKERS_URL}/api/coins/balance`, { headers: { Authorization: `Bearer ${token}` } });
+    const data = await res.json();
+    document.getElementById('coin-balance').textContent = `${data.coins} コイン`;
+  } catch {}
+}
+
+window.runPreview = async function() {
+  const year = document.getElementById('year').value;
+  const month = document.getElementById('month').value;
+  const day = document.getElementById('day').value;
+  const errEl = document.getElementById('form-error');
+
+  if (!year || parseInt(year) < 1900 || parseInt(year) > 2010) {
+    errEl.textContent = '生年を正しく入力してください（1900〜2010）'; return;
+  }
+  errEl.textContent = '';
+
+  const btn = document.getElementById('preview-btn');
+  btn.textContent = '調べています...'; btn.disabled = true;
+
+  try {
+    const res = await fetch(`${WORKERS_URL}/api/sukuyo/preview?year=${year}&month=${month}&day=${day}`);
+    const data = await res.json();
+
+    document.getElementById('p-symbol').textContent = data.symbol || '☆';
+    document.getElementById('p-name').textContent = data.shuku;
+    document.getElementById('p-element').textContent = `${data.element}の気`;
+    document.getElementById('p-personality').textContent = data.personality || '詳細鑑定で確認できます。';
+
+    // ログイン状態チェック
+    const token = localStorage.getItem('kyusei_token');
+    if (!token) {
+      document.getElementById('reading-btn').style.display = 'none';
+      document.getElementById('login-note').style.display = 'block';
+    }
+
+    document.getElementById('preview-card').style.display = 'block';
+    document.getElementById('preview-card').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  } catch {
+    errEl.textContent = 'エラーが発生しました。しばらくしてお試しください。';
+  } finally {
+    btn.textContent = '✦ 無料で本宿を調べる'; btn.disabled = false;
+  }
+};
+
+window.runReading = async function() {
+  const token = localStorage.getItem('kyusei_token');
+  if (!token) { window.location.href = '/login'; return; }
+
+  const year = document.getElementById('year').value;
+  const month = document.getElementById('month').value;
+  const day = document.getElementById('day').value;
+
+  const btn = document.getElementById('reading-btn');
+  btn.textContent = '鑑定中...'; btn.disabled = true;
+
+  try {
+    const res = await fetch(`${WORKERS_URL}/api/sukuyo/reading`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+      body: JSON.stringify({ year: parseInt(year), month: parseInt(month), day: parseInt(day) }),
+    });
+    const data = await res.json();
+
+    if (!res.ok) {
+      document.getElementById('form-error').textContent = data.error || 'エラーが発生しました';
+      return;
+    }
+
+    displayResult(data);
+  } catch {
+    document.getElementById('form-error').textContent = '通信エラーが発生しました。';
+  } finally {
+    btn.textContent = '🔮 詳細鑑定を受ける（2コイン）'; btn.disabled = false;
+  }
+};
+
+function displayResult(data) {
+  document.getElementById('r-symbol').textContent = data.symbol || '☆';
+  document.getElementById('r-index').textContent = `第${data.shukuIndex + 1}宿`;
+  document.getElementById('r-name').textContent = data.shuku;
+  document.getElementById('r-element').textContent = `${data.element}の気`;
+  document.getElementById('r-birth').textContent = data.birthDate;
+  document.getElementById('r-personality').textContent = data.personality;
+  document.getElementById('r-talent').textContent = data.talent;
+  document.getElementById('r-weakness').textContent = data.weakness;
+  document.getElementById('r-love').textContent = data.love;
+  document.getElementById('r-work').textContent = data.work;
+
+  // 吉方位・ラッキー
+  const luckyEl = document.getElementById('r-lucky');
+  luckyEl.innerHTML = (data.lucky || '').split('・').map(l =>
+    `<span class="lucky-chip">${l}</span>`
+  ).join('');
+
+  // 相性
+  const compatEl = document.getElementById('r-compat');
+  compatEl.innerHTML = (data.compatibility || []).map(c => `
+    <div class="compat-item">
+      <span class="compat-name">${c.name}</span>
+      <div>
+        <p class="compat-relation">${c.relation}</p>
+        <p class="compat-desc">${c.desc}</p>
+      </div>
+    </div>
+  `).join('');
+
+  // コイン残高更新
+  document.getElementById('coin-balance').textContent = `${data.remainingCoins} コイン`;
+
+  document.getElementById('form-section').style.display = 'none';
+  const section = document.getElementById('result-section');
+  section.style.display = 'block';
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+window.resetReading = function() {
+  document.getElementById('result-section').style.display = 'none';
+  document.getElementById('preview-card').style.display = 'none';
+  document.getElementById('form-section').style.display = 'block';
+  document.getElementById('year').value = '';
+  document.getElementById('form-error').textContent = '';
+  loadBalance(localStorage.getItem('kyusei_token'));
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+};
+
+// 星背景
+const starsEl = document.getElementById('stars');
+for (let i = 0; i < 50; i++) {
+  const s = document.createElement('div');
+  const size = Math.random() * 2 + 1;
+  s.style.cssText = `position:absolute;border-radius:50%;background:#fff;width:${size}px;height:${size}px;top:${Math.random()*100}%;left:${Math.random()*100}%;opacity:${Math.random()*0.5+0.1};animation:twinkle ${2+Math.random()*3}s ease-in-out infinite;animation-delay:${Math.random()*3}s;`;
+  starsEl.appendChild(s);
+}
+
+init();
+</script>
