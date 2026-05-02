@@ -15,23 +15,55 @@ import '../../styles/global.css';
 
       <div class="glass-card intro-card fade-in-up delay-1">
         <h2 class="intro-title">宇宙の「気」を読み解く運命学</h2>
-        <p class="intro-text">
-          九星気学は、古代中国を起源とする「気（エネルギー）」の法則です。<br>
-          あなたが生まれた瞬間に満ちていた宇宙のエネルギーを9つの星に分類し、生まれ持った宿命や才能、そして人生のバイオリズムを紐解きます。
-        </p>
+
+        <div class="intro-section">
+          <h3 class="intro-section-title">九星気学とは</h3>
+          <p class="intro-text">
+            九星気学（きゅうせいきがく）は、古代中国を起源とする「気（エネルギー）」の法則をもとにした東洋占術です。
+            宇宙のエネルギーを一白水星・二黒土星・三碧木星・四緑木星・五黄土星・六白金星・七赤金星・八白土星・九紫火星の9つに分類し、
+            生まれ持った宿命や才能、そして人生のバイオリズムを読み解きます。
+          </p>
+        </div>
+
+        <div class="intro-section">
+          <h3 class="intro-section-title">本命星・月命星・傾斜宮</h3>
+          <p class="intro-text">
+            九星気学では主に3つの星を使います。生まれた年から算出する「本命星（ほんめいせい）」があなたの本質と表の性格を表し、
+            生まれた月から算出する「月命星（つきめいせい）」が内面と感情パターンを表します。
+            この2つの組み合わせを「傾斜宮（けいしゃきゅう）」と呼び、より深い宿命の読み解きに使います。
+          </p>
+        </div>
+
+        <div class="intro-section">
+          <h3 class="intro-section-title">吉方位とは</h3>
+          <p class="intro-text">
+            九星気学の最大の特徴が「方位学（ほういがく）」です。本命星によって吉方位・凶方位が決まり、
+            引越し・旅行・転職・結婚など人生の重要な決断において、吉方位を活用することで運気を大きく引き寄せることができます。
+            逆に凶方位への移動は運気を乱すとされるため、重要な行動の際には方位を意識することが大切です。
+          </p>
+        </div>
+
         <div class="intro-features">
           <div class="intro-feature">
             <span class="feature-icon">✧</span>
-            <span><strong>本質と才能</strong><br>本命星が示すあなたの真の姿と隠された裏の性格</span>
+            <span><strong>本命星：本質と才能</strong><br>生まれ年から算出する本命星が示す、あなたの真の姿・性格・才能・人生テーマ</span>
+          </div>
+          <div class="intro-feature">
+            <span class="feature-icon">☽</span>
+            <span><strong>月命星：内面と感情</strong><br>生まれ月から算出する月命星が示す、感情パターン・対人関係・内なる欲求</span>
           </div>
           <div class="intro-feature">
             <span class="feature-icon">🧭</span>
-            <span><strong>吉方位</strong><br>自ら動いて運を掴む、あなただけの最強パワースポット</span>
+            <span><strong>吉方位：運を引き寄せる方角</strong><br>引越し・旅行・転職など重要な行動で活用する、あなただけの最強パワースポット</span>
           </div>
           <div class="intro-feature">
             <span class="feature-icon">⏳</span>
-            <span><strong>運命の波</strong><br>今は攻める時か、守る時か。人生の波を味方につける時期</span>
+            <span><strong>年運・月運：運命の波</strong><br>今は攻める時か、守る時か。9年・9ヶ月サイクルで変化する人生の波を読む</span>
           </div>
+        </div>
+
+        <div class="intro-note">
+          <p>※ 九星気学では2月3日（節分）を年の区切りとします。1〜2月3日生まれの方は前年の本命星になる場合があります。</p>
         </div>
       </div>
 
@@ -232,6 +264,11 @@ import '../../styles/global.css';
 .plan-coins { font-size: 1.4rem; font-weight: bold; color: #fff; }
 .plan-coins span { font-size: 0.8rem; margin-left: 2px; color: var(--gold); }
 .plan-price { font-size: 0.75rem; color: var(--text-secondary); margin-top: 4px; }
+.intro-section { margin-bottom: 1.25rem; text-align: left; }
+.intro-section-title { font-family: 'Shippori Mincho', serif; font-size: 15px; color: var(--gold); margin-bottom: 0.5rem; letter-spacing: 0.05em; }
+.intro-note { margin-top: 1.25rem; padding: 0.75rem 1rem; background: rgba(255,255,255,0.03); border-radius: var(--radius-md); border: 0.5px solid rgba(255,255,255,0.08); }
+.intro-note p { font-size: 12px; color: var(--text-secondary); margin: 0; }
+
 @keyframes twinkle {
   0% { opacity: 0.3; transform: scale(0.8); }
   50% { opacity: 1; transform: scale(1.1); }
