@@ -15,23 +15,58 @@ import '../../styles/global.css';
 
       <div class="glass-card intro-card fade-in-up delay-1">
         <h2 class="intro-title">「今」の迷いに答える神秘の卜術</h2>
-        <p class="intro-text">
-          易（周易）は、古代中国から伝わる、偶然の事象から必然を読み解く卜術（ぼくじゅつ）です。<br>
-          「A案とB案、どちらを選ぶべきか」「今、相手はどう思っているか」といった、現在直面している具体的な悩みや近い未来の選択に対して、六十四の卦（け）が明確な啓示を与えます。
-        </p>
+
+        <div class="intro-section">
+          <h3 class="intro-section-title">易（周易）とは</h3>
+          <p class="intro-text">
+            易（周易）は、3000年以上の歴史を持つ古代中国の卜術（ぼくじゅつ）です。
+            孔子も深く学んだとされる東洋思想の根幹であり、陰（⚋）と陽（⚊）の二つの原理の組み合わせから、
+            宇宙と人生のあらゆる状況を64種類の「卦（け）」で表現します。
+          </p>
+        </div>
+
+        <div class="intro-section">
+          <h3 class="intro-section-title">他の占いとの違い</h3>
+          <p class="intro-text">
+            四柱推命や九星気学が「生年月日から宿命を読む」のに対し、易は「今この瞬間の状況を読む」卜術です。
+            過去の宿命ではなく、現在進行中の問題や近い未来の選択に対して、
+            白黒はっきりとした具体的な答えと行動指針を与えてくれます。
+            「あの人は今どう思っているか」「転職すべきか」「この投資は吉か凶か」といった
+            具体的な問いに最も適した占術です。
+          </p>
+        </div>
+
+        <div class="intro-section">
+          <h3 class="intro-section-title">本卦と之卦（変化の先）</h3>
+          <p class="intro-text">
+            易では「本卦（ほんけ）」で現在の状況を読み、変爻（へんこう）がある場合は
+            「之卦（のうけ）」で変化の先・未来の状況も読み解きます。
+            変爻とは陰が陽に・陽が陰に変化する爻のことで、状況が動いていることを示します。
+            変爻がある場合は特に重要なメッセージが含まれています。
+          </p>
+        </div>
+
         <div class="intro-features">
           <div class="intro-feature">
             <span class="feature-icon">☯️</span>
-            <span><strong>森羅万象の法則</strong><br>陰と陽の組み合わせからなる64種類の「卦」が、今のあなたの状況を的確に言い当てます</span>
+            <span><strong>64卦：森羅万象の法則</strong><br>陰陽の組み合わせからなる64種類の「卦」が、今のあなたの状況を的確に言い当てます</span>
           </div>
           <div class="intro-feature">
             <span class="feature-icon">🌿</span>
-            <span><strong>偶然という必然</strong><br>占う瞬間のあなたの心の波長が、画面越しに「筮竹（ぜいちく）」の結果へと反映されます</span>
+            <span><strong>偶然という必然</strong><br>占う瞬間のあなたの心の波長が「筮竹（ぜいちく）」の結果へと反映される、偶然の中の必然</span>
           </div>
           <div class="intro-feature">
             <span class="feature-icon">⚖️</span>
             <span><strong>明確な行動指針</strong><br>「進むべきか、退くべきか」。遠い未来ではなく、直近のアクションへの最適な答えを導きます</span>
           </div>
+          <div class="intro-feature">
+            <span class="feature-icon">🔄</span>
+            <span><strong>之卦：変化の先を読む</strong><br>変爻がある場合は之卦で未来の変化も読み解きます。状況がどう動くかを示します</span>
+          </div>
+        </div>
+
+        <div class="intro-note">
+          <p>※ 易は「今この瞬間の問い」に答えます。占う前に心を静め、具体的な問いを一つだけ心に念じてからボタンを押してください。</p>
         </div>
       </div>
 
@@ -323,11 +358,16 @@ import '../../styles/global.css';
 }
 .btn-outline:hover { background: #f59e0b; color: #000; }
 
+.intro-section { margin-bottom: 1.25rem; text-align: left; }
+.intro-section-title { font-family: 'Shippori Mincho', serif; font-size: 15px; color: #f59e0b; margin-bottom: 0.5rem; letter-spacing: 0.05em; }
+.intro-note { margin-top: 1.25rem; padding: 0.75rem 1rem; background: rgba(245,158,11,0.05); border-radius: var(--radius-md); border: 0.5px solid rgba(245,158,11,0.2); }
+.intro-note p { font-size: 12px; color: var(--text-secondary); margin: 0; }
+
 @keyframes twinkle { 0%,100% { opacity: 0.2; } 50% { opacity: 0.8; } }
 @keyframes pulse { 0%,100% { opacity: 0.5; } 50% { opacity: 1; } }
 </style>
 
-<!-- <script is:inline>
+<script is:inline>
 const WORKERS_URL = 'https://kyusei-api.seiji-tomizawa.workers.dev';
 
 const CATEGORIES = {
@@ -542,7 +582,7 @@ if (starsEl && starsEl.children.length === 0) {
 }
 
 init();
-</script> -->
+</script>
 
 <script is:inline>
 const CATEGORIES = {
