@@ -10,15 +10,43 @@ import '../../styles/global.css';
 
       <header class="page-header fade-in-up">
         <h1 class="page-title">宿曜占星術</h1>
-        <p class="page-desc">古代インドから伝わる二十七宿が、あなたの宿命と本質を照らします</p>
+        <p class="page-desc">古代インドより伝わる二十七宿の叡智が、あなたの宿命と本質を月の軌跡から照らします</p>
       </header>
 
       <div class="glass-card intro-card fade-in-up delay-1">
         <h2 class="intro-title">月の軌道が刻む、あなたの宿命</h2>
-        <p class="intro-text">
-          宿曜占星術は、平安時代に空海が日本に伝えた古代インド由来の占術です。<br>
-          月が通る27の「宿（しゅく）」のうち、生まれた日の月の位置から「本宿（ほんしゅく）」を算出し、あなたの本質・才能・宿命を読み解きます。
-        </p>
+        <div class="intro-history">
+          <h3 class="history-title">宿曜占星術とは</h3>
+          <p class="intro-text">
+            宿曜占星術（すくようせんせいじゅつ）は、古代インド発祥の占星術が中国を経由して日本に伝わったものです。
+            8世紀に空海や密教僧によって日本に伝えられ、平安時代の貴族社会で広く使われました。「宿曜経」という経典がベースになっています。
+          </p>
+          <h3 class="history-title">月の位置で読み解く本質</h3>
+          <p class="intro-text">
+            月が約27〜28日かけて地球を一周することに着目し、その軌道を27の「宿（しゅく）」に分割します。
+            生まれた日に月がどの宿にあったかで、その人の本質・才能・運命・相性を判断します。<br>
+            西洋占星術が「太陽の位置」を基準にするのに対し、宿曜占星術は「月の位置」を基準にします。
+            月は感情・本能・潜在意識を司るとされるため、表面的な性格より深い内面や宿命を読み解くのに向いています。
+          </p>
+          <h3 class="history-title">27宿と相性</h3>
+          <p class="intro-text">
+            27宿はそれぞれ固有の性質を持ち、宿同士の関係で相性が決まります。特に有名なのが以下の3種類です。
+          </p>
+          <div class="compat-types">
+            <div class="compat-type">
+              <span class="compat-badge best">安宿</span>
+              <span class="compat-type-desc">最良の相性。互いに補い合える関係</span>
+            </div>
+            <div class="compat-type">
+              <span class="compat-badge good">栄宿</span>
+              <span class="compat-type-desc">共に発展できる相性</span>
+            </div>
+            <div class="compat-type">
+              <span class="compat-badge friend">命宿</span>
+              <span class="compat-type-desc">魂レベルでつながる深い縁</span>
+            </div>
+          </div>
+        </div>
         <div class="intro-features">
           <div class="intro-feature">
             <span class="feature-icon">🌙</span>
@@ -284,6 +312,24 @@ import '../../styles/global.css';
   cursor: pointer; font-family: 'Noto Serif JP', serif; transition: all 0.2s;
 }
 .btn-outline:hover { background: #7c6fcd; color: #fff; }
+
+.intro-history { text-align: left; }
+.history-title {
+  font-family: 'Shippori Mincho', serif;
+  font-size: 14px; color: #c4b5fd;
+  margin: 1.25rem 0 0.5rem; letter-spacing: 0.05em;
+}
+.history-title:first-child { margin-top: 0; }
+.compat-types { display: flex; flex-direction: column; gap: 8px; margin-top: 0.75rem; }
+.compat-type { display: flex; align-items: center; gap: 0.75rem; }
+.compat-badge {
+  font-size: 11px; font-weight: bold; padding: 3px 10px;
+  border-radius: 999px; flex-shrink: 0; min-width: 48px; text-align: center;
+}
+.compat-badge.best { background: rgba(94,240,197,0.15); color: #5ef0c5; border: 0.5px solid rgba(94,240,197,0.3); }
+.compat-badge.good { background: rgba(124,111,205,0.15); color: #c4b5fd; border: 0.5px solid rgba(124,111,205,0.3); }
+.compat-badge.friend { background: rgba(249,168,212,0.15); color: #f9a8d4; border: 0.5px solid rgba(249,168,212,0.3); }
+.compat-type-desc { font-size: 12px; color: var(--text-secondary); }
 
 @keyframes twinkle { 0%,100% { opacity: 0.2; } 50% { opacity: 0.8; } }
 </style>
