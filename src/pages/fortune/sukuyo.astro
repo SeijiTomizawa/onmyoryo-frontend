@@ -72,7 +72,8 @@ import '../../styles/global.css';
 
       <!-- 入力フォーム -->
       <div id="form-section">
-        <div class="glass-card form-card fade-in-up delay-2">
+        <div class="autofill-banner" id="autofill-banner" style="display:none"></div>
+      <div class="glass-card form-card fade-in-up delay-2">
           <p class="form-label">生年月日を入力してください</p>
           <div class="date-row">
             <div class="field">
@@ -331,6 +332,11 @@ import '../../styles/global.css';
 .compat-badge.friend { background: rgba(249,168,212,0.15); color: #f9a8d4; border: 0.5px solid rgba(249,168,212,0.3); }
 .compat-type-desc { font-size: 13px; color: var(--text-secondary); }
 
+.autofill-banner {
+  background: rgba(29,158,117,0.12); border: 0.5px solid rgba(29,158,117,0.3);
+  border-radius: var(--radius-md); padding: 0.6rem 1rem;
+  font-size: 13px; color: #1d9e75; margin-bottom: 1rem; text-align: center;
+}
 @keyframes twinkle { 0%,100% { opacity: 0.2; } 50% { opacity: 0.8; } }
 </style>
 
@@ -473,6 +479,22 @@ window.resetReading = function() {
   loadBalance(localStorage.getItem('kyusei_token'));
   window.scrollTo({ top: 0, behavior: 'smooth' });
 };
+
+// 自動入力
+(function() {
+  const user = JSON.parse(localStorage.getItem('kyusei_user') || 'null');
+  if (!user || !user.birth_date) return;
+  const [y, m, d] = user.birth_date.split('-').map(Number);
+  ['year','birth-year'].forEach(id => { const el = document.getElementById(id); if (el) el.value = y; });
+  ['month','birth-month'].forEach(id => { const el = document.getElementById(id); if (el) el.value = m; });
+  ['day','birth-day'].forEach(id => { const el = document.getElementById(id); if (el) el.value = d; });
+  const banner = document.getElementById('autofill-banner');
+  if (banner) {
+    const name = user.display_name || user.email.split('@')[0];
+    banner.textContent = `${name}さんの生年月日（${y}年${m}月${d}日）を自動入力しました`;
+    banner.style.display = 'block';
+  }
+})();
 
 // 星背景
 const starsEl = document.getElementById('stars');

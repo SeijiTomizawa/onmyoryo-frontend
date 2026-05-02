@@ -141,6 +141,7 @@ import '../styles/global.css';
       </div>
 
       <div style="text-align:center;margin-top:2rem;padding-bottom:2rem">
+      <a href="/mypage/profile" class="btn-profile">プロフィール・パスワード管理</a>
         <button class="btn-logout" onclick="doLogout()">ログアウト</button>
       </div>
 
@@ -305,6 +306,8 @@ import '../styles/global.css';
 .kaji-label-modal { font-size: 10px; color: var(--gold); margin-bottom: 4px; }
 .kaji-text-modal { font-family: 'Shippori Mincho', serif; font-size: 15px; color: #fde68a; line-height: 1.8; margin: 0; }
 
+.btn-profile { display:inline-block; background: transparent; border: 0.5px solid rgba(212,175,55,0.4); color: var(--gold); padding: 0.5rem 1.5rem; border-radius: var(--radius-md); font-size: 14px; cursor: pointer; font-family: 'Noto Serif JP', serif; text-decoration: none; margin-bottom: 0.75rem; transition: all 0.2s; }
+.btn-profile:hover { background: rgba(212,175,55,0.1); }
 .btn-logout { background: transparent; border: 0.5px solid #ffffff22; color: var(--text-secondary); padding: 0.5rem 2rem; border-radius: var(--radius-md); font-size: 14px; cursor: pointer; font-family: 'Noto Serif JP', serif; }
 
 .relation-list::-webkit-scrollbar { width: 4px; }

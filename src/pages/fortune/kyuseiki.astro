@@ -67,6 +67,7 @@ import '../../styles/global.css';
         </div>
       </div>
 
+      <div class="autofill-banner" id="autofill-banner" style="display:none"></div>
       <div class="glass-card form-card fade-in-up delay-2">
         <div class="date-row">
           <div class="field">
@@ -92,6 +93,12 @@ import '../../styles/global.css';
         </div>
         <p class="error-msg" id="form-error"></p>
         <button class="btn-primary" id="preview-btn" onclick="runPreview()">✦ 無料鑑定を開始する</button>
+        <div id="one-click-area" style="display:none;margin-top:0.75rem">
+          <button class="btn-one-click" onclick="runPreview()">
+            ⚡ ワンクリックで鑑定する
+            <span class="one-click-sub">（登録中の生年月日で即時鑑定）</span>
+          </button>
+        </div>
       </div>
 
       <div id="result-section" style="display:none">
@@ -433,6 +440,21 @@ import '../../styles/global.css';
   font-size: 12px; color: var(--text-muted); margin: 0;
 }
 
+.autofill-banner {
+  background: rgba(29,158,117,0.12); border: 0.5px solid rgba(29,158,117,0.3);
+  border-radius: var(--radius-md); padding: 0.6rem 1rem;
+  font-size: 13px; color: #1d9e75; margin-bottom: 1rem; text-align: center;
+}
+.btn-one-click {
+  width: 100%; padding: 0.875rem; background: linear-gradient(135deg, rgba(29,158,117,0.2), rgba(29,158,117,0.1));
+  border: 1px solid rgba(29,158,117,0.4); color: #1d9e75;
+  border-radius: var(--radius-md); font-family: 'Noto Serif JP', serif;
+  font-size: 15px; cursor: pointer; transition: all 0.2s; display: flex;
+  flex-direction: column; align-items: center; gap: 4px;
+}
+.btn-one-click:hover { background: rgba(29,158,117,0.25); transform: translateY(-1px); }
+.one-click-sub { font-size: 11px; color: rgba(29,158,117,0.7); }
+
 @keyframes twinkle {
   0% { opacity: 0.3; transform: scale(0.8); }
   50% { opacity: 1; transform: scale(1.1); }
@@ -533,6 +555,29 @@ window.runPreview = async function() {
     btn.textContent = originalText; btn.disabled = false;
   }
 };
+
+// 自動入力処理
+(function() {
+  const user = JSON.parse(localStorage.getItem('kyusei_user') || 'null');
+  if (!user || !user.birth_date) return;
+  const [y, m, d] = user.birth_date.split('-').map(Number);
+  const yearEl = document.getElementById('year');
+  if (yearEl) yearEl.value = y;
+  const monthEl = document.getElementById('month');
+  if (monthEl) monthEl.value = m;
+  const dayEl = document.getElementById('day');
+  if (dayEl) dayEl.value = d;
+  // バナー表示
+  const banner = document.getElementById('autofill-banner');
+  if (banner) {
+    const name = user.display_name || user.email.split('@')[0];
+    banner.textContent = `${name}さんの生年月日（${y}年${m}月${d}日）を自動入力しました`;
+    banner.style.display = 'block';
+  }
+  // ワンクリックボタン表示
+  const oneClick = document.getElementById('one-click-area');
+  if (oneClick) oneClick.style.display = 'block';
+})();
 
 // 星背景
 const starsEl = document.getElementById('stars');
