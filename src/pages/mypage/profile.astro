@@ -51,6 +51,15 @@ import '../../styles/global.css';
           <p class="form-hint">各占いページで自動入力されます</p>
         </div>
 
+        <div class="form-group">
+          <label class="form-label">性別</label>
+          <div class="gender-row">
+            <button class="gender-btn" id="gender-f" onclick="setGender('f')">女性</button>
+            <button class="gender-btn" id="gender-m" onclick="setGender('m')">男性</button>
+          </div>
+          <p class="form-hint">四柱推命の大運計算に使用されます</p>
+        </div>
+
         <p class="success-msg" id="profile-success" style="display:none">✓ プロフィールを更新しました</p>
         <p class="error-msg" id="profile-error"></p>
         <button class="btn-primary save-btn" onclick="saveProfile()">プロフィールを保存する</button>
@@ -151,6 +160,17 @@ import '../../styles/global.css';
 .toggle-pw:hover { border-color: var(--gold); color: var(--gold); }
 
 .save-btn { max-width: 100%; margin-top: 0.5rem; }
+.gender-row { display: flex; gap: 10px; }
+.gender-btn {
+  flex: 1; padding: 0.6rem; background: rgba(255,255,255,0.05);
+  border: 0.5px solid rgba(255,255,255,0.2); border-radius: var(--radius-md);
+  color: var(--text-secondary); font-family: 'Noto Serif JP', serif;
+  font-size: 15px; cursor: pointer; transition: all 0.2s;
+}
+.gender-btn.active {
+  border-color: var(--gold); background: rgba(212,175,55,0.15);
+  color: var(--gold);
+}
 .success-msg { font-size: 14px; color: #1d9e75; margin-bottom: 0.75rem; }
 
 .email-display {
@@ -226,12 +246,13 @@ async function saveProfile() {
   }
 
   const birth_date = `${year}-${month}-${day}`;
+  const gender = document.querySelector('.gender-btn.active')?.id === 'gender-m' ? 'm' : 'f';
 
   try {
     const res = await fetch(`${WORKERS_URL}/api/profile`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
-      body: JSON.stringify({ display_name, birth_date }),
+      body: JSON.stringify({ display_name, birth_date, gender }),
     });
     const data = await res.json();
     if (!res.ok) { errEl.textContent = data.error; return; }
@@ -240,6 +261,7 @@ async function saveProfile() {
     const user = JSON.parse(localStorage.getItem('kyusei_user') || '{}');
     user.display_name = display_name;
     user.birth_date = birth_date;
+    user.gender = gender;
     localStorage.setItem('kyusei_user', JSON.stringify(user));
 
     sucEl.style.display = 'block';
@@ -281,6 +303,11 @@ async function savePassword() {
   } catch {
     errEl.textContent = 'エラーが発生しました。しばらくしてお試しください。';
   }
+}
+
+function setGender(g) {
+  document.getElementById('gender-f').classList.toggle('active', g === 'f');
+  document.getElementById('gender-m').classList.toggle('active', g === 'm');
 }
 
 function togglePw(id, btn) {

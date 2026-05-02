@@ -435,6 +435,11 @@ window.runShichu = async function() {
   ['year','birth-year'].forEach(id => { const el = document.getElementById(id); if (el) el.value = y; });
   ['month','birth-month'].forEach(id => { const el = document.getElementById(id); if (el) el.value = m; });
   ['day','birth-day'].forEach(id => { const el = document.getElementById(id); if (el) el.value = d; });
+  // 性別の自動選択
+  if (user.gender) {
+    const gEl = document.getElementById('gender');
+    if (gEl) gEl.value = user.gender;
+  }
   const banner = document.getElementById('autofill-banner');
   if (banner) {
     const name = user.display_name || user.email.split('@')[0];
