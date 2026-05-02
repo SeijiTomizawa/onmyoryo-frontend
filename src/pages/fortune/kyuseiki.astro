@@ -137,24 +137,81 @@ import '../../styles/global.css';
             </div>
           </div>
 
-          <div class="glass-card result-item coin-card" id="coin-cta">
-            <h3 class="coin-title">さらに詳しく運勢を読み解く</h3>
-            <p class="coin-desc">月運の詳細・日ごとの吉凶・具体的なアドバイスは、詳細鑑定で公開しています。</p>
-            <div class="coin-plans">
-              <div class="coin-plan" onclick="window.location.href='/register'">
-                <p class="plan-coins">100<span>C</span></p>
-                <p class="plan-price">¥500</p>
+          <div class="glass-card result-item premium-cta" id="coin-cta">
+            <div class="cta-header">
+              <div class="cta-ornament">✦</div>
+              <h3 class="cta-title">あなたの運命を、もっと深く</h3>
+              <div class="cta-ornament">✦</div>
+            </div>
+            <p class="cta-lead">今見えているのは、あなたの宿命のほんの一端。<br>詳細鑑定では、より深い真実が明らかになります。</p>
+
+            <div class="cta-features">
+              <div class="cta-feature">
+                <span class="cta-feature-icon">❤️</span>
+                <div>
+                  <p class="cta-feature-name">恋愛運の詳細</p>
+                  <p class="cta-feature-desc">今の恋愛・出会いの機運・相手との相性</p>
+                </div>
               </div>
-              <div class="coin-plan featured" onclick="window.location.href='/register'">
-                <span class="plan-badge">推奨</span>
-                <p class="plan-coins">300<span>C</span></p>
-                <p class="plan-price">¥1,200</p>
+              <div class="cta-feature">
+                <span class="cta-feature-icon">💼</span>
+                <div>
+                  <p class="cta-feature-name">仕事運の詳細</p>
+                  <p class="cta-feature-desc">転職・昇進・天職への道筋</p>
+                </div>
               </div>
-              <div class="coin-plan" onclick="window.location.href='/register'">
-                <p class="plan-coins">500<span>C</span></p>
-                <p class="plan-price">¥1,800</p>
+              <div class="cta-feature">
+                <span class="cta-feature-icon">💰</span>
+                <div>
+                  <p class="cta-feature-name">金運の詳細</p>
+                  <p class="cta-feature-desc">財運の流れ・投資・節約のタイミング</p>
+                </div>
+              </div>
+              <div class="cta-feature">
+                <span class="cta-feature-icon">🧭</span>
+                <div>
+                  <p class="cta-feature-name">吉方位の詳細解説</p>
+                  <p class="cta-feature-desc">引越し・旅行で運を引き寄せる方角</p>
+                </div>
+              </div>
+              <div class="cta-feature">
+                <span class="cta-feature-icon">🌙</span>
+                <div>
+                  <p class="cta-feature-name">今月の月運</p>
+                  <p class="cta-feature-desc">今月のテーマと具体的なアドバイス</p>
+                </div>
               </div>
             </div>
+
+            <div class="cta-divider">
+              <span>コインをチャージして鑑定する</span>
+            </div>
+
+            <div class="cta-plans">
+              <div class="cta-plan" onclick="window.location.href='/register'">
+                <p class="cta-plan-coin">100C</p>
+                <p class="cta-plan-price">¥500</p>
+                <p class="cta-plan-note">お試し</p>
+              </div>
+              <div class="cta-plan cta-plan-featured" onclick="window.location.href='/register'">
+                <p class="cta-plan-badge">人気</p>
+                <p class="cta-plan-coin">300C</p>
+                <p class="cta-plan-price">¥1,200</p>
+                <p class="cta-plan-note">おすすめ</p>
+              </div>
+              <div class="cta-plan" onclick="window.location.href='/register'">
+                <p class="cta-plan-coin">500C</p>
+                <p class="cta-plan-price">¥1,800</p>
+                <p class="cta-plan-note">お得</p>
+              </div>
+            </div>
+
+            <p class="cta-note">1コイン = ¥5相当 · 期限なし · いつでも利用可能</p>
+
+            <button class="cta-btn" onclick="window.location.href='/register'">
+              無料登録して詳細鑑定を受ける
+            </button>
+            <p class="cta-sub">登録無料 · 1分で完了 · クレジットカード不要</p>
           </div>
         </div>
       </div>
@@ -268,6 +325,113 @@ import '../../styles/global.css';
 .intro-section-title { font-family: 'Shippori Mincho', serif; font-size: 15px; color: var(--gold); margin-bottom: 0.5rem; letter-spacing: 0.05em; }
 .intro-note { margin-top: 1.25rem; padding: 0.75rem 1rem; background: rgba(255,255,255,0.03); border-radius: var(--radius-md); border: 0.5px solid rgba(255,255,255,0.08); }
 .intro-note p { font-size: 12px; color: var(--text-secondary); margin: 0; }
+
+/* Premium CTA */
+.premium-cta {
+  background: linear-gradient(160deg, rgba(20,16,8,0.95) 0%, rgba(30,24,10,0.95) 50%, rgba(15,10,5,0.95) 100%);
+  border: 1px solid rgba(212,175,55,0.3);
+  padding: 2.5rem;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.premium-cta::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 50% 0%, rgba(212,175,55,0.08) 0%, transparent 70%);
+  pointer-events: none;
+}
+.cta-header {
+  display: flex; align-items: center; justify-content: center;
+  gap: 1rem; margin-bottom: 1rem;
+}
+.cta-ornament { font-size: 14px; color: var(--gold); opacity: 0.6; }
+.cta-title {
+  font-family: 'Shippori Mincho', serif;
+  font-size: 22px; color: #f0e6d3;
+  letter-spacing: 0.05em; margin: 0;
+}
+.cta-lead {
+  font-size: 15px; color: var(--text-secondary);
+  line-height: 1.9; margin-bottom: 2rem;
+}
+.cta-features {
+  display: flex; flex-direction: column; gap: 12px;
+  margin-bottom: 2rem; text-align: left;
+  background: rgba(255,255,255,0.03);
+  border-radius: var(--radius-lg); padding: 1.25rem;
+  border: 0.5px solid rgba(255,255,255,0.08);
+}
+.cta-feature {
+  display: flex; align-items: center; gap: 12px;
+}
+.cta-feature-icon { font-size: 20px; flex-shrink: 0; }
+.cta-feature-name {
+  font-size: 14px; color: #f0e6d3; margin: 0 0 2px; font-weight: 500;
+}
+.cta-feature-desc {
+  font-size: 12px; color: var(--text-secondary); margin: 0;
+}
+.cta-divider {
+  display: flex; align-items: center; gap: 12px;
+  margin-bottom: 1.25rem; color: var(--text-muted); font-size: 12px;
+}
+.cta-divider::before, .cta-divider::after {
+  content: ''; flex: 1; height: 0.5px; background: rgba(212,175,55,0.2);
+}
+.cta-plans {
+  display: flex; gap: 10px; margin-bottom: 1rem;
+}
+.cta-plan {
+  flex: 1; background: rgba(255,255,255,0.04);
+  border: 0.5px solid rgba(255,255,255,0.15);
+  border-radius: var(--radius-md); padding: 1rem 0.5rem;
+  cursor: pointer; transition: all 0.2s;
+  position: relative;
+}
+.cta-plan:hover {
+  border-color: var(--gold); background: rgba(212,175,55,0.06);
+  transform: translateY(-2px);
+}
+.cta-plan-featured {
+  border-color: rgba(212,175,55,0.5);
+  background: rgba(212,175,55,0.08);
+  box-shadow: 0 0 20px rgba(212,175,55,0.1);
+}
+.cta-plan-badge {
+  position: absolute; top: -10px; left: 50%; transform: translateX(-50%);
+  background: var(--gold); color: #000; font-size: 10px; font-weight: bold;
+  padding: 2px 10px; border-radius: 999px; white-space: nowrap;
+}
+.cta-plan-coin {
+  font-size: 18px; font-weight: bold; color: #f0e6d3; margin: 0 0 4px;
+}
+.cta-plan-price {
+  font-size: 13px; color: var(--gold); margin: 0 0 4px;
+}
+.cta-plan-note {
+  font-size: 10px; color: var(--text-muted); margin: 0;
+}
+.cta-note {
+  font-size: 11px; color: var(--text-muted); margin-bottom: 1.5rem;
+}
+.cta-btn {
+  width: 100%; padding: 1rem;
+  background: linear-gradient(135deg, #b08d5a, #7a5c2e);
+  color: #fff; border: none; border-radius: var(--radius-md);
+  font-family: 'Shippori Mincho', serif;
+  font-size: 16px; cursor: pointer; letter-spacing: 0.05em;
+  transition: all 0.2s; margin-bottom: 0.75rem;
+}
+.cta-btn:hover {
+  background: linear-gradient(135deg, #c9a96e, #8b6d20);
+  box-shadow: 0 4px 20px rgba(176,141,90,0.3);
+  transform: translateY(-1px);
+}
+.cta-sub {
+  font-size: 12px; color: var(--text-muted); margin: 0;
+}
 
 @keyframes twinkle {
   0% { opacity: 0.3; transform: scale(0.8); }
