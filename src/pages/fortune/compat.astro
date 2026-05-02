@@ -1,0 +1,401 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import '../../styles/global.css';
+---
+<Layout title="相性鑑定 | 陰陽寮">
+  <div class="page">
+    <div class="stars" id="stars"></div>
+    <div class="page-inner">
+
+      <header class="page-header fade-in-up">
+        <h1 class="page-title">九星気学 相性鑑定</h1>
+        <p class="page-desc">二つの星の気が織りなす、運命の縁を読み解きます</p>
+      </header>
+
+      <div class="glass-card intro-card fade-in-up delay-1">
+        <h2 class="intro-title">あの人との縁は、必然ですか？</h2>
+        <p class="intro-text">
+          九星気学の相性鑑定では、あなたと気になる相手の本命星の「五行の気」の関係から、
+          二人の縁の深さ・恋愛・仕事における相性・そしてこの縁をより豊かにするためのアドバイスを読み解きます。
+          相性が良い・悪いだけでなく、「この縁にどんな意味があるか」まで丁寧に伝えます。
+        </p>
+        <div class="intro-features">
+          <div class="intro-feature">
+            <span class="feature-icon">❤️</span>
+            <span><strong>恋愛相性</strong><br>二人の縁の深さと、恋愛を長続きさせるためのポイント</span>
+          </div>
+          <div class="intro-feature">
+            <span class="feature-icon">💼</span>
+            <span><strong>仕事相性</strong><br>ビジネスパートナー・上司・部下としての相性と活かし方</span>
+          </div>
+          <div class="intro-feature">
+            <span class="feature-icon">🌟</span>
+            <span><strong>縁の意味</strong><br>なぜ二人は出会ったのか。この縁があなたにもたらす成長</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- コイン残高 -->
+      <div class="coin-balance-bar" id="balance-bar" style="display:none">
+        <span class="balance-label">保有コイン</span>
+        <span class="balance-value" id="coin-balance">-- コイン</span>
+        <span class="balance-cost">相性鑑定 3コイン（¥300相当）</span>
+      </div>
+
+      <!-- 入力フォーム -->
+      <div id="form-section">
+        <div class="glass-card form-card fade-in-up delay-2">
+
+          <div class="form-block my-block">
+            <p class="form-block-label">あなた</p>
+            <div class="autofill-banner" id="autofill-banner" style="display:none"></div>
+            <div class="date-row">
+              <div class="field"><label>生年（西暦）</label>
+                <input type="number" id="my-year" placeholder="1990" min="1900" max="2010" /></div>
+              <div class="field"><label>月</label>
+                <select id="my-month">{Array.from({length:12},(_,i)=><option value={i+1}>{i+1}月</option>)}</select>
+              </div>
+              <div class="field"><label>日</label>
+                <select id="my-day">{Array.from({length:31},(_,i)=><option value={i+1}>{i+1}日</option>)}</select>
+              </div>
+            </div>
+          </div>
+
+          <div class="vs-divider">
+            <div class="vs-line"></div>
+            <span class="vs-text">VS</span>
+            <div class="vs-line"></div>
+          </div>
+
+          <div class="form-block target-block">
+            <p class="form-block-label">お相手</p>
+            <div class="field" style="margin-bottom:0.75rem">
+              <label>ニックネーム（任意）</label>
+              <input type="text" id="target-name" placeholder="例：Aさん" maxlength="10" />
+            </div>
+            <div class="field">
+              <label>生年（西暦）</label>
+              <input type="number" id="target-year" placeholder="1988" min="1900" max="2010" />
+            </div>
+            <p class="form-note">※ 月・日は本命星の計算に影響しないため省略できます</p>
+          </div>
+
+          <p class="error-msg" id="form-error"></p>
+
+          <div id="login-note" style="display:none;text-align:center;margin-top:1rem">
+            <p style="font-size:14px;color:var(--text-secondary)">鑑定にはログインが必要です</p>
+            <a href="/login" class="btn-primary" style="display:inline-block;margin-top:0.5rem;text-decoration:none">ログイン・新規登録</a>
+          </div>
+
+          <button class="btn-primary cast-btn" id="cast-btn" onclick="runCompat()">
+            ❤️ 相性を鑑定する（3コイン）
+          </button>
+        </div>
+      </div>
+
+      <!-- 結果セクション -->
+      <div id="result-section" style="display:none">
+        <div class="result-grid">
+
+          <!-- 相性スコアカード -->
+          <div class="glass-card result-block score-card">
+            <div class="score-header">
+              <div class="score-person">
+                <div class="person-star-badge" id="r-my-badge"></div>
+                <p class="person-star-name" id="r-my-star"></p>
+                <p class="person-label">あなた</p>
+              </div>
+              <div class="score-center">
+                <div class="score-ring">
+                  <svg viewBox="0 0 120 120" class="ring-svg">
+                    <circle cx="60" cy="60" r="50" fill="none" stroke="#ffffff10" stroke-width="8"/>
+                    <circle cx="60" cy="60" r="50" fill="none" stroke-width="8"
+                      stroke-dasharray="314.2" stroke-linecap="round"
+                      transform="rotate(-90 60 60)" id="score-circle" stroke="#f59e0b"/>
+                  </svg>
+                  <div class="score-num" id="r-score">--</div>
+                </div>
+                <p class="score-label" id="r-compat-label">--</p>
+              </div>
+              <div class="score-person">
+                <div class="person-star-badge target-badge" id="r-target-badge"></div>
+                <p class="person-star-name" id="r-target-star"></p>
+                <p class="person-label" id="r-target-name">お相手</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- 総合相性 -->
+          <div class="glass-card result-block">
+            <h3 class="block-title">✦ 二人の縁・総合相性</h3>
+            <p class="block-text" id="r-overall"></p>
+          </div>
+
+          <!-- 恋愛・仕事 -->
+          <div class="glass-card result-block">
+            <h3 class="block-title">✦ 恋愛相性</h3>
+            <p class="block-text" id="r-love"></p>
+          </div>
+
+          <div class="glass-card result-block">
+            <h3 class="block-title">✦ 仕事・協力関係</h3>
+            <p class="block-text" id="r-work"></p>
+          </div>
+
+          <!-- アドバイス -->
+          <div class="glass-card result-block advice-block">
+            <h3 class="block-title">✦ この縁をより豊かにするために</h3>
+            <p class="block-text" id="r-advice"></p>
+          </div>
+
+          <!-- 五行情報 -->
+          <div class="glass-card result-block element-block">
+            <h3 class="block-title">✦ 五行の関係</h3>
+            <div class="element-display">
+              <div class="element-item">
+                <p class="element-label">あなたの気</p>
+                <p class="element-name" id="r-my-element"></p>
+              </div>
+              <div class="element-arrow" id="r-element-arrow">→</div>
+              <div class="element-item">
+                <p class="element-label">お相手の気</p>
+                <p class="element-name" id="r-target-element"></p>
+              </div>
+            </div>
+          </div>
+
+          <!-- 再鑑定 -->
+          <div class="glass-card result-block" style="text-align:center">
+            <button class="btn-primary" onclick="resetAll()" style="max-width:300px">別の相手を鑑定する</button>
+            <a href="/mypage" class="btn-outline" style="display:block;margin-top:0.75rem;max-width:300px;margin-left:auto;margin-right:auto;text-align:center">マイページへ</a>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+</Layout>
+
+<style>
+.page { padding: 3rem 1.5rem; min-height: 100vh; position: relative; }
+.stars { position: fixed; inset: 0; pointer-events: none; z-index: 0; }
+.page-inner { max-width: 680px; margin: 0 auto; position: relative; z-index: 1; }
+.page-header { text-align: center; margin-bottom: 2rem; }
+.page-title { font-family: 'Shippori Mincho', serif; font-size: 26px; margin-bottom: 0.5rem; }
+.page-desc { font-size: 14px; color: var(--text-secondary); }
+
+.intro-card { text-align: center; margin-bottom: 2rem; border-top: 2px solid #f43f5e; background: linear-gradient(180deg, rgba(40,10,20,0.6) 0%, rgba(10,12,16,0.8) 100%); }
+.intro-title { font-family: 'Shippori Mincho', serif; font-size: 1.3rem; color: #fda4af; margin-bottom: 1rem; }
+.intro-text { font-size: 15px; color: var(--text-secondary); line-height: 2; margin-bottom: 1.5rem; }
+.intro-features { display: flex; gap: 1rem; flex-wrap: wrap; }
+.intro-feature { flex: 1; min-width: 180px; display: flex; align-items: flex-start; gap: 0.75rem; background: rgba(255,255,255,0.03); padding: 1rem; border-radius: var(--radius-md); border: 1px solid rgba(255,255,255,0.05); text-align: left; }
+.feature-icon { font-size: 1.4rem; line-height: 1; }
+.intro-feature span { font-size: 14px; color: var(--text-secondary); line-height: 1.7; }
+.intro-feature strong { display: block; color: #fda4af; font-size: 15px; margin-bottom: 0.25rem; font-family: 'Shippori Mincho', serif; }
+
+.coin-balance-bar { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1rem; background: var(--dark-card); border: 0.5px solid #ffffff15; border-radius: var(--radius-md); padding: 0.6rem 1rem; }
+.balance-label { font-size: 12px; color: var(--text-secondary); }
+.balance-value { font-size: 16px; color: #f43f5e; font-weight: 500; }
+.balance-cost { font-size: 11px; color: var(--text-muted); margin-left: auto; }
+
+.form-card { margin-bottom: 1rem; }
+.form-block { margin-bottom: 1rem; }
+.form-block-label { font-size: 12px; color: var(--text-secondary); letter-spacing: 0.1em; margin-bottom: 0.75rem; }
+.date-row { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 8px; }
+.field { display: flex; flex-direction: column; gap: 4px; }
+.field label { font-size: 11px; color: var(--text-secondary); }
+.form-note { font-size: 11px; color: var(--text-muted); margin-top: 0.5rem; }
+
+.vs-divider { display: flex; align-items: center; gap: 1rem; margin: 1.25rem 0; }
+.vs-line { flex: 1; height: 0.5px; background: linear-gradient(90deg, transparent, #f43f5e44, transparent); }
+.vs-text { font-family: 'Shippori Mincho', serif; font-size: 20px; color: #f43f5e; letter-spacing: 0.2em; }
+
+.cast-btn { max-width: 100%; margin-top: 1rem; background: linear-gradient(135deg, rgba(244,63,94,0.8), rgba(190,24,93,0.8)); border-color: #f43f5e; font-size: 16px; }
+.cast-btn:hover { background: linear-gradient(135deg, #f43f5e, #be185d); }
+
+.autofill-banner { background: rgba(29,158,117,0.12); border: 0.5px solid rgba(29,158,117,0.3); border-radius: var(--radius-md); padding: 0.5rem 0.875rem; font-size: 12px; color: #1d9e75; margin-bottom: 0.75rem; }
+
+/* 結果 */
+.result-grid { display: flex; flex-direction: column; gap: 1.25rem; margin-top: 2rem; }
+.result-block { padding: 1.75rem; }
+.block-title { font-family: 'Shippori Mincho', serif; font-size: 16px; color: #fda4af; margin-bottom: 1rem; padding-bottom: 0.75rem; border-bottom: 0.5px solid rgba(244,63,94,0.2); }
+.block-text { font-size: 15px; color: var(--text-secondary); line-height: 2; }
+
+.score-card { border-top: 3px solid #f43f5e; text-align: center; background: linear-gradient(135deg, rgba(40,10,20,0.8), rgba(10,12,16,0.9)); }
+.score-header { display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
+.score-person { display: flex; flex-direction: column; align-items: center; gap: 8px; flex: 1; }
+.person-star-badge { width: 56px; height: 56px; border-radius: 50%; background: linear-gradient(135deg, var(--gold), #8b6d20); display: flex; align-items: center; justify-content: center; font-family: 'Shippori Mincho', serif; font-size: 22px; color: #000; font-weight: bold; margin: 0 auto; }
+.target-badge { background: linear-gradient(135deg, #f43f5e, #9f1239); }
+.person-star-name { font-family: 'Shippori Mincho', serif; font-size: 13px; color: #f0e6d3; text-align: center; }
+.person-label { font-size: 11px; color: var(--text-secondary); }
+.score-center { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+.score-ring { position: relative; width: 120px; height: 120px; }
+.ring-svg { width: 120px; height: 120px; }
+.score-num { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 32px; font-weight: bold; color: #f59e0b; }
+.score-label { font-family: 'Shippori Mincho', serif; font-size: 15px; color: #f0e6d3; }
+
+.advice-block { background: linear-gradient(135deg, rgba(40,10,20,0.6), rgba(10,12,16,0.8)); border-left: 3px solid #f43f5e; }
+.element-block { background: rgba(255,255,255,0.03); }
+.element-display { display: flex; align-items: center; justify-content: center; gap: 1.5rem; }
+.element-item { text-align: center; }
+.element-label { font-size: 11px; color: var(--text-secondary); margin-bottom: 6px; }
+.element-name { font-family: 'Shippori Mincho', serif; font-size: 22px; color: #f0e6d3; }
+.element-arrow { font-size: 24px; color: var(--text-muted); }
+
+.btn-outline { background: transparent; color: #f43f5e; border: 0.5px solid #f43f5e; border-radius: var(--radius-md); padding: 0.6rem 1.5rem; font-size: 14px; cursor: pointer; font-family: 'Noto Serif JP', serif; transition: all 0.2s; }
+.btn-outline:hover { background: #f43f5e; color: #fff; }
+
+@keyframes twinkle { 0%,100% { opacity: 0.2; } 50% { opacity: 0.8; } }
+</style>
+
+<script is:inline>
+const WORKERS_URL = 'https://kyusei-api.seiji-tomizawa.workers.dev';
+
+const ELEMENT_NAMES: Record<string, string> = {
+  water:'水（水星）', wood:'木（木星）', fire:'火（火星）',
+  earth:'土（土星）', metal:'金（金星）'
+};
+const STAR_CHARS: Record<number, string> = {
+  1:'水',2:'土',3:'木',4:'木',5:'土',6:'金',7:'金',8:'土',9:'火'
+};
+const STAR_NAMES_SHORT: Record<number, string> = {
+  1:'一白水星',2:'二黒土星',3:'三碧木星',4:'四緑木星',5:'五黄土星',
+  6:'六白金星',7:'七赤金星',8:'八白土星',9:'九紫火星'
+};
+
+function init() {
+  const token = localStorage.getItem('kyusei_token');
+  const user = JSON.parse(localStorage.getItem('kyusei_user') || 'null');
+
+  if (!token) {
+    document.getElementById('cast-btn').style.display = 'none';
+    document.getElementById('login-note').style.display = 'block';
+    return;
+  }
+
+  document.getElementById('balance-bar').style.display = 'flex';
+  loadBalance(token);
+
+  // 自動入力
+  if (user?.birth_date) {
+    const [y, m, d] = user.birth_date.split('-').map(Number);
+    document.getElementById('my-year').value = y;
+    document.getElementById('my-month').value = m;
+    document.getElementById('my-day').value = d;
+    const name = user.display_name || user.email.split('@')[0];
+    const banner = document.getElementById('autofill-banner');
+    banner.textContent = `${name}さんの生年月日を自動入力しました`;
+    banner.style.display = 'block';
+  }
+}
+
+async function loadBalance(token) {
+  try {
+    const res = await fetch(`${WORKERS_URL}/api/coins/balance`, { headers: { Authorization: `Bearer ${token}` } });
+    const data = await res.json();
+    document.getElementById('coin-balance').textContent = `${data.coins} コイン`;
+  } catch {}
+}
+
+window.runCompat = async function() {
+  const token = localStorage.getItem('kyusei_token');
+  if (!token) { window.location.href = '/login'; return; }
+
+  const myYear = document.getElementById('my-year').value;
+  const targetYear = document.getElementById('target-year').value;
+  const targetName = document.getElementById('target-name').value || 'お相手';
+  const errEl = document.getElementById('form-error');
+
+  errEl.textContent = '';
+
+  if (!myYear || parseInt(myYear) < 1900) { errEl.textContent = 'あなたの生年を入力してください'; return; }
+  if (!targetYear || parseInt(targetYear) < 1900) { errEl.textContent = '相手の生年を入力してください'; return; }
+
+  const btn = document.getElementById('cast-btn');
+  btn.textContent = '鑑定中...'; btn.disabled = true;
+
+  try {
+    const res = await fetch(`${WORKERS_URL}/api/ai_fortune/compat`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+      body: JSON.stringify({ target_year: parseInt(targetYear), target_name: targetName }),
+    });
+    const data = await res.json();
+
+    if (!res.ok) { errEl.textContent = data.error; return; }
+
+    displayResult(data, targetName);
+  } catch {
+    errEl.textContent = '通信エラーが発生しました。しばらくしてお試しください。';
+  } finally {
+    btn.textContent = '❤️ 相性を鑑定する（3コイン）'; btn.disabled = false;
+  }
+};
+
+function displayResult(data, targetName) {
+  const compat = data.compat;
+
+  // バッジ
+  document.getElementById('r-my-badge').textContent = STAR_CHARS[data.myHonmei] || '★';
+  document.getElementById('r-my-star').textContent = data.myStarName || STAR_NAMES_SHORT[data.myHonmei];
+  document.getElementById('r-target-badge').textContent = STAR_CHARS[data.targetHonmei] || '★';
+  document.getElementById('r-target-star').textContent = data.targetStarName || STAR_NAMES_SHORT[data.targetHonmei];
+  document.getElementById('r-target-name').textContent = targetName;
+
+  // スコアリング
+  const score = compat.score;
+  document.getElementById('r-score').textContent = score;
+  document.getElementById('r-compat-label').textContent = compat.label;
+
+  // スコアリングに応じてリングの色を変える
+  const circle = document.getElementById('score-circle');
+  const circumference = 314.2;
+  const offset = circumference - (circumference * score / 100);
+  circle.setAttribute('stroke-dashoffset', offset.toString());
+  if (score >= 85) circle.setAttribute('stroke', '#1d9e75');
+  else if (score >= 70) circle.setAttribute('stroke', '#f59e0b');
+  else if (score >= 50) circle.setAttribute('stroke', '#fb923c');
+  else circle.setAttribute('stroke', '#f43f5e');
+
+  // テキスト
+  document.getElementById('r-overall').textContent = compat.overall;
+  document.getElementById('r-love').textContent = compat.love;
+  document.getElementById('r-work').textContent = compat.work;
+  document.getElementById('r-advice').textContent = compat.advice;
+
+  // 五行
+  document.getElementById('r-my-element').textContent = ELEMENT_NAMES[compat.myElement] || compat.myElement;
+  document.getElementById('r-target-element').textContent = ELEMENT_NAMES[compat.targetElement] || compat.targetElement;
+
+  // コイン残高更新
+  document.getElementById('coin-balance').textContent = `${data.remainingCoins} コイン`;
+
+  // 表示切替
+  document.getElementById('form-section').style.display = 'none';
+  const section = document.getElementById('result-section');
+  section.style.display = 'block';
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+window.resetAll = function() {
+  document.getElementById('result-section').style.display = 'none';
+  document.getElementById('form-section').style.display = 'block';
+  document.getElementById('target-year').value = '';
+  document.getElementById('target-name').value = '';
+  document.getElementById('form-error').textContent = '';
+  loadBalance(localStorage.getItem('kyusei_token'));
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+};
+
+// 星背景
+const starsEl = document.getElementById('stars');
+for (let i = 0; i < 50; i++) {
+  const s = document.createElement('div');
+  const size = Math.random() * 2 + 1;
+  s.style.cssText = `position:absolute;border-radius:50%;background:#fff;width:${size}px;height:${size}px;top:${Math.random()*100}%;left:${Math.random()*100}%;opacity:${Math.random()*0.5+0.1};animation:twinkle ${2+Math.random()*3}s ease-in-out infinite;animation-delay:${Math.random()*3}s;`;
+  starsEl.appendChild(s);
+}
+
+init();
+</script>
