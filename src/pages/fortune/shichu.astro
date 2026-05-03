@@ -447,23 +447,35 @@ import '../../styles/global.css';
 .career-reason { font-size: 15px; color: var(--text-secondary); line-height: 1.9; }
 
 .daiun-intro { font-size: 14px; color: var(--text-secondary); line-height: 1.9; margin-bottom: 1.5rem; padding: 0.875rem 1rem; background: rgba(255,255,255,0.03); border-radius: var(--radius-md); border: 0.5px solid rgba(255,255,255,0.08); }
-.daiun-list { display: flex; flex-direction: column; gap: 1.25rem; }
-.daiun-item { border-radius: var(--radius-lg); overflow: hidden; border: 0.5px solid rgba(255,255,255,0.08); }
-.daiun-header { display: flex; align-items: center; gap: 1rem; padding: 1rem 1.25rem; background: rgba(255,255,255,0.04); flex-wrap: wrap; }
-.daiun-age { font-size: 13px; color: var(--text-secondary); flex-shrink: 0; min-width: 70px; }
-.daiun-kanshi { font-family: 'Shippori Mincho', serif; font-size: 22px; color: #f0e6d3; }
-.daiun-gogyo-badge { font-size: 12px; padding: 3px 10px; border-radius: 999px; margin-left: auto; flex-shrink: 0; }
-.daiun-theme { font-size: 13px; color: var(--gold); flex: 1; text-align: right; font-family: 'Shippori Mincho', serif; }
-.daiun-body { padding: 1rem 1.25rem; background: rgba(0,0,0,0.2); }
-.daiun-desc { font-size: 15px; color: var(--text-secondary); line-height: 2; margin-bottom: 1rem; }
-.daiun-detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-bottom: 0.75rem; }
-.daiun-detail-item { background: rgba(255,255,255,0.04); border-radius: var(--radius-sm); padding: 0.75rem; }
-.daiun-detail-label { font-size: 11px; color: var(--gold); margin-bottom: 4px; }
-.daiun-detail-text { font-size: 13px; color: var(--text-secondary); line-height: 1.8; }
-.daiun-advice { font-size: 14px; color: #f0e6d3; background: rgba(212,175,55,0.06); border-left: 2px solid var(--gold); padding: 0.75rem 1rem; border-radius: 0 var(--radius-sm) var(--radius-sm) 0; line-height: 1.8; }
-.daiun-current { border-color: rgba(212,175,55,0.5) !important; }
+.daiun-list { display: flex; flex-direction: column; gap: 1.5rem; }
+
+/* 大運カード */
+.daiun-item { border-radius: var(--radius-lg); overflow: hidden; border: 0.5px solid rgba(255,255,255,0.1); transition: all 0.2s; }
+.daiun-item:hover { border-color: rgba(212,175,55,0.3); }
+.daiun-current { border-color: rgba(212,175,55,0.5) !important; box-shadow: 0 0 20px rgba(212,175,55,0.1); }
+
+/* 大運ヘッダー */
+.daiun-header { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 1rem; padding: 1.25rem 1.5rem; background: rgba(255,255,255,0.04); }
 .daiun-current .daiun-header { background: rgba(212,175,55,0.1); }
-.daiun-current-badge { font-size: 10px; background: var(--gold); color: #000; padding: 2px 8px; border-radius: 999px; font-weight: bold; }
+.daiun-header-left { display: flex; flex-direction: column; gap: 4px; }
+.daiun-age { font-size: 12px; color: var(--text-secondary); }
+.daiun-kanshi { font-family: 'Shippori Mincho', serif; font-size: 28px; color: #f0e6d3; line-height: 1; }
+.daiun-header-center { text-align: center; }
+.daiun-theme { font-family: 'Shippori Mincho', serif; font-size: 15px; color: #f0e6d3; display: block; margin-bottom: 6px; }
+.daiun-gogyo-badge { display: inline-block; font-size: 12px; padding: 4px 14px; border-radius: 999px; font-weight: 500; }
+.daiun-header-right { display: flex; flex-direction: column; align-items: flex-end; gap: 6px; }
+.daiun-current-badge { font-size: 11px; background: var(--gold); color: #000; padding: 3px 10px; border-radius: 999px; font-weight: bold; white-space: nowrap; }
+.daiun-toggle { font-size: 12px; color: var(--text-muted); cursor: pointer; background: none; border: 0.5px solid rgba(255,255,255,0.15); padding: 4px 10px; border-radius: var(--radius-sm); font-family: "Noto Serif JP",serif; transition: all 0.2s; }
+.daiun-toggle:hover { border-color: var(--gold); color: var(--gold); }
+
+/* 大運ボディ */
+.daiun-body { padding: 1.25rem 1.5rem; background: rgba(0,0,0,0.25); border-top: 0.5px solid rgba(255,255,255,0.06); }
+.daiun-desc { font-size: 15px; color: var(--text-secondary); line-height: 2.1; margin-bottom: 1.25rem; }
+.daiun-detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.875rem; margin-bottom: 1rem; }
+.daiun-detail-item { background: rgba(255,255,255,0.04); border-radius: var(--radius-md); padding: 0.875rem; border: 0.5px solid rgba(255,255,255,0.06); }
+.daiun-detail-label { font-size: 11px; color: var(--gold); letter-spacing: 0.05em; margin-bottom: 6px; }
+.daiun-detail-text { font-size: 14px; color: var(--text-secondary); line-height: 1.9; }
+.daiun-advice { font-size: 14px; color: #f0e6d3; background: rgba(212,175,55,0.07); border-left: 3px solid var(--gold); padding: 0.875rem 1rem; border-radius: 0 var(--radius-md) var(--radius-md) 0; line-height: 1.9; }
 
 .message-card { background: linear-gradient(135deg, rgba(30,24,10,0.8), rgba(10,12,16,0.9)); border-left: 3px solid var(--gold); }
 .key-message-text { font-size: 17px; color: #f0e6d3; line-height: 2.2; }
@@ -531,21 +543,32 @@ function applyPremiumResult(d) {
   const birthYear = d.birthYear || parseInt(document.getElementById('year').value) || 1990;
   const ageNow = new Date().getFullYear() - birthYear;
   const daiunList = document.getElementById('daiun-list');
-  daiunList.innerHTML = (d.enrichedDaiun || d.daiun || []).map(function(u) {
+  daiunList.innerHTML = (d.enrichedDaiun || d.daiun || []).map(function(u, idx) {
     const gogyo = GOGYO_MAP[u.kan] || '土';
     const color = GOGYO_COLOR[gogyo] || '#d4af37';
     const bg = GOGYO_BG[gogyo] || 'rgba(212,175,55,0.15)';
     const isCurrent = u.age <= ageNow && ageNow < (u.age + 10);
     const t = u.text;
+    const bodyId = 'daiun-body-' + idx;
+    // 現在の大運は開いた状態、それ以外は閉じた状態
+    const isOpen = isCurrent;
+
     return '<div class="daiun-item' + (isCurrent ? ' daiun-current' : '') + '">' +
       '<div class="daiun-header">' +
-        (isCurrent ? '<span class="daiun-current-badge">現在</span>' : '') +
-        '<span class="daiun-age">' + u.age + '歳〜</span>' +
-        '<span class="daiun-kanshi">' + u.kan + u.shi + '</span>' +
-        (t ? '<span class="daiun-theme">' + t.theme + '</span>' : '') +
-        '<span class="daiun-gogyo-badge" style="background:' + bg + ';color:' + color + '">' + gogyo + '</span>' +
+        '<div class="daiun-header-left">' +
+          '<span class="daiun-age">' + u.age + '歳〜' + (u.age + 9) + '歳</span>' +
+          '<span class="daiun-kanshi">' + u.kan + u.shi + '</span>' +
+        '</div>' +
+        '<div class="daiun-header-center">' +
+          (t ? '<span class="daiun-theme">' + t.theme + '</span>' : '') +
+          '<span class="daiun-gogyo-badge" style="background:' + bg + ';color:' + color + '">' + gogyo + 'の気</span>' +
+        '</div>' +
+        '<div class="daiun-header-right">' +
+          (isCurrent ? '<span class="daiun-current-badge">✦ 現在の大運</span>' : '') +
+          (t ? '<button class="daiun-toggle" onclick="toggleDaiun('' + bodyId + '', this)">' + (isOpen ? '▲ 閉じる' : '▼ 詳細') + '</button>' : '') +
+        '</div>' +
       '</div>' +
-      (t ? '<div class="daiun-body">' +
+      (t ? '<div class="daiun-body" id="' + bodyId + '" style="display:' + (isOpen ? 'block' : 'none') + '">' +
         '<p class="daiun-desc">' + t.description + '</p>' +
         '<div class="daiun-detail-grid">' +
           '<div class="daiun-detail-item"><p class="daiun-detail-label">❤️ 恋愛・人間関係</p><p class="daiun-detail-text">' + t.love + '</p></div>' +
@@ -657,6 +680,18 @@ async function loadBalance(token) {
     document.getElementById('coin-balance').textContent = data.coins + ' コイン';
   } catch {}
 }
+
+window.toggleDaiun = function(id, btn) {
+  const body = document.getElementById(id);
+  if (!body) return;
+  if (body.style.display === 'none') {
+    body.style.display = 'block';
+    btn.textContent = '▲ 閉じる';
+  } else {
+    body.style.display = 'none';
+    btn.textContent = '▼ 詳細';
+  }
+};
 
 window.runShichu = async function() {
   const year = document.getElementById('year').value;
