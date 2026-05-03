@@ -24,8 +24,24 @@ import '../../styles/global.css';
           <p class="intro-text">四柱推命の核心は「日干」です。生まれた日の十干（甲・乙・丙・丁・戊・己・庚・辛・壬・癸）がその人の本質を表します。それぞれ大樹・草花・太陽・灯火・山・大地・鋼鉄・宝石・海・雨という自然界のシンボルに例えられ、あなたの根本的な性格・才能・弱点・恋愛観・仕事への向き合い方を決定します。</p>
         </div>
         <div class="intro-section">
-          <h3 class="intro-section-title">天中殺（てんちゅうさつ）とは</h3>
-          <p class="intro-text">天中殺とは誰にでも訪れる「冬の時代」のことで、算命学の中核となる概念です。この時期の過ごし方が人生の大きな分岐点となります。天中殺を正しく理解することで、逆境を力に変えることができます。</p>
+          <h3 class="intro-section-title">天中殺（てんちゅうさつ）の2つの意味</h3>
+          <p class="intro-text">天中殺には「宿命天中殺」と「後天天中殺」の2種類があります。</p>
+          <div class="tenchusatsu-explain">
+            <div class="tc-explain-item">
+              <div class="tc-explain-icon">🏔️</div>
+              <div>
+                <p class="tc-explain-title">宿命天中殺（一生変わらない）</p>
+                <p class="tc-explain-desc">生まれた年の干支から算出する、その人が生涯持つ天中殺です。「子丑天中殺」「寅卯天中殺」など6種類があり、その人の宿命的な弱点と強みを示します。無料で鑑定できます。</p>
+              </div>
+            </div>
+            <div class="tc-explain-item">
+              <div class="tc-explain-icon">🌊</div>
+              <div>
+                <p class="tc-explain-title">後天天中殺（年・月・日で変わる）</p>
+                <p class="tc-explain-desc">宿命天中殺の干支が、その年・月・日の干支と重なる時期のことです。「今年は天中殺の年」「今月は天中殺の月」という使い方をします。この時期の過ごし方が人生の分岐点になります。</p>
+              </div>
+            </div>
+          </div>
         </div>
         <div class="intro-features">
           <div class="intro-feature">
@@ -38,7 +54,7 @@ import '../../styles/global.css';
           </div>
           <div class="intro-feature">
             <span class="feature-icon">⛓️</span>
-            <span><strong>天中殺：冬の時代の活かし方</strong><br>誰にでも訪れる試練の時期を、成長の機会に変える知恵</span>
+            <span><strong>天中殺：冬の時代の活かし方</strong><br>宿命天中殺（無料）と後天天中殺（1C）で深く理解する</span>
           </div>
         </div>
         <div class="intro-note">
@@ -80,7 +96,7 @@ import '../../styles/global.css';
         <button class="btn-primary" id="btn" onclick="runShichu()">✦ 命式を作成する（無料）</button>
       </div>
 
-      <!-- 無料鑑定結果 -->
+      <!-- 鑑定結果 -->
       <div id="result-section" style="display:none">
         <div class="result-grid">
 
@@ -128,15 +144,16 @@ import '../../styles/global.css';
             <div class="personality-box" id="nikkan-personality"></div>
           </div>
 
-          <!-- 天中殺 -->
-          <div class="glass-card result-item">
-            <h3 class="card-subtitle">算命学・天中殺</h3>
+          <!-- 宿命天中殺（無料） -->
+          <div class="glass-card result-item tenchusatsu-card">
+            <div class="tc-free-badge">無料</div>
+            <h3 class="card-subtitle">宿命天中殺</h3>
             <div class="tenchusatsu-box">
               <p class="tenchusatsu-name" id="tenchusatsu-name"></p>
               <p class="tenchusatsu-desc" id="tenchusatsu-desc"></p>
-              <div class="tenchusatsu-detail" id="tenchusatsu-detail" style="display:none">
+              <div class="tenchusatsu-detail">
                 <div class="tenchusatsu-section">
-                  <p class="tenchusatsu-section-title">✦ 強み</p>
+                  <p class="tenchusatsu-section-title">✦ あなたの強み</p>
                   <p class="tenchusatsu-section-text" id="tenchusatsu-strength"></p>
                 </div>
                 <div class="tenchusatsu-section">
@@ -144,10 +161,59 @@ import '../../styles/global.css';
                   <p class="tenchusatsu-section-text" id="tenchusatsu-caution"></p>
                 </div>
                 <div class="tenchusatsu-section">
-                  <p class="tenchusatsu-section-title">💡 天中殺の活かし方</p>
+                  <p class="tenchusatsu-section-title">💡 天中殺を味方につける方法</p>
                   <p class="tenchusatsu-section-text" id="tenchusatsu-advice"></p>
                 </div>
               </div>
+            </div>
+          </div>
+
+          <!-- 後天天中殺（有料1コイン） -->
+          <div class="glass-card result-item kochiten-card" id="kochiten-section">
+            <div class="tc-paid-badge">1コイン</div>
+            <h3 class="card-subtitle">後天天中殺</h3>
+            <p class="kochiten-intro">今年・今月・今日が天中殺の時期かどうかを確認できます。天中殺の時期は「無理な前進を避け、内側を充実させる」ことが大切です。</p>
+
+            <div id="kochiten-result" style="display:none">
+              <div class="kochiten-grid">
+                <div class="kochiten-item" id="kt-year-item">
+                  <div class="kochiten-period">今年</div>
+                  <div class="kochiten-kanshi" id="kt-year-kanshi"></div>
+                  <div class="kochiten-status" id="kt-year-status"></div>
+                </div>
+                <div class="kochiten-item" id="kt-month-item">
+                  <div class="kochiten-period">今月</div>
+                  <div class="kochiten-kanshi" id="kt-month-kanshi"></div>
+                  <div class="kochiten-status" id="kt-month-status"></div>
+                </div>
+                <div class="kochiten-item" id="kt-day-item">
+                  <div class="kochiten-period">今日</div>
+                  <div class="kochiten-kanshi" id="kt-day-kanshi"></div>
+                  <div class="kochiten-status" id="kt-day-status"></div>
+                </div>
+              </div>
+              <div class="kochiten-months" id="kochiten-months-section" style="display:none">
+                <p class="kochiten-months-title">⚠ 今年の天中殺月</p>
+                <div class="kochiten-months-chips" id="kochiten-months-chips"></div>
+                <p class="kochiten-months-desc">これらの月は天中殺の影響を受けやすい時期です。新しいことを始めるより、今あるものを丁寧に育てることに集中してください。</p>
+              </div>
+              <div class="kochiten-days" id="kochiten-days-section" style="display:none">
+                <p class="kochiten-days-title">📅 今月の天中殺日</p>
+                <div class="kochiten-days-chips" id="kochiten-days-chips"></div>
+                <p class="kochiten-days-desc">これらの日は慎重に過ごすことをお勧めします。重要な決断や新しいことの開始は、翌日以降に延期してください。</p>
+              </div>
+              <p class="kochiten-coin-info" id="kochiten-coin-info"></p>
+            </div>
+
+            <div id="kochiten-btn-area">
+              <p class="error-msg" id="kochiten-error"></p>
+              <div id="kochiten-login-note" style="display:none;text-align:center">
+                <p style="font-size:14px;color:var(--text-secondary);margin-bottom:0.75rem">鑑定にはログインが必要です</p>
+                <a href="/login" class="btn-primary" style="display:inline-block;text-decoration:none">ログイン・新規登録</a>
+              </div>
+              <button class="btn-primary kochiten-btn" id="kochiten-btn" onclick="runKochiten()">
+                🌊 後天天中殺を確認する（1コイン）
+              </button>
             </div>
           </div>
 
@@ -160,53 +226,16 @@ import '../../styles/global.css';
             </div>
             <p class="cta-lead">命式盤と日干・天中殺はほんの入口。詳細鑑定では、あなたの才能・弱点・恋愛・仕事・天職・大運まで完全に読み解きます。</p>
             <div class="cta-features">
-              <div class="cta-feature">
-                <span class="cta-feature-icon">💼</span>
-                <div>
-                  <p class="cta-feature-name">才能・天職の詳細</p>
-                  <p class="cta-feature-desc">あなたが最も輝ける仕事・天職・具体的な職種</p>
-                </div>
-              </div>
-              <div class="cta-feature">
-                <span class="cta-feature-icon">❤️</span>
-                <div>
-                  <p class="cta-feature-name">恋愛・結婚運の詳細</p>
-                  <p class="cta-feature-desc">恋愛パターン・理想のパートナー・結婚への道</p>
-                </div>
-              </div>
-              <div class="cta-feature">
-                <span class="cta-feature-icon">🌊</span>
-                <div>
-                  <p class="cta-feature-name">大運（10年の流れ）</p>
-                  <p class="cta-feature-desc">10年ごとに変わる運気の流れと黄金期</p>
-                </div>
-              </div>
-              <div class="cta-feature">
-                <span class="cta-feature-icon">✨</span>
-                <div>
-                  <p class="cta-feature-name">今のあなたへのメッセージ</p>
-                  <p class="cta-feature-desc">宿命から読み解く、今のあなたへの特別な言葉</p>
-                </div>
-              </div>
+              <div class="cta-feature"><span class="cta-feature-icon">💼</span><div><p class="cta-feature-name">才能・天職の詳細</p><p class="cta-feature-desc">あなたが最も輝ける仕事・天職・具体的な職種とその理由</p></div></div>
+              <div class="cta-feature"><span class="cta-feature-icon">❤️</span><div><p class="cta-feature-name">恋愛・結婚運の詳細</p><p class="cta-feature-desc">恋愛パターン・理想のパートナー・結婚への道</p></div></div>
+              <div class="cta-feature"><span class="cta-feature-icon">🌊</span><div><p class="cta-feature-name">大運（10年の流れ）</p><p class="cta-feature-desc">10年ごとに変わる運気の流れと黄金期・注意の時期</p></div></div>
+              <div class="cta-feature"><span class="cta-feature-icon">✨</span><div><p class="cta-feature-name">今のあなたへのメッセージ</p><p class="cta-feature-desc">宿命から読み解く、今のあなたへの特別な言葉</p></div></div>
             </div>
             <div class="cta-divider"><span>コインをチャージして鑑定する</span></div>
             <div class="cta-plans">
-              <div class="cta-plan" onclick="window.location.href='/register'">
-                <p class="cta-plan-coin">100C</p>
-                <p class="cta-plan-price">¥500</p>
-                <p class="cta-plan-note">お試し</p>
-              </div>
-              <div class="cta-plan cta-plan-featured" onclick="window.location.href='/register'">
-                <p class="cta-plan-badge">人気</p>
-                <p class="cta-plan-coin">300C</p>
-                <p class="cta-plan-price">¥1,200</p>
-                <p class="cta-plan-note">おすすめ</p>
-              </div>
-              <div class="cta-plan" onclick="window.location.href='/register'">
-                <p class="cta-plan-coin">500C</p>
-                <p class="cta-plan-price">¥1,800</p>
-                <p class="cta-plan-note">お得</p>
-              </div>
+              <div class="cta-plan" onclick="window.location.href='/register'"><p class="cta-plan-coin">100C</p><p class="cta-plan-price">¥500</p><p class="cta-plan-note">お試し</p></div>
+              <div class="cta-plan cta-plan-featured" onclick="window.location.href='/register'"><p class="cta-plan-badge">人気</p><p class="cta-plan-coin">300C</p><p class="cta-plan-price">¥1,200</p><p class="cta-plan-note">おすすめ</p></div>
+              <div class="cta-plan" onclick="window.location.href='/register'"><p class="cta-plan-coin">500C</p><p class="cta-plan-price">¥1,800</p><p class="cta-plan-note">お得</p></div>
             </div>
             <p class="cta-note">1コイン = ¥5相当 · 期限なし</p>
             <button class="cta-btn" onclick="window.location.href='/register'">無料登録して詳細鑑定を受ける</button>
@@ -216,8 +245,8 @@ import '../../styles/global.css';
           <!-- ログイン済み詳細鑑定ボタン -->
           <div class="glass-card result-item paid-menu" id="paid-menu" style="display:none">
             <h3 class="paid-menu-title">✦ 詳細鑑定を受ける</h3>
-            <p class="paid-menu-desc">才能・弱点・恋愛・仕事・大運など、あなたの宿命をさらに深く読み解きます。</p>
-            <div id="coin-bar" class="coin-bar">
+            <p class="paid-menu-desc">才能・弱点・恋愛・仕事・天職・大運など、あなたの宿命をさらに深く読み解きます。</p>
+            <div class="coin-bar">
               <span class="coin-bar-label">保有コイン</span>
               <span class="coin-bar-value" id="coin-balance">-- コイン</span>
               <span class="coin-bar-cost">詳細鑑定 3コイン</span>
@@ -231,44 +260,37 @@ import '../../styles/global.css';
           <!-- 詳細鑑定結果（有料） -->
           <div id="premium-result" style="display:none">
 
-            <!-- 才能 -->
             <div class="glass-card result-item talent-section">
               <h3 class="card-subtitle" id="talent-title">才能・特性</h3>
               <p class="talent-desc" id="talent-desc"></p>
             </div>
 
-            <!-- 弱点 -->
             <div class="glass-card result-item weakness-section">
               <h3 class="card-subtitle" id="weakness-title">あなたへのやさしい注意点</h3>
               <p class="talent-desc" id="weakness-desc"></p>
             </div>
 
-            <!-- 恋愛 -->
             <div class="glass-card result-item love-section">
               <h3 class="card-subtitle" id="love-title">恋愛でのあなたらしさ</h3>
               <p class="talent-desc" id="love-desc"></p>
             </div>
 
-            <!-- 仕事 -->
             <div class="glass-card result-item work-section">
               <h3 class="card-subtitle" id="work-title">仕事でのあなたの輝き方</h3>
               <p class="talent-desc" id="work-desc"></p>
             </div>
 
-            <!-- 天職 -->
             <div class="glass-card result-item career-section">
               <h3 class="card-subtitle">天職・向いている職種</h3>
               <div class="career-list" id="career-list"></div>
             </div>
 
-            <!-- 大運 -->
             <div class="glass-card result-item daiun-section">
               <h3 class="card-subtitle">大運（10年ごとの運勢の流れ）</h3>
-              <p class="daiun-intro">あなたの人生は10年ごとに異なるテーマを持つ「大運」が訪れます。それぞれの時期の流れを知ることで、今という時期をより深く理解できます。</p>
+              <p class="daiun-intro">あなたの人生は10年ごとに異なるテーマを持つ「大運」が訪れます。それぞれの時期の流れを知ることで、今という時期をより深く理解できます。現在の大運は<span style="color:var(--gold)">金色</span>でハイライトされています。</p>
               <div class="daiun-list" id="daiun-list"></div>
             </div>
 
-            <!-- メッセージ -->
             <div class="glass-card result-item message-card">
               <h3 class="card-subtitle">✦ 今のあなたへのメッセージ</h3>
               <p class="key-message-text" id="key-message"></p>
@@ -303,6 +325,13 @@ import '../../styles/global.css';
 .intro-note { margin-top: 1.25rem; padding: 0.75rem 1rem; background: rgba(255,255,255,0.03); border-radius: var(--radius-md); border: 0.5px solid rgba(255,255,255,0.08); }
 .intro-note p { font-size: 12px; color: var(--text-secondary); margin: 0; }
 
+/* 天中殺説明 */
+.tenchusatsu-explain { display: flex; flex-direction: column; gap: 0.75rem; margin-top: 0.75rem; }
+.tc-explain-item { display: flex; gap: 1rem; align-items: flex-start; background: rgba(255,255,255,0.03); border-radius: var(--radius-md); padding: 1rem; border: 0.5px solid rgba(255,255,255,0.08); text-align: left; }
+.tc-explain-icon { font-size: 24px; flex-shrink: 0; }
+.tc-explain-title { font-size: 14px; color: #f0e6d3; font-weight: 500; margin-bottom: 4px; font-family: 'Shippori Mincho', serif; }
+.tc-explain-desc { font-size: 13px; color: var(--text-secondary); line-height: 1.8; margin: 0; }
+
 .form-card { margin-bottom: 2rem; }
 .date-row { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 8px; margin-bottom: 1rem; }
 .field { display: flex; flex-direction: column; gap: 4px; }
@@ -315,7 +344,7 @@ import '../../styles/global.css';
 /* 命式盤 */
 .meishiki-card { padding: 1.75rem; }
 .meishiki-table { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 1rem; }
-.meishiki-col { background: #ffffff06; border: 0.5px solid #ffffff15; border-radius: var(--radius-md); padding: 1rem 0.5rem; text-align: center; }
+.meishiki-col { background: rgba(255,255,255,0.04); border: 0.5px solid rgba(255,255,255,0.1); border-radius: var(--radius-md); padding: 1rem 0.5rem; text-align: center; }
 .col-label { font-size: 11px; color: var(--text-secondary); margin-bottom: 8px; }
 .col-kan { font-family: 'Shippori Mincho', serif; font-size: 22px; margin-bottom: 6px; color: #f0e6d3; }
 .col-shi { font-size: 18px; color: var(--text-secondary); margin-bottom: 6px; }
@@ -330,14 +359,42 @@ import '../../styles/global.css';
 .star-sub { font-size: 13px; color: var(--text-secondary); margin-bottom: 1.25rem; }
 .personality-box { background: rgba(176,141,90,0.08); border-left: 3px solid var(--gold); padding: 1.25rem; font-size: 15px; line-height: 2; text-align: left; border-radius: 0 var(--radius-md) var(--radius-md) 0; }
 
-/* 天中殺 */
+/* 宿命天中殺 */
+.tenchusatsu-card { position: relative; }
+.tc-free-badge { position: absolute; top: 1rem; right: 1rem; background: rgba(29,158,117,0.2); color: #1d9e75; font-size: 11px; padding: 3px 10px; border-radius: 999px; border: 0.5px solid rgba(29,158,117,0.3); }
 .tenchusatsu-box { background: rgba(255,255,255,0.03); border-radius: var(--radius-md); padding: 1.25rem; }
 .tenchusatsu-name { font-family: 'Shippori Mincho', serif; font-size: 22px; color: var(--gold); margin-bottom: 0.75rem; text-align: center; }
-.tenchusatsu-desc { font-size: 15px; color: var(--text-secondary); line-height: 2; }
-.tenchusatsu-detail { margin-top: 1.25rem; display: flex; flex-direction: column; gap: 1rem; }
+.tenchusatsu-desc { font-size: 15px; color: var(--text-secondary); line-height: 2; margin-bottom: 1.25rem; }
+.tenchusatsu-detail { display: flex; flex-direction: column; gap: 1rem; }
 .tenchusatsu-section { background: rgba(255,255,255,0.03); border-radius: var(--radius-md); padding: 1rem; }
 .tenchusatsu-section-title { font-size: 13px; color: var(--gold); margin-bottom: 0.5rem; }
 .tenchusatsu-section-text { font-size: 15px; color: var(--text-secondary); line-height: 2; }
+
+/* 後天天中殺 */
+.kochiten-card { position: relative; }
+.tc-paid-badge { position: absolute; top: 1rem; right: 1rem; background: rgba(212,175,55,0.15); color: var(--gold); font-size: 11px; padding: 3px 10px; border-radius: 999px; border: 0.5px solid rgba(212,175,55,0.3); }
+.kochiten-intro { font-size: 14px; color: var(--text-secondary); line-height: 1.9; margin-bottom: 1.25rem; }
+.kochiten-btn { max-width: 100%; }
+.kochiten-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 1.25rem; }
+.kochiten-item { background: rgba(255,255,255,0.04); border-radius: var(--radius-md); padding: 1rem; text-align: center; border: 0.5px solid rgba(255,255,255,0.1); }
+.kochiten-item.is-tc { background: rgba(244,63,94,0.1); border-color: rgba(244,63,94,0.3); }
+.kochiten-item.not-tc { background: rgba(29,158,117,0.08); border-color: rgba(29,158,117,0.2); }
+.kochiten-period { font-size: 12px; color: var(--text-secondary); margin-bottom: 6px; }
+.kochiten-kanshi { font-family: 'Shippori Mincho', serif; font-size: 20px; color: #f0e6d3; margin-bottom: 8px; }
+.kochiten-status { font-size: 13px; font-weight: bold; }
+.kochiten-item.is-tc .kochiten-status { color: #fb7185; }
+.kochiten-item.not-tc .kochiten-status { color: #1d9e75; }
+.kochiten-months { background: rgba(244,63,94,0.06); border-radius: var(--radius-md); padding: 1rem; border: 0.5px solid rgba(244,63,94,0.2); margin-bottom: 1rem; }
+.kochiten-months-title { font-size: 13px; color: #fb7185; margin-bottom: 0.75rem; }
+.kochiten-months-chips { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 0.75rem; }
+.kochiten-month-chip { font-size: 13px; padding: 4px 12px; border-radius: 999px; background: rgba(244,63,94,0.15); color: #fb7185; border: 0.5px solid rgba(244,63,94,0.3); }
+.kochiten-months-desc { font-size: 13px; color: var(--text-secondary); line-height: 1.8; margin: 0; }
+.kochiten-days { background: rgba(245,158,11,0.06); border-radius: var(--radius-md); padding: 1rem; border: 0.5px solid rgba(245,158,11,0.2); margin-bottom: 1rem; }
+.kochiten-days-title { font-size: 13px; color: #f59e0b; margin-bottom: 0.75rem; }
+.kochiten-days-chips { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 0.75rem; }
+.kochiten-day-chip { font-size: 13px; padding: 4px 12px; border-radius: 999px; background: rgba(245,158,11,0.15); color: #f59e0b; border: 0.5px solid rgba(245,158,11,0.3); }
+.kochiten-days-desc { font-size: 13px; color: var(--text-secondary); line-height: 1.8; margin: 0; }
+.kochiten-coin-info { font-size: 12px; color: var(--text-muted); text-align: center; margin-top: 0.5rem; }
 
 /* 有料CTA */
 .premium-cta { background: linear-gradient(160deg, rgba(20,16,8,0.95), rgba(30,24,10,0.95)); border: 1px solid rgba(212,175,55,0.3); padding: 2.5rem; text-align: center; }
@@ -345,7 +402,7 @@ import '../../styles/global.css';
 .cta-ornament { font-size: 14px; color: var(--gold); opacity: 0.6; }
 .cta-title { font-family: 'Shippori Mincho', serif; font-size: 20px; color: #f0e6d3; margin: 0; }
 .cta-lead { font-size: 15px; color: var(--text-secondary); line-height: 1.9; margin-bottom: 2rem; }
-.cta-features { display: flex; flex-direction: column; gap: 12px; margin-bottom: 2rem; text-align: left; background: rgba(255,255,255,0.03); border-radius: var(--radius-lg); padding: 1.25rem; border: 0.5px solid rgba(255,255,255,0.08); }
+.cta-features { display: flex; flex-direction: column; gap: 12px; margin-bottom: 2rem; text-align: left; background: rgba(255,255,255,0.03); border-radius: var(--radius-lg); padding: 1.25rem; }
 .cta-feature { display: flex; align-items: center; gap: 12px; }
 .cta-feature-icon { font-size: 20px; flex-shrink: 0; }
 .cta-feature-name { font-size: 14px; color: #f0e6d3; margin: 0 0 2px; font-weight: 500; }
@@ -382,7 +439,6 @@ import '../../styles/global.css';
 .work-section { border-left: 3px solid #93c5fd; }
 .talent-desc { font-size: 16px; color: var(--text-secondary); line-height: 2.1; }
 
-/* 天職 */
 .career-section { background: linear-gradient(135deg, rgba(20,36,56,0.6), rgba(10,12,16,0.8)); }
 .career-list { display: flex; flex-direction: column; gap: 1rem; }
 .career-item { background: rgba(255,255,255,0.04); border-radius: var(--radius-md); padding: 1.25rem; border: 0.5px solid rgba(212,175,55,0.2); }
@@ -390,25 +446,23 @@ import '../../styles/global.css';
 .career-icon { font-size: 20px; }
 .career-reason { font-size: 15px; color: var(--text-secondary); line-height: 1.9; }
 
-/* 大運 */
-.daiun-section {}
 .daiun-intro { font-size: 14px; color: var(--text-secondary); line-height: 1.9; margin-bottom: 1.5rem; padding: 0.875rem 1rem; background: rgba(255,255,255,0.03); border-radius: var(--radius-md); border: 0.5px solid rgba(255,255,255,0.08); }
 .daiun-list { display: flex; flex-direction: column; gap: 1.25rem; }
 .daiun-item { border-radius: var(--radius-lg); overflow: hidden; border: 0.5px solid rgba(255,255,255,0.08); }
-.daiun-header { display: flex; align-items: center; gap: 1rem; padding: 1rem 1.25rem; background: rgba(255,255,255,0.04); }
+.daiun-header { display: flex; align-items: center; gap: 1rem; padding: 1rem 1.25rem; background: rgba(255,255,255,0.04); flex-wrap: wrap; }
 .daiun-age { font-size: 13px; color: var(--text-secondary); flex-shrink: 0; min-width: 70px; }
 .daiun-kanshi { font-family: 'Shippori Mincho', serif; font-size: 22px; color: #f0e6d3; }
 .daiun-gogyo-badge { font-size: 12px; padding: 3px 10px; border-radius: 999px; margin-left: auto; flex-shrink: 0; }
-.daiun-theme { font-size: 14px; color: var(--gold); flex: 1; text-align: right; }
+.daiun-theme { font-size: 13px; color: var(--gold); flex: 1; text-align: right; font-family: 'Shippori Mincho', serif; }
 .daiun-body { padding: 1rem 1.25rem; background: rgba(0,0,0,0.2); }
-.daiun-desc { font-size: 15px; color: var(--text-secondary); line-height: 1.9; margin-bottom: 1rem; }
+.daiun-desc { font-size: 15px; color: var(--text-secondary); line-height: 2; margin-bottom: 1rem; }
 .daiun-detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-bottom: 0.75rem; }
 .daiun-detail-item { background: rgba(255,255,255,0.04); border-radius: var(--radius-sm); padding: 0.75rem; }
 .daiun-detail-label { font-size: 11px; color: var(--gold); margin-bottom: 4px; }
-.daiun-detail-text { font-size: 13px; color: var(--text-secondary); line-height: 1.7; }
+.daiun-detail-text { font-size: 13px; color: var(--text-secondary); line-height: 1.8; }
 .daiun-advice { font-size: 14px; color: #f0e6d3; background: rgba(212,175,55,0.06); border-left: 2px solid var(--gold); padding: 0.75rem 1rem; border-radius: 0 var(--radius-sm) var(--radius-sm) 0; line-height: 1.8; }
-.daiun-current { border-color: rgba(212,175,55,0.4) !important; }
-.daiun-current .daiun-header { background: rgba(212,175,55,0.08); }
+.daiun-current { border-color: rgba(212,175,55,0.5) !important; }
+.daiun-current .daiun-header { background: rgba(212,175,55,0.1); }
 .daiun-current-badge { font-size: 10px; background: var(--gold); color: #000; padding: 2px 8px; border-radius: 999px; font-weight: bold; }
 
 .message-card { background: linear-gradient(135deg, rgba(30,24,10,0.8), rgba(10,12,16,0.9)); border-left: 3px solid var(--gold); }
@@ -420,9 +474,12 @@ import '../../styles/global.css';
 <script is:inline>
 const WORKERS_URL = 'https://kyusei-api.seiji-tomizawa.workers.dev';
 const GOGYO_COLOR = { '木':'#5ef0c5','火':'#ff8e8e','土':'#d4af37','金':'#c0c0c0','水':'#7eb8f7' };
+const GOGYO_BG = { '木':'rgba(94,240,197,0.15)','火':'rgba(255,142,142,0.15)','土':'rgba(212,175,55,0.15)','金':'rgba(192,192,192,0.15)','水':'rgba(126,184,247,0.15)' };
+const GOGYO_MAP = {'甲':'木','乙':'木','丙':'火','丁':'火','戊':'土','己':'土','庚':'金','辛':'金','壬':'水','癸':'水'};
+const CAREER_ICONS = ['🌟','💼','🎯','✨'];
+let currentYear = 0, currentMonth = 0, currentDay = 0;
 
 function applyResult(d) {
-  // 命式盤
   document.getElementById('nichu-kan').textContent = d.nichu?.kan || '--';
   document.getElementById('nichu-shi').textContent = d.nichu?.shi || '--';
   document.getElementById('getchu-kan').textContent = d.getchu?.kan || '--';
@@ -440,25 +497,19 @@ function applyResult(d) {
   document.getElementById('gogyo-chip').textContent = '五行：' + (d.nikkanGogyo || '');
   document.getElementById('inyo-chip').textContent = d.nikkanInyo || '';
 
-  // 日干
   document.getElementById('nikkan-label').textContent = '日干 · ' + d.nikkan + '（' + (d.nikkanSymbol || d.nikkan) + '）';
   document.getElementById('nikkan-name').textContent = d.nikkan + '（' + (d.nikkanSymbol || '') + '）';
   document.getElementById('nikkan-gogyo').textContent = (d.nikkanGogyo || '') + 'の気 · ' + (d.nikkanInyo || '');
   document.getElementById('nikkan-personality').textContent = d.personality || '';
 
-  // 天中殺
   document.getElementById('tenchusatsu-name').textContent = d.shukumeisei || '';
   document.getElementById('tenchusatsu-desc').textContent = d.tenchusatsuDesc || '';
-  if (d.tenchusatsuStrength) {
-    document.getElementById('tenchusatsu-strength').textContent = d.tenchusatsuStrength;
-    document.getElementById('tenchusatsu-caution').textContent = d.tenchusatsuCaution || '';
-    document.getElementById('tenchusatsu-advice').textContent = d.tenchusatsuAdvice || '';
-    document.getElementById('tenchusatsu-detail').style.display = 'flex';
-  }
+  document.getElementById('tenchusatsu-strength').textContent = d.tenchusatsuStrength || '';
+  document.getElementById('tenchusatsu-caution').textContent = d.tenchusatsuCaution || '';
+  document.getElementById('tenchusatsu-advice').textContent = d.tenchusatsuAdvice || '';
 }
 
 function applyPremiumResult(d) {
-  // 才能・特性（D1テキスト）
   document.getElementById('talent-title').textContent = d.talentTitle || '才能・特性';
   document.getElementById('talent-desc').textContent = d.talentDesc || d.talent || '';
   document.getElementById('weakness-title').textContent = d.weaknessTitle || 'あなたへのやさしい注意点';
@@ -469,8 +520,6 @@ function applyPremiumResult(d) {
   document.getElementById('work-desc').textContent = d.workDesc || d.work || '';
   document.getElementById('key-message').textContent = d.keyMessage || '';
 
-  // 天職（D1テキスト）
-  const CAREER_ICONS = ['🌟','💼','🎯','✨'];
   const careerList = document.getElementById('career-list');
   careerList.innerHTML = (d.careers || []).map(function(c, i) {
     return '<div class="career-item">' +
@@ -479,21 +528,15 @@ function applyPremiumResult(d) {
       '</div>';
   }).join('');
 
-  // 大運（D1テキスト付き）
-  const now = new Date();
-  const currentYear = now.getFullYear();
+  const birthYear = d.birthYear || parseInt(document.getElementById('year').value) || 1990;
+  const ageNow = new Date().getFullYear() - birthYear;
   const daiunList = document.getElementById('daiun-list');
-  const GOGYO_MAP = {'甲':'木','乙':'木','丙':'火','丁':'火','戊':'土','己':'土','庚':'金','辛':'金','壬':'水','癸':'水'};
-  const GOGYO_BG = {'木':'rgba(94,240,197,0.15)','火':'rgba(255,142,142,0.15)','土':'rgba(212,175,55,0.15)','金':'rgba(192,192,192,0.15)','水':'rgba(126,184,247,0.15)'};
-  const GOGYO_COLOR2 = {'木':'#5ef0c5','火':'#ff8e8e','土':'#d4af37','金':'#c0c0c0','水':'#7eb8f7'};
-
   daiunList.innerHTML = (d.enrichedDaiun || d.daiun || []).map(function(u) {
     const gogyo = GOGYO_MAP[u.kan] || '土';
-    const color = GOGYO_COLOR2[gogyo] || '#d4af37';
+    const color = GOGYO_COLOR[gogyo] || '#d4af37';
     const bg = GOGYO_BG[gogyo] || 'rgba(212,175,55,0.15)';
-    const isCurrent = u.age <= (currentYear - (d.birthYear || 1990)) && (currentYear - (d.birthYear || 1990)) < u.age + 10;
+    const isCurrent = u.age <= ageNow && ageNow < (u.age + 10);
     const t = u.text;
-
     return '<div class="daiun-item' + (isCurrent ? ' daiun-current' : '') + '">' +
       '<div class="daiun-header">' +
         (isCurrent ? '<span class="daiun-current-badge">現在</span>' : '') +
@@ -516,6 +559,39 @@ function applyPremiumResult(d) {
   document.getElementById('premium-result').style.display = 'block';
 }
 
+// 後天天中殺の表示
+function applyKochiten(data) {
+  const setItem = function(id, kanshi, isTC) {
+    const el = document.getElementById(id);
+    el.querySelector('.kochiten-kanshi').textContent = kanshi;
+    const statusEl = el.querySelector('.kochiten-status');
+    if (isTC) {
+      el.classList.add('is-tc');
+      statusEl.textContent = '⚠ 天中殺';
+    } else {
+      el.classList.add('not-tc');
+      statusEl.textContent = '✓ 通常期';
+    }
+  };
+  setItem('kt-year-item', data.thisYear + '年 ' + data.yearKanshi, data.isYearTC);
+  setItem('kt-month-item', data.thisMonth + '月 ' + data.monthKanshi, data.isMonthTC);
+  setItem('kt-day-item', '今日 ' + data.dayKanshi, data.isDayTC);
+
+  if (data.tcMonths && data.tcMonths.length > 0) {
+    document.getElementById('kochiten-months-chips').innerHTML =
+      data.tcMonths.map(function(m) { return '<span class="kochiten-month-chip">' + data.thisYear + '年' + m + '月</span>'; }).join('');
+    document.getElementById('kochiten-months-section').style.display = 'block';
+  }
+  if (data.tcDays && data.tcDays.length > 0) {
+    document.getElementById('kochiten-days-chips').innerHTML =
+      data.tcDays.map(function(d) { return '<span class="kochiten-day-chip">' + d + '日</span>'; }).join('');
+    document.getElementById('kochiten-days-section').style.display = 'block';
+  }
+  document.getElementById('kochiten-coin-info').textContent = '残りコイン: ' + data.remainingCoins + 'C';
+  document.getElementById('kochiten-result').style.display = 'block';
+  document.getElementById('kochiten-btn-area').style.display = 'none';
+}
+
 // 自動入力・ログイン済みは自動鑑定
 (function() {
   const token = localStorage.getItem('kyusei_token');
@@ -529,17 +605,18 @@ function applyPremiumResult(d) {
   if (user.gender) document.getElementById('gender').value = user.gender;
 
   if (token) {
-    // ログイン済みは自動鑑定
-    const formCard = document.getElementById('form-card');
-    if (formCard) formCard.style.display = 'none';
+    document.getElementById('form-card').style.display = 'none';
+    // 後天天中殺ボタンのログイン状態設定
+    document.getElementById('kochiten-login-note').style.display = 'none';
+    document.getElementById('kochiten-btn').style.display = 'block';
+    loadBalance(token);
     autoRunShichu(y, m, d, user.gender || 'f', token);
   } else {
-    // 未ログインはバナー表示
     const banner = document.getElementById('autofill-banner');
-    if (banner) {
-      banner.textContent = (user.display_name || user.email.split('@')[0]) + 'さんの生年月日を自動入力しました';
-      banner.style.display = 'block';
-    }
+    banner.textContent = (user.display_name || user.email.split('@')[0]) + 'さんの生年月日を自動入力しました';
+    banner.style.display = 'block';
+    document.getElementById('kochiten-login-note').style.display = 'block';
+    document.getElementById('kochiten-btn').style.display = 'none';
   }
 })();
 
@@ -550,19 +627,26 @@ async function autoRunShichu(year, month, day, gender, token) {
     );
     const d = await res.json();
     applyResult(d);
-
-    // ログイン済みなので詳細メニューを表示
     document.getElementById('premium-cta').style.display = 'none';
     document.getElementById('paid-menu').style.display = 'block';
-    loadBalance(token);
+
+    // 鑑定済みの詳細結果をlocalStorageから復元
+    const savedKey = 'shichu_premium_' + year + '_' + month + '_' + day;
+    const saved = localStorage.getItem(savedKey);
+    if (saved) {
+      try {
+        const savedData = JSON.parse(saved);
+        applyPremiumResult(savedData);
+        document.getElementById('paid-menu').style.display = 'none';
+      } catch(e) {}
+    }
 
     document.getElementById('result-section').style.display = 'block';
     document.getElementById('result-section').querySelectorAll('.result-item').forEach(function(el, i) {
       setTimeout(function() { el.classList.add('show'); }, i * 150);
     });
   } catch(e) {
-    const formCard = document.getElementById('form-card');
-    if (formCard) formCard.style.display = 'block';
+    document.getElementById('form-card').style.display = 'block';
   }
 }
 
@@ -581,33 +665,27 @@ window.runShichu = async function() {
   const time = document.getElementById('time').value;
   const gender = document.getElementById('gender').value;
   const errEl = document.getElementById('form-error');
-
-  if (!year || parseInt(year) < 1900 || parseInt(year) > 2010) {
-    errEl.textContent = '生年を正しく入力してください（1900〜2010）'; return;
-  }
+  if (!year || parseInt(year) < 1900 || parseInt(year) > 2010) { errEl.textContent = '生年を正しく入力してください（1900〜2010）'; return; }
   errEl.textContent = '';
-
   const btn = document.getElementById('btn');
   btn.textContent = '命式を解析中...'; btn.disabled = true;
-
   try {
-    const res = await fetch(
-      WORKERS_URL + '/api/shichu/preview?year=' + year + '&month=' + month + '&day=' + day + '&hour=' + time + '&gender=' + gender
-    );
+    const res = await fetch(WORKERS_URL + '/api/shichu/preview?year=' + year + '&month=' + month + '&day=' + day + '&hour=' + time + '&gender=' + gender);
     const d = await res.json();
     applyResult(d);
-
-    // ログイン状態で表示切替
     const token = localStorage.getItem('kyusei_token');
     if (token) {
       document.getElementById('premium-cta').style.display = 'none';
       document.getElementById('paid-menu').style.display = 'block';
       loadBalance(token);
+      document.getElementById('kochiten-login-note').style.display = 'none';
+      document.getElementById('kochiten-btn').style.display = 'block';
     } else {
       document.getElementById('premium-cta').style.display = 'block';
       document.getElementById('paid-menu').style.display = 'none';
+      document.getElementById('kochiten-login-note').style.display = 'block';
+      document.getElementById('kochiten-btn').style.display = 'none';
     }
-
     const section = document.getElementById('result-section');
     section.style.display = 'block';
     setTimeout(function() {
@@ -626,7 +704,6 @@ window.runShichu = async function() {
 window.runReading = async function() {
   const token = localStorage.getItem('kyusei_token');
   if (!token) { window.location.href = '/login'; return; }
-
   const year = document.getElementById('year').value;
   const month = document.getElementById('month').value;
   const day = document.getElementById('day').value;
@@ -634,23 +711,22 @@ window.runReading = async function() {
   const gender = document.getElementById('gender').value;
   const errEl = document.getElementById('reading-error');
   const btn = document.getElementById('reading-btn');
-
   errEl.textContent = '';
   btn.textContent = '鑑定中...'; btn.disabled = true;
-
   try {
     const res = await fetch(
       WORKERS_URL + '/api/shichu/reading?year=' + year + '&month=' + month + '&day=' + day + '&hour=' + time + '&gender=' + gender,
       { headers: { Authorization: 'Bearer ' + token } }
     );
     const d = await res.json();
-
     if (!res.ok) { errEl.textContent = d.error || 'エラーが発生しました'; return; }
-
     applyPremiumResult(d);
+    // localStorageに保存（次回自動表示用）
+    const savedKey = 'shichu_premium_' + year + '_' + month + '_' + day;
+    localStorage.setItem(savedKey, JSON.stringify(d));
     document.getElementById('paid-menu').style.display = 'none';
-    document.getElementById('coin-balance').textContent = d.remainingCoins + ' コイン';
-
+    const coinEl = document.getElementById('coin-balance');
+    if (coinEl) coinEl.textContent = d.remainingCoins + ' コイン';
     document.getElementById('premium-result').scrollIntoView({ behavior: 'smooth', block: 'start' });
   } catch {
     errEl.textContent = '通信エラーが発生しました。しばらくしてお試しください。';
@@ -659,7 +735,31 @@ window.runReading = async function() {
   }
 };
 
-// 星背景
+window.runKochiten = async function() {
+  const token = localStorage.getItem('kyusei_token');
+  if (!token) { window.location.href = '/login'; return; }
+  const year = document.getElementById('year').value;
+  const month = document.getElementById('month').value;
+  const day = document.getElementById('day').value;
+  const errEl = document.getElementById('kochiten-error');
+  const btn = document.getElementById('kochiten-btn');
+  errEl.textContent = '';
+  btn.textContent = '確認中...'; btn.disabled = true;
+  try {
+    const res = await fetch(
+      WORKERS_URL + '/api/shichu/kochiten?year=' + year + '&month=' + month + '&day=' + day,
+      { headers: { Authorization: 'Bearer ' + token } }
+    );
+    const data = await res.json();
+    if (!res.ok) { errEl.textContent = data.error || 'エラーが発生しました'; return; }
+    applyKochiten(data);
+  } catch {
+    errEl.textContent = '通信エラーが発生しました。';
+  } finally {
+    btn.textContent = '🌊 後天天中殺を確認する（1コイン）'; btn.disabled = false;
+  }
+};
+
 const starsEl = document.getElementById('stars');
 for (let i = 0; i < 50; i++) {
   const s = document.createElement('div');
