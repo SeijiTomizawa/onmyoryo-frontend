@@ -43,87 +43,140 @@ import Layout from '../../layouts/Layout.astro';
           <span class="stat-num" id="stat-today">—</span>
           <span class="stat-label">本日の新規登録</span>
         </div>
-      </div>
-
-      <!-- 検索 -->
-      <div class="section-card">
-        <h3 class="section-title">🔍 ユーザー検索</h3>
-        <div class="search-row">
-          <input type="text" id="search-query" placeholder="メールアドレス または ユーザーID" onkeydown="if(event.key==='Enter')searchUser()" />
-          <button class="btn-search" onclick="searchUser()">検索</button>
-          <button class="btn-clear" onclick="clearSearch()">クリア</button>
-        </div>
-        <p class="hint-text">※ メールアドレスの部分一致 またはユーザーID完全一致</p>
-      </div>
-
-      <!-- ユーザー詳細パネル -->
-      <div id="user-detail" style="display:none" class="section-card user-detail-card">
-        <div class="detail-header">
-          <h3 class="section-title">👤 ユーザー詳細</h3>
-          <button class="btn-close" onclick="closeUserDetail()">✕ 閉じる</button>
-        </div>
-        <div class="detail-grid">
-          <div class="detail-item full">
-            <span class="detail-label">ユーザーID</span>
-            <span class="detail-value mono" id="d-id"></span>
-          </div>
-          <div class="detail-item">
-            <span class="detail-label">メールアドレス</span>
-            <span class="detail-value" id="d-email"></span>
-          </div>
-          <div class="detail-item">
-            <span class="detail-label">登録日</span>
-            <span class="detail-value" id="d-created"></span>
-          </div>
-          <div class="detail-item highlight">
-            <span class="detail-label">現在のコイン残高</span>
-            <span class="detail-value coin-value" id="d-coins"></span>
-          </div>
-        </div>
-
-        <div class="coin-panel">
-          <h4 class="panel-title">💰 コイン残高の調整</h4>
-          <div class="coin-controls">
-            <select id="coin-operation">
-              <option value="add">付与する (+)</option>
-              <option value="sub">減らす (−)</option>
-              <option value="set">上書き（固定値）</option>
-            </select>
-            <input type="number" id="coin-amount" placeholder="コイン枚数" min="0" />
-            <button class="btn-coin" onclick="updateUserCoins()">更新する</button>
-          </div>
-          <div class="quick-btns">
-            <span class="quick-label">クイック付与：</span>
-            <button class="btn-quick" onclick="quickAdd(1)">+1</button>
-            <button class="btn-quick" onclick="quickAdd(10)">+10</button>
-            <button class="btn-quick" onclick="quickAdd(100)">+100</button>
-            <button class="btn-quick" onclick="quickAdd(500)">+500</button>
-          </div>
-          <p class="save-msg" id="coin-msg"></p>
-        </div>
-
-        <div class="tx-panel">
-          <h4 class="panel-title">📋 コイン履歴（直近20件）</h4>
-          <div id="tx-list" class="tx-list"><p class="loading-text">読み込み中...</p></div>
+        <div class="stat-divider"></div>
+        <div class="stat-item">
+          <span class="stat-num" id="stat-readings">—</span>
+          <span class="stat-label">総鑑定回数</span>
         </div>
       </div>
 
-      <!-- ユーザー一覧 -->
-      <div class="section-card">
-        <div class="section-header-row">
-          <h3 class="section-title">📋 ユーザー一覧</h3>
-          <div style="display:flex;gap:8px;align-items:center">
-            <select id="sort-select" onchange="sortUsers()" class="sort-select">
-              <option value="created_desc">登録日↓</option>
-              <option value="created_asc">登録日↑</option>
-              <option value="coins_desc">コイン↓</option>
-              <option value="coins_asc">コイン↑</option>
-            </select>
-            <button class="btn-refresh" onclick="loadAllUsers()">🔄 更新</button>
+      <!-- タブ -->
+      <div class="tab-row">
+        <button class="tab-btn active" onclick="switchView('users', this)">👥 ユーザー管理</button>
+        <button class="tab-btn" onclick="switchView('readings', this)">📖 占い利用履歴</button>
+      </div>
+
+      <!-- ===== ユーザー管理ビュー ===== -->
+      <div id="view-users">
+
+        <div class="section-card">
+          <h3 class="section-title">🔍 ユーザー検索</h3>
+          <div class="search-row">
+            <input type="text" id="search-query" placeholder="メールアドレス または ユーザーID" onkeydown="if(event.key==='Enter')searchUser()" />
+            <button class="btn-search" onclick="searchUser()">検索</button>
+            <button class="btn-clear" onclick="clearSearch()">クリア</button>
+          </div>
+          <p class="hint-text">※ メールアドレスの部分一致 またはユーザーID完全一致</p>
+        </div>
+
+        <div id="user-detail" style="display:none" class="section-card user-detail-card">
+          <div class="detail-header">
+            <h3 class="section-title">👤 ユーザー詳細</h3>
+            <button class="btn-close" onclick="closeUserDetail()">✕ 閉じる</button>
+          </div>
+          <div class="detail-grid">
+            <div class="detail-item full">
+              <span class="detail-label">ユーザーID</span>
+              <span class="detail-value mono" id="d-id"></span>
+            </div>
+            <div class="detail-item">
+              <span class="detail-label">メールアドレス</span>
+              <span class="detail-value" id="d-email"></span>
+            </div>
+            <div class="detail-item">
+              <span class="detail-label">登録日</span>
+              <span class="detail-value" id="d-created"></span>
+            </div>
+            <div class="detail-item highlight">
+              <span class="detail-label">現在のコイン残高</span>
+              <span class="detail-value coin-value" id="d-coins"></span>
+            </div>
+          </div>
+
+          <div class="coin-panel">
+            <h4 class="panel-title">💰 コイン残高の調整</h4>
+            <div class="coin-controls">
+              <select id="coin-operation">
+                <option value="add">付与する (+)</option>
+                <option value="sub">減らす (−)</option>
+                <option value="set">上書き（固定値）</option>
+              </select>
+              <input type="number" id="coin-amount" placeholder="コイン枚数" min="0" />
+              <button class="btn-coin" onclick="updateUserCoins()">更新する</button>
+            </div>
+            <div class="quick-btns">
+              <span class="quick-label">クイック付与：</span>
+              <button class="btn-quick" onclick="quickAdd(1)">+1</button>
+              <button class="btn-quick" onclick="quickAdd(10)">+10</button>
+              <button class="btn-quick" onclick="quickAdd(100)">+100</button>
+              <button class="btn-quick" onclick="quickAdd(500)">+500</button>
+            </div>
+            <p class="save-msg" id="coin-msg"></p>
+          </div>
+
+          <!-- タブ: コイン履歴 / 占い履歴 -->
+          <div class="detail-tab-row">
+            <button class="detail-tab active" onclick="switchDetailTab('coins', this)">💰 コイン履歴</button>
+            <button class="detail-tab" onclick="switchDetailTab('readings', this)">📖 占い履歴</button>
+          </div>
+
+          <div id="detail-coins">
+            <div id="tx-list" class="tx-list"><p class="loading-text">読み込み中...</p></div>
+          </div>
+          <div id="detail-readings" style="display:none">
+            <div id="user-readings-list" class="tx-list"><p class="loading-text">読み込み中...</p></div>
           </div>
         </div>
-        <div id="all-users-list"><p class="loading-text">読み込み中...</p></div>
-        <div id="pagination" class="pagination"></div>
+
+        <div class="section-card">
+          <div class="section-header-row">
+            <h3 class="section-title">📋 ユーザー一覧</h3>
+            <div style="display:flex;gap:8px;align-items:center">
+              <select id="sort-select" onchange="sortUsers()" class="sort-select">
+                <option value="created_desc">登録日↓</option>
+                <option value="created_asc">登録日↑</option>
+                <option value="coins_desc">コイン↓</option>
+                <option value="coins_asc">コイン↑</option>
+              </select>
+              <button class="btn-refresh" onclick="loadAllUsers()">🔄 更新</button>
+            </div>
+          </div>
+          <div id="all-users-list"><p class="loading-text">読み込み中...</p></div>
+          <div id="pagination" class="pagination"></div>
+        </div>
+
+      </div>
+
+      <!-- ===== 占い利用履歴ビュー ===== -->
+      <div id="view-readings" style="display:none">
+
+        <!-- 統計カード -->
+        <div class="reading-stats-grid" id="reading-stats-grid">
+          <p class="loading-text">読み込み中...</p>
+        </div>
+
+        <!-- フィルター -->
+        <div class="section-card">
+          <div class="section-header-row">
+            <h3 class="section-title">📖 鑑定履歴</h3>
+            <div style="display:flex;gap:8px;align-items:center">
+              <select id="reading-type-filter" onchange="filterReadings()" class="sort-select">
+                <option value="all">全種別</option>
+                <option value="basic">基本鑑定</option>
+                <option value="monthly">月運</option>
+                <option value="yearly">年運</option>
+                <option value="compat">相性</option>
+                <option value="daily">日運</option>
+                <option value="eki">易占い</option>
+                <option value="sukuyo">宿曜</option>
+              </select>
+              <button class="btn-refresh" onclick="loadReadings()">🔄 更新</button>
+            </div>
+          </div>
+          <div id="readings-list"><p class="loading-text">読み込み中...</p></div>
+          <div id="readings-pagination" class="pagination"></div>
+        </div>
+
       </div>
 
     </div>
@@ -143,11 +196,14 @@ import Layout from '../../layouts/Layout.astro';
 .page-title { font-family: 'Shippori Mincho', serif; font-size: 20px; }
 .logout-btn { background: rgba(255,255,255,0.05); border: 0.5px solid #ffffff22; color: var(--text-secondary); padding: 0.4rem 1rem; border-radius: var(--radius-md); font-size: 13px; cursor: pointer; transition: all 0.2s; }
 .logout-btn:hover { border-color: #ff8e8e; color: #ff8e8e; }
-.stats-bar { display: flex; align-items: center; background: rgba(212,175,55,0.06); border: 0.5px solid rgba(212,175,55,0.15); border-radius: var(--radius-lg); padding: 1rem; margin-bottom: 1.25rem; }
+.stats-bar { display: flex; align-items: center; background: rgba(212,175,55,0.06); border: 0.5px solid rgba(212,175,55,0.15); border-radius: var(--radius-lg); padding: 1rem; margin-bottom: 1rem; }
 .stat-item { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 4px; }
-.stat-num { font-family: 'Shippori Mincho', serif; font-size: 1.5rem; color: #fde68a; font-weight: bold; }
-.stat-label { font-size: 11px; color: var(--text-secondary); }
+.stat-num { font-family: 'Shippori Mincho', serif; font-size: 1.4rem; color: #fde68a; font-weight: bold; }
+.stat-label { font-size: 10px; color: var(--text-secondary); text-align: center; }
 .stat-divider { width: 1px; height: 36px; background: rgba(255,255,255,0.08); }
+.tab-row { display: flex; gap: 8px; margin-bottom: 1.25rem; }
+.tab-btn { padding: 0.6rem 1.25rem; border-radius: var(--radius-md); background: #ffffff08; border: 0.5px solid #ffffff22; color: var(--text-secondary); font-size: 14px; transition: all 0.15s; cursor: pointer; }
+.tab-btn.active { background: var(--gold); color: #000; border-color: var(--gold); font-weight: bold; }
 .section-card { background: var(--dark-card); border: 0.5px solid #ffffff12; border-radius: var(--radius-lg); padding: 1.5rem; margin-bottom: 1.25rem; display: flex; flex-direction: column; gap: 1rem; }
 .section-title { font-family: 'Shippori Mincho', serif; font-size: 16px; color: #fff; margin: 0; }
 .section-header-row { display: flex; justify-content: space-between; align-items: center; }
@@ -190,7 +246,9 @@ import Layout from '../../layouts/Layout.astro';
 .quick-label { font-size: 11px; color: var(--text-secondary); }
 .btn-quick { padding: 0.3rem 0.75rem; background: rgba(16,185,129,0.1); border: 0.5px solid rgba(16,185,129,0.3); color: #6ee7b7; border-radius: var(--radius-sm); font-size: 12px; cursor: pointer; transition: all 0.2s; }
 .btn-quick:hover { background: rgba(16,185,129,0.22); }
-.tx-panel { display: flex; flex-direction: column; gap: 0.75rem; }
+.detail-tab-row { display: flex; gap: 6px; border-bottom: 1px solid #ffffff10; padding-bottom: 0.75rem; }
+.detail-tab { padding: 0.4rem 1rem; background: none; border: 0.5px solid #ffffff18; color: var(--text-secondary); border-radius: var(--radius-sm); font-size: 13px; cursor: pointer; transition: all 0.15s; }
+.detail-tab.active { background: rgba(212,175,55,0.15); border-color: rgba(212,175,55,0.4); color: #fde68a; }
 .tx-list { display: flex; flex-direction: column; gap: 0.4rem; }
 .tx-row { display: flex; align-items: center; gap: 0.75rem; padding: 0.55rem 0.875rem; background: #ffffff04; border-radius: var(--radius-sm); font-size: 12px; }
 .tx-type { padding: 2px 8px; border-radius: 10px; font-size: 10px; font-weight: bold; white-space: nowrap; }
@@ -201,6 +259,25 @@ import Layout from '../../layouts/Layout.astro';
 .tx-amount.positive { color: #6ee7b7; }
 .tx-amount.negative { color: #fca5a5; }
 .tx-date { color: var(--text-secondary); margin-left: auto; white-space: nowrap; }
+/* 占い履歴 */
+.reading-stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.75rem; margin-bottom: 1.25rem; }
+.reading-stat-card { background: var(--dark-card); border: 0.5px solid #ffffff12; border-radius: var(--radius-md); padding: 1rem; text-align: center; display: flex; flex-direction: column; gap: 4px; }
+.reading-stat-type { font-size: 10px; color: var(--text-secondary); letter-spacing: 0.05em; }
+.reading-stat-count { font-family: 'Shippori Mincho', serif; font-size: 1.4rem; color: #fff; font-weight: bold; }
+.reading-stat-coins { font-size: 11px; color: #f59e0b; }
+.reading-row { display: flex; align-items: center; gap: 0.75rem; padding: 0.75rem 1rem; background: #ffffff05; border-radius: var(--radius-md); border: 0.5px solid #ffffff08; font-size: 12px; }
+.reading-type-badge { padding: 3px 10px; border-radius: 20px; font-size: 10px; font-weight: bold; white-space: nowrap; background: rgba(139,92,246,0.18); color: #c4b5fd; }
+.reading-type-badge.eki { background: rgba(245,158,11,0.18); color: #fde68a; }
+.reading-type-badge.sukuyo { background: rgba(244,114,182,0.18); color: #f9a8d4; }
+.reading-type-badge.basic { background: rgba(59,130,246,0.18); color: #93c5fd; }
+.reading-type-badge.monthly { background: rgba(16,185,129,0.18); color: #6ee7b7; }
+.reading-type-badge.yearly { background: rgba(239,68,68,0.18); color: #fca5a5; }
+.reading-info { flex: 1; min-width: 0; }
+.reading-email { color: #f0e6d3; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.reading-question { font-size: 11px; color: var(--text-secondary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-top: 2px; }
+.reading-coins { color: #f59e0b; white-space: nowrap; font-weight: bold; }
+.reading-date { color: var(--text-secondary); white-space: nowrap; }
+.readings-inner { display: flex; flex-direction: column; gap: 0.5rem; }
 .pagination { display: flex; gap: 6px; justify-content: center; flex-wrap: wrap; padding-top: 0.5rem; }
 .btn-page { padding: 0.4rem 0.875rem; background: #ffffff08; border: 0.5px solid #ffffff18; color: var(--text-secondary); border-radius: var(--radius-sm); font-size: 12px; cursor: pointer; transition: all 0.15s; }
 .btn-page:hover, .btn-page.active { background: var(--gold); color: #000; border-color: var(--gold); font-weight: bold; }
@@ -216,8 +293,8 @@ import Layout from '../../layouts/Layout.astro';
   .detail-item.full { grid-column: 1; }
   .coin-controls { flex-direction: column; }
   .coin-controls input { width: 100%; }
-  .stats-bar { gap: 0; }
-  .stat-num { font-size: 1.2rem; }
+  .stats-bar { flex-wrap: wrap; }
+  .reading-stats-grid { grid-template-columns: repeat(2, 1fr); }
 }
 </style>
 
@@ -226,8 +303,11 @@ const WORKERS_URL = 'https://kyusei-api.seiji-tomizawa.workers.dev';
 let ADMIN_PW = '';
 let selectedUserId = null;
 let allUsers = [];
+let allReadings = [];
 let currentPage = 1;
+let readingsPage = 1;
 const PAGE_SIZE = 20;
+const READING_LABELS = { basic:'基本鑑定', monthly:'月運', yearly:'年運', compat:'相性', daily:'日運', eki:'易占い', sukuyo:'宿曜' };
 
 function doAuth() {
   const pw = document.getElementById('admin-password').value;
@@ -236,6 +316,7 @@ function doAuth() {
   document.getElementById('auth-section').style.display = 'none';
   document.getElementById('admin-section').style.display = 'block';
   loadAllUsers();
+  loadReadings();
 }
 
 function doLogout() {
@@ -249,6 +330,23 @@ function adminHeaders() {
   return { 'Content-Type': 'application/json', 'X-Admin-Password': ADMIN_PW };
 }
 
+function switchView(name, btn) {
+  document.getElementById('view-users').style.display = name === 'users' ? 'block' : 'none';
+  document.getElementById('view-readings').style.display = name === 'readings' ? 'block' : 'none';
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+}
+
+function switchDetailTab(name, btn) {
+  document.getElementById('detail-coins').style.display = name === 'coins' ? 'block' : 'none';
+  document.getElementById('detail-readings').style.display = name === 'readings' ? 'block' : 'none';
+  document.querySelectorAll('.detail-tab').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  if (name === 'readings' && selectedUserId) loadUserReadings(selectedUserId);
+}
+
+// ========== ユーザー管理 ==========
+
 async function loadAllUsers() {
   const el = document.getElementById('all-users-list');
   el.innerHTML = '<p class="loading-text">読み込み中...</p>';
@@ -258,8 +356,7 @@ async function loadAllUsers() {
     if (!res.ok) { el.innerHTML = `<p class="empty-text">エラー: ${data.error || '取得失敗'}</p>`; return; }
     allUsers = data.users || [];
     updateStats();
-    currentPage = 1;
-    renderPage();
+    currentPage = 1; renderPage();
   } catch {
     el.innerHTML = '<p class="empty-text">通信エラーが発生しました</p>';
   }
@@ -285,8 +382,7 @@ function sortUsers() {
 
 function renderPage() {
   const start = (currentPage - 1) * PAGE_SIZE;
-  const paged = allUsers.slice(start, start + PAGE_SIZE);
-  renderUserList(paged, document.getElementById('all-users-list'));
+  renderUserList(allUsers.slice(start, start + PAGE_SIZE), document.getElementById('all-users-list'));
   renderPagination();
 }
 
@@ -346,6 +442,10 @@ function openUserDetail(encoded) {
   document.getElementById('d-coins').textContent = (u.coins || 0).toLocaleString() + ' C';
   document.getElementById('coin-msg').textContent = '';
   document.getElementById('coin-amount').value = '';
+  // タブをコイン履歴に戻す
+  document.getElementById('detail-coins').style.display = 'block';
+  document.getElementById('detail-readings').style.display = 'none';
+  document.querySelectorAll('.detail-tab').forEach((b, i) => b.classList.toggle('active', i === 0));
   const detail = document.getElementById('user-detail');
   detail.style.display = 'flex';
   detail.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -374,6 +474,31 @@ async function loadUserTransactions(userId) {
       </div>`).join('');
   } catch {
     el.innerHTML = '<p class="empty-text">履歴の取得に失敗しました</p>';
+  }
+}
+
+async function loadUserReadings(userId) {
+  const el = document.getElementById('user-readings-list');
+  el.innerHTML = '<p class="loading-text">読み込み中...</p>';
+  try {
+    const res = await fetch(`${WORKERS_URL}/api/admin/users/${userId}/readings`, { headers: adminHeaders() });
+    const data = await res.json();
+    const readings = [...(data.readings || []), ...(data.eki_readings || [])];
+    readings.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+    if (readings.length === 0) { el.innerHTML = '<p class="empty-text">鑑定履歴がありません</p>'; return; }
+    el.innerHTML = readings.map(r => `
+      <div class="tx-row">
+        <span class="tx-type ${r.reading_type || 'eki'}" style="background:rgba(139,92,246,0.18);color:#c4b5fd">
+          ${READING_LABELS[r.reading_type] || r.reading_type || '易占い'}
+        </span>
+        <span style="flex:1;font-size:11px;color:var(--text-secondary);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;padding:0 0.5rem">
+          ${r.question || '—'}
+        </span>
+        <span style="color:#f59e0b;white-space:nowrap;font-size:12px">${r.coins_used || 1} C</span>
+        <span class="tx-date">${new Date(r.created_at).toLocaleDateString('ja-JP')}</span>
+      </div>`).join('');
+  } catch {
+    el.innerHTML = '<p class="empty-text">取得に失敗しました</p>';
   }
 }
 
@@ -416,4 +541,74 @@ async function doUpdateCoins(op, amount, msgEl) {
     msgEl.style.color = '#ff8e8e'; msgEl.textContent = '通信エラーが発生しました';
   }
 }
+
+// ========== 占い利用履歴 ==========
+
+async function loadReadings() {
+  try {
+    const res = await fetch(`${WORKERS_URL}/api/admin/readings?limit=100`, { headers: adminHeaders() });
+    const data = await res.json();
+
+    // 統計カード
+    document.getElementById('stat-readings').textContent = (data.total_count || 0).toLocaleString();
+    const statsGrid = document.getElementById('reading-stats-grid');
+    const stats = data.stats || [];
+    const ekiStats = data.eki_stats || { count: 0, total_coins: 0 };
+
+    const allStats = [...stats, { reading_type: 'eki', count: ekiStats.count, total_coins: ekiStats.total_coins }];
+    statsGrid.innerHTML = allStats.map(s => `
+      <div class="reading-stat-card">
+        <span class="reading-stat-type">${READING_LABELS[s.reading_type] || s.reading_type}</span>
+        <span class="reading-stat-count">${(s.count || 0).toLocaleString()}</span>
+        <span class="reading-stat-coins">${(s.total_coins || 0).toLocaleString()} C消費</span>
+      </div>
+    `).join('');
+
+    // 全履歴をマージ
+    const readings = data.readings || [];
+    const ekiReadings = (data.eki_readings || []).map(r => ({ ...r, reading_type: 'eki' }));
+    allReadings = [...readings, ...ekiReadings].sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+    readingsPage = 1;
+    renderReadings();
+  } catch {
+    document.getElementById('readings-list').innerHTML = '<p class="empty-text">通信エラーが発生しました</p>';
+  }
+}
+
+function filterReadings() {
+  readingsPage = 1;
+  renderReadings();
+}
+
+function renderReadings() {
+  const typeFilter = document.getElementById('reading-type-filter').value;
+  const filtered = typeFilter === 'all' ? allReadings : allReadings.filter(r => r.reading_type === typeFilter);
+  const start = (readingsPage - 1) * PAGE_SIZE;
+  const paged = filtered.slice(start, start + PAGE_SIZE);
+  const el = document.getElementById('readings-list');
+
+  if (paged.length === 0) { el.innerHTML = '<p class="empty-text">履歴がありません</p>'; document.getElementById('readings-pagination').innerHTML = ''; return; }
+
+  el.innerHTML = '<div class="readings-inner">' + paged.map(r => `
+    <div class="reading-row">
+      <span class="reading-type-badge ${r.reading_type}">${READING_LABELS[r.reading_type] || r.reading_type}</span>
+      <div class="reading-info">
+        <div class="reading-email">${r.email || r.user_id?.substring(0,8) + '...'}</div>
+        ${r.question ? `<div class="reading-question">${r.question}</div>` : ''}
+      </div>
+      <span class="reading-coins">${r.coins_used || 1} C</span>
+      <span class="reading-date">${new Date(r.created_at).toLocaleDateString('ja-JP')}</span>
+    </div>
+  `).join('') + '</div>';
+
+  // ページネーション
+  const total = Math.ceil(filtered.length / PAGE_SIZE);
+  const pagEl = document.getElementById('readings-pagination');
+  if (total <= 1) { pagEl.innerHTML = ''; return; }
+  pagEl.innerHTML = Array.from({length: total}, (_, i) => i + 1).map(p =>
+    `<button class="btn-page ${p === readingsPage ? 'active' : ''}" onclick="goReadingsPage(${p})">${p}</button>`
+  ).join('');
+}
+
+function goReadingsPage(p) { readingsPage = p; renderReadings(); }
 </script>
