@@ -1,0 +1,179 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import '../../styles/global.css';
+---
+<Layout title="コインチャージ | 陰陽寮">
+  <div class="page">
+    <div class="stars" id="stars"></div>
+    <div class="page-inner">
+
+      <header class="page-header fade-in-up">
+        <a href="/mypage" class="back-link">← マイページへ</a>
+        <h1 class="page-title">コインチャージ</h1>
+        <p class="page-desc">コインをチャージして、占術鑑定をお楽しみください</p>
+      </header>
+
+      <!-- 現在のコイン残高 -->
+      <div class="glass-card balance-card fade-in-up delay-1">
+        <div class="balance-inner">
+          <div class="balance-left">
+            <p class="balance-label">現在の保有コイン</p>
+            <p class="balance-amount" id="coin-amount">-- <span>C</span></p>
+          </div>
+          <div class="balance-right">
+            <p class="balance-note">1コイン = ¥100相当</p>
+            <p class="balance-note">有効期限なし</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- コインの使い方 -->
+      <div class="glass-card howto-card fade-in-up delay-1">
+        <h2 class="howto-title">✦ コインの使い方</h2>
+        <div class="howto-grid">
+          <div class="howto-item">
+            <span class="howto-icon">☀️</span>
+            <div>
+              <p class="howto-name">本日の運勢・易占い・後天天中殺</p>
+              <p class="howto-cost">各 1コイン</p>
+            </div>
+          </div>
+          <div class="howto-item">
+            <span class="howto-icon">🌙</span>
+            <div>
+              <p class="howto-name">月運詳細・宿曜占星術</p>
+              <p class="howto-cost">各 2コイン</p>
+            </div>
+          </div>
+          <div class="howto-item">
+            <span class="howto-icon">💎</span>
+            <div>
+              <p class="howto-name">四柱推命詳細・相性鑑定</p>
+              <p class="howto-cost">各 3コイン</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 注意事項 -->
+      <div class="notice-card fade-in-up delay-2">
+        <p class="notice-text">⚠ テスト環境です。実際の決済は行われません。テスト用カード番号：<strong>4242 4242 4242 4242</strong>（有効期限・CVCは任意の数字）</p>
+      </div>
+
+      <!-- Stripe料金表 -->
+      <div class="stripe-wrap fade-in-up delay-2">
+        <h2 class="stripe-title">✦ プランを選択</h2>
+        <script async src="https://js.stripe.com/v3/pricing-table.js"></script>
+        <stripe-pricing-table
+          pricing-table-id="prctbl_1TTFIhCN3WdjIiL7LcPCJESE"
+          publishable-key="pk_test_51TMFa8CN3WdjIiL7w4QQfa48vNy7ghagIVosgdr1OiH14mmJt2yLOpFO1qvy8W5NeArWGokN69CukTqQLwk4hVTp00mfGiWOxR"
+          id="stripe-table">
+        </stripe-pricing-table>
+      </div>
+
+      <!-- 購入後の案内 -->
+      <div class="glass-card after-card fade-in-up delay-3">
+        <h3 class="after-title">購入後について</h3>
+        <div class="after-list">
+          <div class="after-item">
+            <span class="after-icon">✓</span>
+            <p>購入完了後、自動的にコインが付与されます</p>
+          </div>
+          <div class="after-item">
+            <span class="after-icon">✓</span>
+            <p>コインに有効期限はありません</p>
+          </div>
+          <div class="after-item">
+            <span class="after-icon">✓</span>
+            <p>月額プランは毎月自動更新されます</p>
+          </div>
+          <div class="after-item">
+            <span class="after-icon">✓</span>
+            <p>月額プランはいつでもキャンセル可能です</p>
+          </div>
+          <div class="after-item">
+            <span class="after-icon">✓</span>
+            <p>購入に関するお問い合わせはメールにてご連絡ください</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</Layout>
+
+<style>
+.page { padding: 3rem 1.5rem; min-height: 100vh; position: relative; }
+.stars { position: fixed; inset: 0; pointer-events: none; z-index: 0; }
+.page-inner { max-width: 720px; margin: 0 auto; position: relative; z-index: 1; display: flex; flex-direction: column; gap: 1.5rem; }
+
+.page-header { text-align: center; }
+.back-link { display: inline-block; font-size: 13px; color: var(--text-secondary); text-decoration: none; margin-bottom: 1rem; transition: color 0.2s; }
+.back-link:hover { color: var(--gold); }
+.page-title { font-family: 'Shippori Mincho', serif; font-size: 26px; margin-bottom: 0.5rem; }
+.page-desc { font-size: 14px; color: var(--text-secondary); }
+
+/* 残高カード */
+.balance-card { padding: 1.25rem 1.5rem; border-left: 3px solid var(--gold); }
+.balance-inner { display: flex; align-items: center; justify-content: space-between; }
+.balance-label { font-size: 12px; color: var(--text-muted); margin-bottom: 4px; }
+.balance-amount { font-size: 36px; font-weight: bold; color: var(--gold); line-height: 1; }
+.balance-amount span { font-size: 20px; }
+.balance-right { text-align: right; }
+.balance-note { font-size: 12px; color: var(--text-muted); line-height: 1.8; }
+
+/* 使い方 */
+.howto-card { padding: 1.5rem; }
+.howto-title { font-family: 'Shippori Mincho', serif; font-size: 16px; color: var(--gold); margin-bottom: 1rem; }
+.howto-grid { display: flex; flex-direction: column; gap: 0.75rem; }
+.howto-item { display: flex; align-items: center; gap: 1rem; padding: 0.875rem 1rem; background: rgba(255,255,255,0.03); border-radius: var(--radius-md); border: 0.5px solid rgba(255,255,255,0.07); }
+.howto-icon { font-size: 22px; flex-shrink: 0; }
+.howto-name { font-size: 14px; color: #f0e6d3; margin-bottom: 2px; }
+.howto-cost { font-size: 12px; color: var(--gold); }
+
+/* 注意事項 */
+.notice-card { background: rgba(245,158,11,0.08); border: 0.5px solid rgba(245,158,11,0.25); border-radius: var(--radius-md); padding: 0.875rem 1rem; }
+.notice-text { font-size: 13px; color: #f59e0b; line-height: 1.8; }
+.notice-text strong { color: #fde68a; }
+
+/* Stripe料金表 */
+.stripe-wrap { }
+.stripe-title { font-family: 'Shippori Mincho', serif; font-size: 18px; color: var(--gold); margin-bottom: 1.25rem; text-align: center; }
+
+/* 購入後 */
+.after-card { padding: 1.5rem; }
+.after-title { font-family: 'Shippori Mincho', serif; font-size: 16px; color: #f0e6d3; margin-bottom: 1rem; }
+.after-list { display: flex; flex-direction: column; gap: 0.625rem; }
+.after-item { display: flex; align-items: flex-start; gap: 0.75rem; font-size: 14px; color: var(--text-secondary); line-height: 1.7; }
+.after-icon { color: #1d9e75; flex-shrink: 0; font-weight: bold; }
+
+@keyframes twinkle { 0%,100%{opacity:0.2}50%{opacity:0.8} }
+</style>
+
+<script is:inline>
+const WORKERS_URL = 'https://kyusei-api.seiji-tomizawa.workers.dev';
+
+async function init() {
+  const token = localStorage.getItem('kyusei_token');
+  if (!token) { window.location.href = '/login'; return; }
+
+  try {
+    const res = await fetch(WORKERS_URL + '/api/coins/balance', {
+      headers: { Authorization: 'Bearer ' + token }
+    });
+    const data = await res.json();
+    document.getElementById('coin-amount').innerHTML = data.coins + ' <span>C</span>';
+  } catch {}
+}
+
+// 星背景
+const starsEl = document.getElementById('stars');
+for (let i = 0; i < 50; i++) {
+  const s = document.createElement('div');
+  const size = Math.random() * 2 + 1;
+  s.style.cssText = 'position:absolute;border-radius:50%;background:#fff;width:' + size + 'px;height:' + size + 'px;top:' + (Math.random()*100) + '%;left:' + (Math.random()*100) + '%;opacity:' + (Math.random()*0.4+0.1) + ';animation:twinkle ' + (2+Math.random()*3) + 's ease-in-out infinite;animation-delay:' + (Math.random()*3) + 's;';
+  starsEl.appendChild(s);
+}
+
+init();
+</script>

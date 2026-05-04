@@ -1,0 +1,61 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import '../../styles/global.css';
+---
+<Layout title="購入完了 | 陰陽寮">
+  <div class="page">
+    <div class="stars" id="stars"></div>
+    <div class="page-inner">
+      <div class="success-card glass-card fade-in-up">
+        <div class="success-icon">✨</div>
+        <h1 class="success-title">購入ありがとうございます</h1>
+        <p class="success-desc">コインが付与されました。さっそく鑑定をお楽しみください。</p>
+        <div class="balance-box">
+          <p class="balance-label">現在の保有コイン</p>
+          <p class="balance-amount" id="coin-amount">-- <span>C</span></p>
+        </div>
+        <div class="success-links">
+          <a href="/mypage" class="btn-primary" style="display:block;text-decoration:none;text-align:center">マイページへ</a>
+          <a href="/fortune/daily" class="btn-secondary" style="display:block;text-align:center;margin-top:0.75rem">本日の運勢を鑑定する</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</Layout>
+
+<style>
+.page { padding: 3rem 1.5rem; min-height: 100vh; display: flex; align-items: center; position: relative; }
+.stars { position: fixed; inset: 0; pointer-events: none; z-index: 0; }
+.page-inner { max-width: 480px; margin: 0 auto; width: 100%; position: relative; z-index: 1; }
+.success-card { padding: 2.5rem; text-align: center; border-top: 3px solid var(--gold); }
+.success-icon { font-size: 56px; margin-bottom: 1rem; }
+.success-title { font-family: 'Shippori Mincho', serif; font-size: 24px; color: #f0e6d3; margin-bottom: 0.75rem; }
+.success-desc { font-size: 15px; color: var(--text-secondary); line-height: 1.9; margin-bottom: 1.5rem; }
+.balance-box { background: rgba(212,175,55,0.08); border: 0.5px solid rgba(212,175,55,0.3); border-radius: var(--radius-md); padding: 1.25rem; margin-bottom: 1.5rem; }
+.balance-label { font-size: 12px; color: var(--text-muted); margin-bottom: 4px; }
+.balance-amount { font-size: 40px; font-weight: bold; color: var(--gold); }
+.balance-amount span { font-size: 22px; }
+.btn-secondary { background: transparent; border: 0.5px solid rgba(255,255,255,0.2); color: var(--text-secondary); padding: 0.75rem 1.5rem; border-radius: var(--radius-md); font-size: 14px; font-family: 'Noto Serif JP', serif; text-decoration: none; }
+@keyframes twinkle { 0%,100%{opacity:0.2}50%{opacity:0.8} }
+</style>
+
+<script is:inline>
+const WORKERS_URL = 'https://kyusei-api.seiji-tomizawa.workers.dev';
+async function init() {
+  const token = localStorage.getItem('kyusei_token');
+  if (!token) { window.location.href = '/login'; return; }
+  try {
+    const res = await fetch(WORKERS_URL + '/api/coins/balance', { headers: { Authorization: 'Bearer ' + token } });
+    const data = await res.json();
+    document.getElementById('coin-amount').innerHTML = data.coins + ' <span>C</span>';
+  } catch {}
+}
+const starsEl = document.getElementById('stars');
+for (let i = 0; i < 50; i++) {
+  const s = document.createElement('div');
+  const size = Math.random() * 2 + 1;
+  s.style.cssText = 'position:absolute;border-radius:50%;background:#fff;width:' + size + 'px;height:' + size + 'px;top:' + (Math.random()*100) + '%;left:' + (Math.random()*100) + '%;opacity:' + (Math.random()*0.4+0.1) + ';animation:twinkle ' + (2+Math.random()*3) + 's ease-in-out infinite;animation-delay:' + (Math.random()*3) + 's;';
+  starsEl.appendChild(s);
+}
+init();
+</script>
