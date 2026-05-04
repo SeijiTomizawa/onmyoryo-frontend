@@ -5,7 +5,6 @@ import Layout from '../../layouts/Layout.astro';
 <div class="page">
   <div class="page-inner">
 
-    <!-- 認証セクション -->
     <div id="auth-section">
       <div class="auth-wrapper">
         <div class="auth-icon">⚙️</div>
@@ -22,218 +21,109 @@ import Layout from '../../layouts/Layout.astro';
       </div>
     </div>
 
-    <!-- 管理セクション -->
     <div id="admin-section" style="display:none">
-      <div class="admin-header">
-        <div class="admin-title-row">
-          <h1 class="page-title">⚙️ 管理画面</h1>
-          <button class="logout-btn" onclick="doLogout()">ログアウト</button>
+      <div class="admin-title-row">
+        <h1 class="page-title">⚙️ 管理画面</h1>
+        <button class="logout-btn" onclick="doLogout()">ログアウト</button>
+      </div>
+
+      <!-- 統計バー -->
+      <div class="stats-bar">
+        <div class="stat-item">
+          <span class="stat-num" id="stat-total">—</span>
+          <span class="stat-label">総ユーザー数</span>
         </div>
-        <div class="tab-row">
-          <button class="tab-btn active" onclick="switchTab('user', this)">👥 ユーザー管理</button>
-          <button class="tab-btn" onclick="switchTab('fortune', this)">⭐ 本命星テキスト</button>
-          <button class="tab-btn" onclick="switchTab('year', this)">📅 年運</button>
-          <button class="tab-btn" onclick="switchTab('month', this)">🌙 月運</button>
-          <button class="tab-btn" onclick="switchTab('direction', this)">🧭 吉方位</button>
+        <div class="stat-divider"></div>
+        <div class="stat-item">
+          <span class="stat-num" id="stat-coins">—</span>
+          <span class="stat-label">総コイン残高</span>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat-item">
+          <span class="stat-num" id="stat-today">—</span>
+          <span class="stat-label">本日の新規登録</span>
         </div>
       </div>
 
-      <!-- ユーザー管理タブ -->
-      <div id="tab-user" class="tab-content">
-
-        <!-- 検索 -->
-        <div class="section-card">
-          <h3 class="section-title">🔍 ユーザー検索</h3>
-          <div class="search-row">
-            <input type="text" id="search-query" placeholder="メールアドレス または ユーザーID" onkeydown="if(event.key==='Enter')searchUser()" />
-            <button class="btn-search" onclick="searchUser()">検索</button>
-          </div>
-          <p class="hint-text">※ メールアドレスの部分一致またはユーザーID完全一致で検索</p>
+      <!-- 検索 -->
+      <div class="section-card">
+        <h3 class="section-title">🔍 ユーザー検索</h3>
+        <div class="search-row">
+          <input type="text" id="search-query" placeholder="メールアドレス または ユーザーID" onkeydown="if(event.key==='Enter')searchUser()" />
+          <button class="btn-search" onclick="searchUser()">検索</button>
+          <button class="btn-clear" onclick="clearSearch()">クリア</button>
         </div>
+        <p class="hint-text">※ メールアドレスの部分一致 またはユーザーID完全一致</p>
+      </div>
 
-        <!-- 検索結果 -->
-        <div id="search-results" style="display:none" class="section-card">
-          <h3 class="section-title">検索結果</h3>
-          <div id="user-list"></div>
+      <!-- ユーザー詳細パネル -->
+      <div id="user-detail" style="display:none" class="section-card user-detail-card">
+        <div class="detail-header">
+          <h3 class="section-title">👤 ユーザー詳細</h3>
+          <button class="btn-close" onclick="closeUserDetail()">✕ 閉じる</button>
         </div>
-
-        <!-- ユーザー詳細・編集 -->
-        <div id="user-detail" style="display:none" class="section-card user-detail-card">
-          <div class="detail-header">
-            <h3 class="section-title">👤 ユーザー詳細</h3>
-            <button class="btn-close" onclick="closeUserDetail()">✕ 閉じる</button>
+        <div class="detail-grid">
+          <div class="detail-item full">
+            <span class="detail-label">ユーザーID</span>
+            <span class="detail-value mono" id="d-id"></span>
           </div>
-
-          <div class="detail-grid">
-            <div class="detail-item">
-              <span class="detail-label">ユーザーID</span>
-              <span class="detail-value mono" id="d-id"></span>
-            </div>
-            <div class="detail-item">
-              <span class="detail-label">メールアドレス</span>
-              <span class="detail-value" id="d-email"></span>
-            </div>
-            <div class="detail-item">
-              <span class="detail-label">名前</span>
-              <span class="detail-value" id="d-name"></span>
-            </div>
-            <div class="detail-item">
-              <span class="detail-label">登録日</span>
-              <span class="detail-value" id="d-created"></span>
-            </div>
-            <div class="detail-item highlight">
-              <span class="detail-label">コイン残高</span>
-              <span class="detail-value coin-value" id="d-coins"></span>
-            </div>
+          <div class="detail-item">
+            <span class="detail-label">メールアドレス</span>
+            <span class="detail-value" id="d-email"></span>
           </div>
-
-          <!-- コイン操作 -->
-          <div class="coin-panel">
-            <h4 class="panel-title">💰 コイン残高の調整</h4>
-            <div class="coin-controls">
-              <select id="coin-operation">
-                <option value="add">付与する (+)</option>
-                <option value="sub">減らす (−)</option>
-                <option value="set">上書き（固定値）</option>
-              </select>
-              <input type="number" id="coin-amount" placeholder="コイン枚数" min="0" />
-              <button class="btn-coin" onclick="updateUserCoins()">更新する</button>
-            </div>
-            <p class="save-msg" id="coin-msg"></p>
+          <div class="detail-item">
+            <span class="detail-label">登録日</span>
+            <span class="detail-value" id="d-created"></span>
           </div>
-
-          <!-- トランザクション履歴 -->
-          <div class="tx-panel">
-            <h4 class="panel-title">📋 コイン履歴（直近10件）</h4>
-            <div id="tx-list" class="tx-list">
-              <p class="loading-text">読み込み中...</p>
-            </div>
+          <div class="detail-item highlight">
+            <span class="detail-label">現在のコイン残高</span>
+            <span class="detail-value coin-value" id="d-coins"></span>
           </div>
         </div>
 
-        <!-- ユーザー一覧 -->
-        <div class="section-card">
-          <div class="section-header-row">
-            <h3 class="section-title">📋 全ユーザー一覧</h3>
+        <div class="coin-panel">
+          <h4 class="panel-title">💰 コイン残高の調整</h4>
+          <div class="coin-controls">
+            <select id="coin-operation">
+              <option value="add">付与する (+)</option>
+              <option value="sub">減らす (−)</option>
+              <option value="set">上書き（固定値）</option>
+            </select>
+            <input type="number" id="coin-amount" placeholder="コイン枚数" min="0" />
+            <button class="btn-coin" onclick="updateUserCoins()">更新する</button>
+          </div>
+          <div class="quick-btns">
+            <span class="quick-label">クイック付与：</span>
+            <button class="btn-quick" onclick="quickAdd(1)">+1</button>
+            <button class="btn-quick" onclick="quickAdd(10)">+10</button>
+            <button class="btn-quick" onclick="quickAdd(100)">+100</button>
+            <button class="btn-quick" onclick="quickAdd(500)">+500</button>
+          </div>
+          <p class="save-msg" id="coin-msg"></p>
+        </div>
+
+        <div class="tx-panel">
+          <h4 class="panel-title">📋 コイン履歴（直近20件）</h4>
+          <div id="tx-list" class="tx-list"><p class="loading-text">読み込み中...</p></div>
+        </div>
+      </div>
+
+      <!-- ユーザー一覧 -->
+      <div class="section-card">
+        <div class="section-header-row">
+          <h3 class="section-title">📋 ユーザー一覧</h3>
+          <div style="display:flex;gap:8px;align-items:center">
+            <select id="sort-select" onchange="sortUsers()" class="sort-select">
+              <option value="created_desc">登録日↓</option>
+              <option value="created_asc">登録日↑</option>
+              <option value="coins_desc">コイン↓</option>
+              <option value="coins_asc">コイン↑</option>
+            </select>
             <button class="btn-refresh" onclick="loadAllUsers()">🔄 更新</button>
           </div>
-          <div id="all-users-list">
-            <p class="loading-text">読み込み中...</p>
-          </div>
         </div>
-
-      </div>
-
-      <!-- 本命星テキストタブ -->
-      <div id="tab-fortune" class="tab-content" style="display:none">
-        <div class="section-card">
-          <div class="field">
-            <label>本命星を選択</label>
-            <select id="fortune-star-select" onchange="loadFortuneText()">
-              <option value="1">一白水星</option><option value="2">二黒土星</option>
-              <option value="3">三碧木星</option><option value="4">四緑木星</option>
-              <option value="5">五黄土星</option><option value="6">六白金星</option>
-              <option value="7">七赤金星</option><option value="8">八白土星</option>
-              <option value="9">九紫火星</option>
-            </select>
-          </div>
-          <div class="field"><label>性格・特徴</label><textarea id="ft-personality" rows="4"></textarea></div>
-          <div class="field"><label>才能</label><textarea id="ft-talent" rows="3"></textarea></div>
-          <div class="field"><label>弱点</label><textarea id="ft-weakness" rows="3"></textarea></div>
-          <div class="field"><label>恋愛</label><textarea id="ft-love" rows="3"></textarea></div>
-          <div class="field"><label>仕事</label><textarea id="ft-work" rows="3"></textarea></div>
-          <p class="save-msg" id="ft-msg"></p>
-          <button class="btn-primary" onclick="saveFortuneText()">保存する</button>
-        </div>
-      </div>
-
-      <!-- 年運タブ -->
-      <div id="tab-year" class="tab-content" style="display:none">
-        <div class="section-card">
-          <div class="two-col">
-            <div class="field">
-              <label>本命星</label>
-              <select id="year-honmei-select" onchange="loadYearFortune()">
-                <option value="1">一白水星</option><option value="2">二黒土星</option>
-                <option value="3">三碧木星</option><option value="4">四緑木星</option>
-                <option value="5">五黄土星</option><option value="6">六白金星</option>
-                <option value="7">七赤金星</option><option value="8">八白土星</option>
-                <option value="9">九紫火星</option>
-              </select>
-            </div>
-            <div class="field">
-              <label>年盤星</label>
-              <select id="year-star-select" onchange="loadYearFortune()">
-                <option value="1">一白水星</option><option value="2">二黒土星</option>
-                <option value="3">三碧木星</option><option value="4">四緑木星</option>
-                <option value="5">五黄土星</option><option value="6">六白金星</option>
-                <option value="7">七赤金星</option><option value="8">八白土星</option>
-                <option value="9">九紫火星</option>
-              </select>
-            </div>
-          </div>
-          <div class="field"><label>タイトル</label><input type="text" id="yf-title" /></div>
-          <div class="field"><label>全体運</label><textarea id="yf-overview" rows="4"></textarea></div>
-          <div class="field"><label>恋愛運</label><textarea id="yf-love" rows="3"></textarea></div>
-          <div class="field"><label>仕事運</label><textarea id="yf-work" rows="3"></textarea></div>
-          <div class="field"><label>金運</label><textarea id="yf-money" rows="3"></textarea></div>
-          <div class="field"><label>アドバイス</label><textarea id="yf-advice" rows="3"></textarea></div>
-          <p class="save-msg" id="yf-msg"></p>
-          <button class="btn-primary" onclick="saveYearFortune()">保存する</button>
-        </div>
-      </div>
-
-      <!-- 月運タブ -->
-      <div id="tab-month" class="tab-content" style="display:none">
-        <div class="section-card">
-          <div class="two-col">
-            <div class="field">
-              <label>本命星</label>
-              <select id="month-honmei-select" onchange="loadMonthFortune()">
-                <option value="1">一白水星</option><option value="2">二黒土星</option>
-                <option value="3">三碧木星</option><option value="4">四緑木星</option>
-                <option value="5">五黄土星</option><option value="6">六白金星</option>
-                <option value="7">七赤金星</option><option value="8">八白土星</option>
-                <option value="9">九紫火星</option>
-              </select>
-            </div>
-            <div class="field">
-              <label>月盤星</label>
-              <select id="month-star-select" onchange="loadMonthFortune()">
-                <option value="1">一白水星</option><option value="2">二黒土星</option>
-                <option value="3">三碧木星</option><option value="4">四緑木星</option>
-                <option value="5">五黄土星</option><option value="6">六白金星</option>
-                <option value="7">七赤金星</option><option value="8">八白土星</option>
-                <option value="9">九紫火星</option>
-              </select>
-            </div>
-          </div>
-          <div class="field"><label>全体運</label><textarea id="mf-overview" rows="4"></textarea></div>
-          <div class="field"><label>アドバイス</label><textarea id="mf-advice" rows="3"></textarea></div>
-          <p class="save-msg" id="mf-msg"></p>
-          <button class="btn-primary" onclick="saveMonthFortune()">保存する</button>
-        </div>
-      </div>
-
-      <!-- 吉方位タブ -->
-      <div id="tab-direction" class="tab-content" style="display:none">
-        <div class="section-card">
-          <div class="field">
-            <label>本命星を選択</label>
-            <select id="dir-star-select" onchange="loadDirectionText()">
-              <option value="1">一白水星</option><option value="2">二黒土星</option>
-              <option value="3">三碧木星</option><option value="4">四緑木星</option>
-              <option value="5">五黄土星</option><option value="6">六白金星</option>
-              <option value="7">七赤金星</option><option value="8">八白土星</option>
-              <option value="9">九紫火星</option>
-            </select>
-          </div>
-          <div class="field"><label>吉方位の詳細解説</label><textarea id="dt-lucky" rows="4"></textarea></div>
-          <div class="field"><label>凶方位の詳細解説</label><textarea id="dt-unlucky" rows="4"></textarea></div>
-          <div class="field"><label>旅行・移動のアドバイス</label><textarea id="dt-travel" rows="3"></textarea></div>
-          <p class="save-msg" id="dt-msg"></p>
-          <button class="btn-primary" onclick="saveDirectionText()">保存する</button>
-        </div>
+        <div id="all-users-list"><p class="loading-text">読み込み中...</p></div>
+        <div id="pagination" class="pagination"></div>
       </div>
 
     </div>
@@ -244,103 +134,90 @@ import Layout from '../../layouts/Layout.astro';
 <style>
 .page { padding: 2rem 1.5rem; min-height: 100vh; }
 .page-inner { max-width: 800px; margin: 0 auto; }
-
-/* 認証 */
 .auth-wrapper { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 80vh; }
 .auth-icon { font-size: 3rem; margin-bottom: 1rem; }
 .auth-title { font-family: 'Shippori Mincho', serif; font-size: 22px; margin-bottom: 0.5rem; }
 .auth-desc { font-size: 13px; color: var(--text-secondary); margin-bottom: 2rem; }
 .auth-card { width: 100%; max-width: 360px; background: var(--dark-card); border: 0.5px solid #ffffff15; border-radius: var(--radius-lg); padding: 2rem; display: flex; flex-direction: column; gap: 1rem; }
-
-/* ヘッダー */
 .admin-title-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
 .page-title { font-family: 'Shippori Mincho', serif; font-size: 20px; }
 .logout-btn { background: rgba(255,255,255,0.05); border: 0.5px solid #ffffff22; color: var(--text-secondary); padding: 0.4rem 1rem; border-radius: var(--radius-md); font-size: 13px; cursor: pointer; transition: all 0.2s; }
 .logout-btn:hover { border-color: #ff8e8e; color: #ff8e8e; }
-
-/* タブ */
-.tab-row { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 1.5rem; }
-.tab-btn { padding: 0.5rem 1rem; border-radius: var(--radius-md); background: #ffffff08; border: 0.5px solid #ffffff22; color: var(--text-secondary); font-size: 13px; transition: all 0.15s; cursor: pointer; }
-.tab-btn.active { background: var(--gold); color: #000; border-color: var(--gold); font-weight: bold; }
-
-/* セクションカード */
+.stats-bar { display: flex; align-items: center; background: rgba(212,175,55,0.06); border: 0.5px solid rgba(212,175,55,0.15); border-radius: var(--radius-lg); padding: 1rem; margin-bottom: 1.25rem; }
+.stat-item { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 4px; }
+.stat-num { font-family: 'Shippori Mincho', serif; font-size: 1.5rem; color: #fde68a; font-weight: bold; }
+.stat-label { font-size: 11px; color: var(--text-secondary); }
+.stat-divider { width: 1px; height: 36px; background: rgba(255,255,255,0.08); }
 .section-card { background: var(--dark-card); border: 0.5px solid #ffffff12; border-radius: var(--radius-lg); padding: 1.5rem; margin-bottom: 1.25rem; display: flex; flex-direction: column; gap: 1rem; }
 .section-title { font-family: 'Shippori Mincho', serif; font-size: 16px; color: #fff; margin: 0; }
 .section-header-row { display: flex; justify-content: space-between; align-items: center; }
-
-/* 検索 */
 .search-row { display: flex; gap: 8px; }
 .search-row input { flex: 1; }
 .btn-search { padding: 0.6rem 1.25rem; background: var(--gold); color: #000; border: none; border-radius: var(--radius-md); font-size: 14px; cursor: pointer; white-space: nowrap; font-weight: bold; }
+.btn-clear { padding: 0.6rem 0.875rem; background: #ffffff08; border: 0.5px solid #ffffff22; color: var(--text-secondary); border-radius: var(--radius-md); font-size: 13px; cursor: pointer; }
 .hint-text { font-size: 11px; color: var(--text-secondary); margin: 0; }
-
-/* ユーザーリスト */
-.user-row {
-  display: flex; align-items: center; gap: 1rem; padding: 0.875rem 1rem;
-  background: #ffffff06; border-radius: var(--radius-md); border: 0.5px solid #ffffff0a;
-  transition: border-color 0.2s; cursor: pointer;
-}
-.user-row:hover { border-color: var(--gold); background: rgba(212,175,55,0.05); }
-.user-avatar { width: 36px; height: 36px; border-radius: 50%; background: rgba(212,175,55,0.15); display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0; }
+.sort-select { font-size: 12px; padding: 0.3rem 0.5rem; background: #ffffff0d; border: 0.5px solid #ffffff22; color: var(--text-secondary); border-radius: 6px; }
+.user-list-inner { display: flex; flex-direction: column; gap: 0.5rem; }
+.user-row { display: flex; align-items: center; gap: 0.875rem; padding: 0.875rem 1rem; background: #ffffff06; border-radius: var(--radius-md); border: 0.5px solid #ffffff0a; transition: all 0.2s; cursor: pointer; }
+.user-row:hover { border-color: rgba(212,175,55,0.4); background: rgba(212,175,55,0.04); }
+.user-row.selected { border-color: var(--gold); background: rgba(212,175,55,0.08); }
+.user-avatar { width: 34px; height: 34px; border-radius: 50%; background: rgba(212,175,55,0.12); display: flex; align-items: center; justify-content: center; font-size: 15px; flex-shrink: 0; }
 .user-info { flex: 1; min-width: 0; }
-.user-email { font-size: 14px; color: #f0e6d3; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.user-email { font-size: 13px; color: #f0e6d3; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .user-meta { font-size: 11px; color: var(--text-secondary); margin-top: 2px; }
-.user-coins { font-size: 16px; font-weight: bold; color: #f59e0b; white-space: nowrap; }
-.user-coins span { font-size: 11px; color: var(--text-secondary); }
-.btn-edit { padding: 0.35rem 0.875rem; background: rgba(212,175,55,0.1); border: 0.5px solid rgba(212,175,55,0.3); color: #fde68a; border-radius: var(--radius-sm); font-size: 12px; cursor: pointer; white-space: nowrap; transition: all 0.2s; }
+.user-coins-badge { font-size: 14px; font-weight: bold; color: #f59e0b; white-space: nowrap; background: rgba(245,158,11,0.1); padding: 3px 10px; border-radius: 20px; border: 0.5px solid rgba(245,158,11,0.2); }
+.btn-edit { padding: 0.3rem 0.75rem; background: rgba(212,175,55,0.1); border: 0.5px solid rgba(212,175,55,0.25); color: #fde68a; border-radius: var(--radius-sm); font-size: 12px; cursor: pointer; white-space: nowrap; transition: all 0.2s; flex-shrink: 0; }
 .btn-edit:hover { background: rgba(212,175,55,0.2); }
-
-/* ユーザー詳細 */
 .user-detail-card { border-top: 3px solid #f59e0b; }
 .detail-header { display: flex; justify-content: space-between; align-items: center; }
 .btn-close { background: none; border: 0.5px solid #ffffff22; color: var(--text-secondary); padding: 0.3rem 0.75rem; border-radius: var(--radius-sm); font-size: 12px; cursor: pointer; }
 .detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; }
 .detail-item { background: #ffffff06; border-radius: var(--radius-sm); padding: 0.75rem; display: flex; flex-direction: column; gap: 4px; }
-.detail-item.highlight { border: 0.5px solid rgba(245,158,11,0.3); background: rgba(245,158,11,0.05); }
+.detail-item.full { grid-column: 1 / -1; }
+.detail-item.highlight { border: 0.5px solid rgba(245,158,11,0.3); background: rgba(245,158,11,0.06); }
 .detail-label { font-size: 10px; color: var(--text-secondary); letter-spacing: 0.05em; }
 .detail-value { font-size: 13px; color: #f0e6d3; word-break: break-all; }
 .detail-value.mono { font-family: monospace; font-size: 11px; }
-.coin-value { font-size: 20px !important; color: #f59e0b !important; font-weight: bold; }
-
-/* コインパネル */
-.coin-panel { background: rgba(245,158,11,0.06); border: 0.5px solid rgba(245,158,11,0.2); border-radius: var(--radius-md); padding: 1.25rem; display: flex; flex-direction: column; gap: 0.75rem; }
+.coin-value { font-size: 22px !important; color: #f59e0b !important; font-weight: bold; }
+.coin-panel { background: rgba(245,158,11,0.05); border: 0.5px solid rgba(245,158,11,0.18); border-radius: var(--radius-md); padding: 1.25rem; display: flex; flex-direction: column; gap: 0.75rem; }
 .panel-title { font-size: 14px; color: #fde68a; font-weight: bold; margin: 0; }
 .coin-controls { display: flex; gap: 8px; flex-wrap: wrap; }
-.coin-controls select { flex: 1; min-width: 160px; }
-.coin-controls input { width: 120px; }
+.coin-controls select { flex: 1; min-width: 150px; }
+.coin-controls input { width: 110px; }
 .btn-coin { padding: 0.6rem 1.25rem; background: rgba(245,158,11,0.15); border: 1px solid rgba(245,158,11,0.4); color: #fde68a; border-radius: var(--radius-md); font-size: 14px; cursor: pointer; white-space: nowrap; transition: all 0.2s; }
-.btn-coin:hover { background: rgba(245,158,11,0.25); }
-
-/* トランザクション */
+.btn-coin:hover { background: rgba(245,158,11,0.28); }
+.quick-btns { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+.quick-label { font-size: 11px; color: var(--text-secondary); }
+.btn-quick { padding: 0.3rem 0.75rem; background: rgba(16,185,129,0.1); border: 0.5px solid rgba(16,185,129,0.3); color: #6ee7b7; border-radius: var(--radius-sm); font-size: 12px; cursor: pointer; transition: all 0.2s; }
+.btn-quick:hover { background: rgba(16,185,129,0.22); }
 .tx-panel { display: flex; flex-direction: column; gap: 0.75rem; }
-.tx-list { display: flex; flex-direction: column; gap: 0.5rem; }
-.tx-row { display: flex; align-items: center; gap: 0.75rem; padding: 0.6rem 0.875rem; background: #ffffff05; border-radius: var(--radius-sm); font-size: 12px; }
+.tx-list { display: flex; flex-direction: column; gap: 0.4rem; }
+.tx-row { display: flex; align-items: center; gap: 0.75rem; padding: 0.55rem 0.875rem; background: #ffffff04; border-radius: var(--radius-sm); font-size: 12px; }
 .tx-type { padding: 2px 8px; border-radius: 10px; font-size: 10px; font-weight: bold; white-space: nowrap; }
-.tx-type.purchase { background: rgba(16,185,129,0.2); color: #6ee7b7; }
-.tx-type.use { background: rgba(239,68,68,0.2); color: #fca5a5; }
-.tx-amount { font-weight: bold; white-space: nowrap; }
+.tx-type.purchase { background: rgba(16,185,129,0.18); color: #6ee7b7; }
+.tx-type.use { background: rgba(239,68,68,0.18); color: #fca5a5; }
+.tx-type.bonus { background: rgba(245,158,11,0.18); color: #fde68a; }
+.tx-amount { font-weight: bold; white-space: nowrap; min-width: 52px; text-align: right; }
 .tx-amount.positive { color: #6ee7b7; }
 .tx-amount.negative { color: #fca5a5; }
 .tx-date { color: var(--text-secondary); margin-left: auto; white-space: nowrap; }
-
+.pagination { display: flex; gap: 6px; justify-content: center; flex-wrap: wrap; padding-top: 0.5rem; }
+.btn-page { padding: 0.4rem 0.875rem; background: #ffffff08; border: 0.5px solid #ffffff18; color: var(--text-secondary); border-radius: var(--radius-sm); font-size: 12px; cursor: pointer; transition: all 0.15s; }
+.btn-page:hover, .btn-page.active { background: var(--gold); color: #000; border-color: var(--gold); font-weight: bold; }
 .btn-refresh { padding: 0.4rem 0.875rem; background: #ffffff08; border: 0.5px solid #ffffff22; color: var(--text-secondary); border-radius: var(--radius-sm); font-size: 12px; cursor: pointer; }
-.loading-text { font-size: 13px; color: var(--text-secondary); text-align: center; padding: 1rem; }
-.empty-text { font-size: 13px; color: var(--text-secondary); text-align: center; padding: 1rem; }
-
-/* フォーム共通 */
+.loading-text { font-size: 13px; color: var(--text-secondary); text-align: center; padding: 1.5rem; margin: 0; }
+.empty-text { font-size: 13px; color: var(--text-secondary); text-align: center; padding: 1.5rem; margin: 0; }
 .field { display: flex; flex-direction: column; gap: 4px; }
 .field label { font-size: 12px; color: var(--text-secondary); }
-.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-textarea { font-family: 'Noto Serif JP', serif; background: #ffffff0d; border: 0.5px solid #ffffff22; border-radius: var(--radius-sm); color: #fff; padding: 0.6rem 0.875rem; font-size: 13px; line-height: 1.8; width: 100%; resize: vertical; outline: none; }
-textarea:focus, input:focus, select:focus { border-color: var(--gold); }
 .save-msg { font-size: 13px; color: #6ee7b7; min-height: 1.2em; margin: 0; }
 .error-msg { font-size: 13px; color: #ff8e8e; min-height: 1.2em; margin: 0; }
-
 @media (max-width: 600px) {
   .detail-grid { grid-template-columns: 1fr; }
+  .detail-item.full { grid-column: 1; }
   .coin-controls { flex-direction: column; }
   .coin-controls input { width: 100%; }
-  .user-row { flex-wrap: wrap; }
+  .stats-bar { gap: 0; }
+  .stat-num { font-size: 1.2rem; }
 }
 </style>
 
@@ -348,6 +225,9 @@ textarea:focus, input:focus, select:focus { border-color: var(--gold); }
 const WORKERS_URL = 'https://kyusei-api.seiji-tomizawa.workers.dev';
 let ADMIN_PW = '';
 let selectedUserId = null;
+let allUsers = [];
+let currentPage = 1;
+const PAGE_SIZE = 20;
 
 function doAuth() {
   const pw = document.getElementById('admin-password').value;
@@ -359,7 +239,7 @@ function doAuth() {
 }
 
 function doLogout() {
-  ADMIN_PW = '';
+  ADMIN_PW = ''; allUsers = []; selectedUserId = null;
   document.getElementById('admin-section').style.display = 'none';
   document.getElementById('auth-section').style.display = 'block';
   document.getElementById('admin-password').value = '';
@@ -369,19 +249,6 @@ function adminHeaders() {
   return { 'Content-Type': 'application/json', 'X-Admin-Password': ADMIN_PW };
 }
 
-function switchTab(name, btn) {
-  document.querySelectorAll('.tab-content').forEach(el => el.style.display = 'none');
-  document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
-  document.getElementById(`tab-${name}`).style.display = 'block';
-  btn.classList.add('active');
-  if (name === 'fortune') loadFortuneText();
-  if (name === 'year') loadYearFortune();
-  if (name === 'month') loadMonthFortune();
-  if (name === 'direction') loadDirectionText();
-}
-
-// ========== ユーザー管理 ==========
-
 async function loadAllUsers() {
   const el = document.getElementById('all-users-list');
   el.innerHTML = '<p class="loading-text">読み込み中...</p>';
@@ -389,60 +256,100 @@ async function loadAllUsers() {
     const res = await fetch(`${WORKERS_URL}/api/admin/users`, { headers: adminHeaders() });
     const data = await res.json();
     if (!res.ok) { el.innerHTML = `<p class="empty-text">エラー: ${data.error || '取得失敗'}</p>`; return; }
-    renderUserList(data.users || data.data || [], el);
+    allUsers = data.users || [];
+    updateStats();
+    currentPage = 1;
+    renderPage();
   } catch {
     el.innerHTML = '<p class="empty-text">通信エラーが発生しました</p>';
   }
 }
 
+function updateStats() {
+  document.getElementById('stat-total').textContent = allUsers.length.toLocaleString();
+  const totalCoins = allUsers.reduce((sum, u) => sum + (u.coins || 0), 0);
+  document.getElementById('stat-coins').textContent = totalCoins.toLocaleString();
+  const today = new Date().toDateString();
+  const todayCount = allUsers.filter(u => u.created_at && new Date(u.created_at).toDateString() === today).length;
+  document.getElementById('stat-today').textContent = todayCount;
+}
+
+function sortUsers() {
+  const sort = document.getElementById('sort-select').value;
+  if (sort === 'created_desc') allUsers.sort((a, b) => new Date(b.created_at || 0) - new Date(a.created_at || 0));
+  else if (sort === 'created_asc') allUsers.sort((a, b) => new Date(a.created_at || 0) - new Date(b.created_at || 0));
+  else if (sort === 'coins_desc') allUsers.sort((a, b) => (b.coins || 0) - (a.coins || 0));
+  else if (sort === 'coins_asc') allUsers.sort((a, b) => (a.coins || 0) - (b.coins || 0));
+  currentPage = 1; renderPage();
+}
+
+function renderPage() {
+  const start = (currentPage - 1) * PAGE_SIZE;
+  const paged = allUsers.slice(start, start + PAGE_SIZE);
+  renderUserList(paged, document.getElementById('all-users-list'));
+  renderPagination();
+}
+
+function renderPagination() {
+  const total = Math.ceil(allUsers.length / PAGE_SIZE);
+  const el = document.getElementById('pagination');
+  if (total <= 1) { el.innerHTML = ''; return; }
+  el.innerHTML = Array.from({length: total}, (_, i) => i + 1).map(p =>
+    `<button class="btn-page ${p === currentPage ? 'active' : ''}" onclick="goPage(${p})">${p}</button>`
+  ).join('');
+}
+
+function goPage(p) { currentPage = p; renderPage(); window.scrollTo({top: 0, behavior: 'smooth'}); }
+
 async function searchUser() {
   const q = document.getElementById('search-query').value.trim();
   if (!q) return;
-  const resultsEl = document.getElementById('search-results');
-  const listEl = document.getElementById('user-list');
-  resultsEl.style.display = 'block';
-  listEl.innerHTML = '<p class="loading-text">検索中...</p>';
+  const el = document.getElementById('all-users-list');
+  el.innerHTML = '<p class="loading-text">検索中...</p>';
+  document.getElementById('pagination').innerHTML = '';
   try {
     const res = await fetch(`${WORKERS_URL}/api/admin/users?q=${encodeURIComponent(q)}`, { headers: adminHeaders() });
     const data = await res.json();
-    const users = data.users || data.data || [];
-    if (users.length === 0) {
-      listEl.innerHTML = '<p class="empty-text">該当するユーザーが見つかりませんでした</p>';
-    } else {
-      renderUserList(users, listEl);
-    }
+    renderUserList(data.users || [], el);
   } catch {
-    listEl.innerHTML = '<p class="empty-text">通信エラーが発生しました</p>';
+    el.innerHTML = '<p class="empty-text">通信エラーが発生しました</p>';
   }
 }
 
+function clearSearch() {
+  document.getElementById('search-query').value = '';
+  currentPage = 1; renderPage();
+}
+
 function renderUserList(users, container) {
-  if (users.length === 0) { container.innerHTML = '<p class="empty-text">ユーザーがいません</p>'; return; }
-  container.innerHTML = users.map(u => `
-    <div class="user-row" onclick="openUserDetail('${u.id}', '${u.email}', '${u.name || '未設定'}', '${u.created_at || ''}', ${u.coins || 0})">
+  if (users.length === 0) { container.innerHTML = '<p class="empty-text">ユーザーが見つかりませんでした</p>'; return; }
+  container.innerHTML = '<div class="user-list-inner">' + users.map(u => {
+    const safe = encodeURIComponent(JSON.stringify(u));
+    return `<div class="user-row ${selectedUserId === u.id ? 'selected' : ''}" onclick="openUserDetail('${safe}')">
       <div class="user-avatar">👤</div>
       <div class="user-info">
         <div class="user-email">${u.email}</div>
-        <div class="user-meta">ID: ${u.id.substring(0, 8)}... | 登録: ${u.created_at ? new Date(u.created_at).toLocaleDateString('ja-JP') : '不明'}</div>
+        <div class="user-meta">ID: ${u.id.substring(0,8)}... | 登録: ${u.created_at ? new Date(u.created_at).toLocaleDateString('ja-JP') : '不明'}</div>
       </div>
-      <div class="user-coins">${u.coins || 0}<span> C</span></div>
-      <button class="btn-edit" onclick="event.stopPropagation(); openUserDetail('${u.id}', '${u.email}', '${u.name || '未設定'}', '${u.created_at || ''}', ${u.coins || 0})">編集</button>
-    </div>
-  `).join('');
+      <div class="user-coins-badge">${(u.coins || 0).toLocaleString()} C</div>
+      <button class="btn-edit" onclick="event.stopPropagation();openUserDetail('${safe}')">編集</button>
+    </div>`;
+  }).join('') + '</div>';
 }
 
-function openUserDetail(id, email, name, createdAt, coins) {
-  selectedUserId = id;
-  document.getElementById('d-id').textContent = id;
-  document.getElementById('d-email').textContent = email;
-  document.getElementById('d-name').textContent = name;
-  document.getElementById('d-created').textContent = createdAt ? new Date(createdAt).toLocaleDateString('ja-JP') : '不明';
-  document.getElementById('d-coins').textContent = coins + ' C';
+function openUserDetail(encoded) {
+  const u = JSON.parse(decodeURIComponent(encoded));
+  selectedUserId = u.id;
+  document.getElementById('d-id').textContent = u.id;
+  document.getElementById('d-email').textContent = u.email;
+  document.getElementById('d-created').textContent = u.created_at ? new Date(u.created_at).toLocaleString('ja-JP') : '不明';
+  document.getElementById('d-coins').textContent = (u.coins || 0).toLocaleString() + ' C';
   document.getElementById('coin-msg').textContent = '';
   document.getElementById('coin-amount').value = '';
-  document.getElementById('user-detail').style.display = 'flex';
-  document.getElementById('user-detail').scrollIntoView({ behavior: 'smooth', block: 'start' });
-  loadUserTransactions(id);
+  const detail = document.getElementById('user-detail');
+  detail.style.display = 'flex';
+  detail.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  loadUserTransactions(u.id);
 }
 
 function closeUserDetail() {
@@ -456,16 +363,15 @@ async function loadUserTransactions(userId) {
   try {
     const res = await fetch(`${WORKERS_URL}/api/admin/users/${userId}/transactions`, { headers: adminHeaders() });
     const data = await res.json();
-    const txs = data.transactions || data.data || [];
+    const txs = data.transactions || [];
     if (txs.length === 0) { el.innerHTML = '<p class="empty-text">履歴がありません</p>'; return; }
-    el.innerHTML = txs.slice(0, 10).map(tx => `
+    el.innerHTML = txs.map(tx => `
       <div class="tx-row">
-        <span class="tx-type ${tx.type}">${tx.type === 'purchase' ? '購入' : tx.type === 'use' ? '使用' : tx.type}</span>
-        <span class="tx-amount ${tx.amount > 0 ? 'positive' : 'negative'}">${tx.amount > 0 ? '+' : ''}${tx.amount} C</span>
-        <span style="font-size:11px;color:var(--text-secondary);flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${tx.stripe_payment_id || '—'}</span>
+        <span class="tx-type ${tx.type}">${tx.type === 'purchase' ? '購入' : tx.type === 'use' ? '使用' : tx.type === 'bonus' ? '付与' : tx.type}</span>
+        <span class="tx-amount ${tx.amount >= 0 ? 'positive' : 'negative'}">${tx.amount >= 0 ? '+' : ''}${tx.amount} C</span>
+        <span style="font-size:11px;color:var(--text-secondary);flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;padding:0 0.5rem">${tx.stripe_payment_id || '—'}</span>
         <span class="tx-date">${new Date(tx.created_at).toLocaleDateString('ja-JP')}</span>
-      </div>
-    `).join('');
+      </div>`).join('');
   } catch {
     el.innerHTML = '<p class="empty-text">履歴の取得に失敗しました</p>';
   }
@@ -476,9 +382,16 @@ async function updateUserCoins() {
   const op = document.getElementById('coin-operation').value;
   const amount = parseInt(document.getElementById('coin-amount').value, 10);
   const msgEl = document.getElementById('coin-msg');
-  if (isNaN(amount) || amount < 0) {
-    msgEl.style.color = '#ff8e8e'; msgEl.textContent = '正しい数値を入力してください'; return;
-  }
+  if (isNaN(amount) || amount < 0) { msgEl.style.color = '#ff8e8e'; msgEl.textContent = '正しい数値を入力してください'; return; }
+  await doUpdateCoins(op, amount, msgEl);
+}
+
+async function quickAdd(n) {
+  if (!selectedUserId) return;
+  await doUpdateCoins('add', n, document.getElementById('coin-msg'));
+}
+
+async function doUpdateCoins(op, amount, msgEl) {
   msgEl.style.color = 'var(--text-secondary)'; msgEl.textContent = '更新中...';
   try {
     const res = await fetch(`${WORKERS_URL}/api/admin/coins`, {
@@ -488,10 +401,12 @@ async function updateUserCoins() {
     const data = await res.json();
     if (res.ok) {
       msgEl.style.color = '#6ee7b7';
-      msgEl.textContent = `✓ 残高を ${data.newBalance} C に更新しました`;
-      document.getElementById('d-coins').textContent = data.newBalance + ' C';
+      msgEl.textContent = `✓ 残高を ${data.newBalance.toLocaleString()} C に更新しました`;
+      document.getElementById('d-coins').textContent = data.newBalance.toLocaleString() + ' C';
       document.getElementById('coin-amount').value = '';
-      loadAllUsers();
+      const u = allUsers.find(u => u.id === selectedUserId);
+      if (u) u.coins = data.newBalance;
+      updateStats(); renderPage();
       loadUserTransactions(selectedUserId);
     } else {
       msgEl.style.color = '#ff8e8e';
@@ -500,87 +415,5 @@ async function updateUserCoins() {
   } catch {
     msgEl.style.color = '#ff8e8e'; msgEl.textContent = '通信エラーが発生しました';
   }
-}
-
-// ========== コンテンツ管理 ==========
-
-async function loadFortuneText() {
-  const star = document.getElementById('fortune-star-select').value;
-  const res = await fetch(`${WORKERS_URL}/api/admin/fortune-texts`, { headers: adminHeaders() });
-  const data = await res.json();
-  const item = data.data?.find(d => d.star_number == star);
-  document.getElementById('ft-personality').value = item?.personality ?? '';
-  document.getElementById('ft-talent').value = item?.talent ?? '';
-  document.getElementById('ft-weakness').value = item?.weakness ?? '';
-  document.getElementById('ft-love').value = item?.love ?? '';
-  document.getElementById('ft-work').value = item?.work ?? '';
-  document.getElementById('ft-msg').textContent = '';
-}
-
-async function saveFortuneText() {
-  const star = document.getElementById('fortune-star-select').value;
-  const body = { personality: document.getElementById('ft-personality').value, talent: document.getElementById('ft-talent').value, weakness: document.getElementById('ft-weakness').value, love: document.getElementById('ft-love').value, work: document.getElementById('ft-work').value };
-  const res = await fetch(`${WORKERS_URL}/api/admin/fortune-texts/${star}`, { method: 'PUT', headers: adminHeaders(), body: JSON.stringify(body) });
-  document.getElementById('ft-msg').textContent = res.ok ? '✓ 保存しました' : '保存に失敗しました';
-}
-
-async function loadYearFortune() {
-  const honmei = document.getElementById('year-honmei-select').value;
-  const year = document.getElementById('year-star-select').value;
-  const res = await fetch(`${WORKERS_URL}/api/admin/year-fortunes`, { headers: adminHeaders() });
-  const data = await res.json();
-  const item = data.data?.find(d => d.honmei_star == honmei && d.year_star == year);
-  document.getElementById('yf-title').value = item?.title ?? '';
-  document.getElementById('yf-overview').value = item?.overview ?? '';
-  document.getElementById('yf-love').value = item?.love ?? '';
-  document.getElementById('yf-work').value = item?.work ?? '';
-  document.getElementById('yf-money').value = item?.money ?? '';
-  document.getElementById('yf-advice').value = item?.advice ?? '';
-  document.getElementById('yf-msg').textContent = '';
-}
-
-async function saveYearFortune() {
-  const honmei = document.getElementById('year-honmei-select').value;
-  const year = document.getElementById('year-star-select').value;
-  const body = { title: document.getElementById('yf-title').value, overview: document.getElementById('yf-overview').value, love: document.getElementById('yf-love').value, work: document.getElementById('yf-work').value, money: document.getElementById('yf-money').value, advice: document.getElementById('yf-advice').value };
-  const res = await fetch(`${WORKERS_URL}/api/admin/year-fortunes/${honmei}/${year}`, { method: 'PUT', headers: adminHeaders(), body: JSON.stringify(body) });
-  document.getElementById('yf-msg').textContent = res.ok ? '✓ 保存しました' : '保存に失敗しました';
-}
-
-async function loadMonthFortune() {
-  const honmei = document.getElementById('month-honmei-select').value;
-  const month = document.getElementById('month-star-select').value;
-  const res = await fetch(`${WORKERS_URL}/api/admin/month-fortunes`, { headers: adminHeaders() });
-  const data = await res.json();
-  const item = data.data?.find(d => d.honmei_star == honmei && d.month_star == month);
-  document.getElementById('mf-overview').value = item?.overview ?? '';
-  document.getElementById('mf-advice').value = item?.advice ?? '';
-  document.getElementById('mf-msg').textContent = '';
-}
-
-async function saveMonthFortune() {
-  const honmei = document.getElementById('month-honmei-select').value;
-  const month = document.getElementById('month-star-select').value;
-  const body = { overview: document.getElementById('mf-overview').value, advice: document.getElementById('mf-advice').value };
-  const res = await fetch(`${WORKERS_URL}/api/admin/month-fortunes/${honmei}/${month}`, { method: 'PUT', headers: adminHeaders(), body: JSON.stringify(body) });
-  document.getElementById('mf-msg').textContent = res.ok ? '✓ 保存しました' : '保存に失敗しました';
-}
-
-async function loadDirectionText() {
-  const star = document.getElementById('dir-star-select').value;
-  const res = await fetch(`${WORKERS_URL}/api/admin/direction-texts`, { headers: adminHeaders() });
-  const data = await res.json();
-  const item = data.data?.find(d => d.star_number == star);
-  document.getElementById('dt-lucky').value = item?.lucky_detail ?? '';
-  document.getElementById('dt-unlucky').value = item?.unlucky_detail ?? '';
-  document.getElementById('dt-travel').value = item?.travel_advice ?? '';
-  document.getElementById('dt-msg').textContent = '';
-}
-
-async function saveDirectionText() {
-  const star = document.getElementById('dir-star-select').value;
-  const body = { lucky_detail: document.getElementById('dt-lucky').value, unlucky_detail: document.getElementById('dt-unlucky').value, travel_advice: document.getElementById('dt-travel').value };
-  const res = await fetch(`${WORKERS_URL}/api/admin/direction-texts/${star}`, { method: 'PUT', headers: adminHeaders(), body: JSON.stringify(body) });
-  document.getElementById('dt-msg').textContent = res.ok ? '✓ 保存しました' : '保存に失敗しました';
 }
 </script>
