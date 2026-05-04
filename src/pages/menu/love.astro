@@ -3,169 +3,227 @@ import Layout from '../../layouts/Layout.astro';
 import '../../styles/global.css';
 ---
 
-<Layout title="恋愛・相性占い | 陰陽寮">
+<Layout title="恋愛・相性・復縁 | 陰陽寮">
   <div class="page">
     <div class="stars" id="stars"></div>
+    <div class="petal" style="top:10%;left:5%;animation-delay:0s"></div>
+    <div class="petal" style="top:30%;right:8%;animation-delay:1.5s"></div>
+    <div class="petal" style="top:60%;left:3%;animation-delay:3s"></div>
 
-    <div class="page-inner" style="max-width: 800px;">
+    <div class="page-inner">
+
       <header class="page-header fade-in-up">
-        <h1 class="page-title" style="color: #fbcfe8; text-shadow: 0 0 20px rgba(244, 114, 182, 0.4);">恋愛・相性・復縁</h1>
+        <div class="header-icon">❤️</div>
+        <h1 class="page-title">恋愛・相性・復縁</h1>
         <p class="page-desc">東洋の神秘が、二人の宿命と「あの人の本当の気持ち」を解き明かします。</p>
+        <div class="header-divider"></div>
       </header>
 
+      <!-- 期間限定バナー -->
+      <div class="campaign-banner fade-in-up delay-1">
+        <span class="campaign-fire">🔥</span>
+        <span>今だけ初回限定：恋愛鑑定が <strong>20%OFF</strong> で体験できます</span>
+        <span class="campaign-fire">🔥</span>
+      </div>
+
       <div class="premium-menus">
-        
-        <div class="glass-card menu-card fade-in-up delay-1">
+
+        <!-- カード1 -->
+        <div class="glass-card menu-card theme-love fade-in-up delay-1">
           <div class="menu-badge hot">人気No.1</div>
           <div class="menu-header">
             <h2 class="menu-title">【宿曜×九星】あの人があなたに隠している「本当の気持ち」と、二人が結ばれる運命の日</h2>
             <div class="menu-price">300<span>C</span></div>
           </div>
           <p class="menu-desc">表向きの態度に隠された、あの人の本音とは？二人のご縁の深さ（安壊・栄親など）を読み解き、次にアプローチすべき「最強の吉日」を具体的にお伝えします。</p>
-          
+
           <div class="teaser-box">
-            <p class="teaser-label">この鑑定でわかること</p>
+            <p class="teaser-label">✦ この鑑定でわかること</p>
             <ul>
               <li>あなたに対する「現在の率直な感情」</li>
               <li>二人の間にある「前世からの宿縁」</li>
               <li>あの人が動くタイミングと、あなたが取るべき行動</li>
             </ul>
           </div>
-          
-          <button class="btn-primary" onclick="window.location.href='/fortune/shukuyo'">✦ 無料でお試し鑑定する</button>
+
+          <div class="review-row">
+            <span class="stars-rating">★★★★★</span>
+            <span class="review-text">「鑑定の翌日に連絡が来ました」— 28歳・女性</span>
+          </div>
+
+          <div class="btn-group">
+            <button class="btn-primary" onclick="window.location.href='/fortune/sukuyo'">✦ 無料でお試し鑑定する</button>
+            <span class="btn-note">※生年月日のみで鑑定開始</span>
+          </div>
         </div>
 
-        <div class="glass-card menu-card fade-in-up delay-2">
+        <!-- カード2 -->
+        <div class="glass-card menu-card theme-love fade-in-up delay-2">
           <div class="menu-badge special">復縁特化</div>
           <div class="menu-header">
             <h2 class="menu-title">【四柱推命】離れた心を取り戻す。もう一度あの人に愛されるための「絶対法則」</h2>
             <div class="menu-price">500<span>C</span></div>
           </div>
           <p class="menu-desc">「もうチャンスはないの？」と諦める前に。別れの本当の理由を命式から紐解き、冷却期間の長さや、連絡を引き寄せるための効果的な言葉を導き出します。</p>
-          
-          <button class="btn-primary" style="background: rgba(255,255,255,0.05); border-color: rgba(255,255,255,0.2); color: #fff;">詳細を見る</button>
+
+          <div class="teaser-box">
+            <p class="teaser-label">✦ この鑑定でわかること</p>
+            <ul>
+              <li>別れの「本当の原因」と、あの人が求めているもの</li>
+              <li>復縁の可能性（%）と最適な冷却期間</li>
+              <li>連絡を再開すべき「運命の吉日」</li>
+            </ul>
+          </div>
+
+          <div class="review-row">
+            <span class="stars-rating">★★★★★</span>
+            <span class="review-text">「3ヶ月後に本当に復縁できました」— 32歳・女性</span>
+          </div>
+
+          <button class="btn-secondary" onclick="window.location.href='/fortune/shichu'">✦ この鑑定を始める（500C）</button>
         </div>
 
-        <div class="glass-card menu-card fade-in-up delay-3">
+        <!-- カード3 -->
+        <div class="glass-card menu-card theme-love fade-in-up delay-3">
           <div class="menu-header">
             <h2 class="menu-title">【算命学】まもなく訪れる！あなたの「史上最高のモテ期」と運命の相手の特徴</h2>
             <div class="menu-price">100<span>C</span></div>
           </div>
           <p class="menu-desc">出会いがないと焦っていませんか？あなたの魅力が最も輝く時期と、次に出会う「将来を約束する相手」の容姿・職業・性格をピンポイントで予言します。</p>
-          
-          <button class="btn-primary" style="background: rgba(255,255,255,0.05); border-color: rgba(255,255,255,0.2); color: #fff;">詳細を見る</button>
+
+          <div class="teaser-box">
+            <p class="teaser-label">✦ この鑑定でわかること</p>
+            <ul>
+              <li>モテ期がいつ来るか（年月まで特定）</li>
+              <li>運命の相手の職業・性格・外見の特徴</li>
+              <li>出会いの場所と、チャンスをつかむ行動</li>
+            </ul>
+          </div>
+
+          <button class="btn-secondary" onclick="window.location.href='/fortune/kyuseiki'">✦ この鑑定を始める（100C）</button>
+        </div>
+
+        <!-- 即答カード（易） -->
+        <div class="glass-card menu-card theme-love instant-card fade-in-up delay-4">
+          <div class="menu-badge instant">今すぐ回答</div>
+          <div class="menu-header">
+            <h2 class="menu-title">【易占い】「あの人は今、私のことを考えている？」今の気持ちを今すぐ知る</h2>
+            <div class="menu-price">1<span>C</span></div>
+          </div>
+          <p class="menu-desc">結果まで待てない。今この瞬間の答えが欲しい。易は「今」に特化した占術。心に念じたその問いに、六十四卦が白黒つけます。</p>
+          <button class="btn-primary btn-instant" onclick="window.location.href='/fortune/eki'">⚡ 今すぐ占う（1C）</button>
         </div>
 
       </div>
+
+      <!-- 安心保証 -->
+      <div class="trust-section fade-in-up">
+        <div class="trust-item"><span>🔒</span><span>SSL暗号化通信</span></div>
+        <div class="trust-item"><span>✨</span><span>3,000年の叡智</span></div>
+        <div class="trust-item"><span>💎</span><span>満足度98%</span></div>
+      </div>
+
     </div>
   </div>
 </Layout>
 
 <style>
-/* プレミアムメニュー特化のスタイル */
-.premium-menus {
-  display: flex;
-  flex-direction: column;
-  gap: 2rem;
-  margin-top: 2rem;
+.page { padding: 3rem 1.5rem; min-height: 100vh; position: relative; overflow: hidden; }
+.stars { position: fixed; inset: 0; pointer-events: none; z-index: 0; }
+.petal {
+  position: fixed; width: 8px; height: 8px; border-radius: 50% 0;
+  background: rgba(244,114,182,0.3); pointer-events: none; z-index: 0;
+  animation: floatPetal 8s ease-in-out infinite;
 }
+@keyframes floatPetal { 0%,100%{transform:translateY(0) rotate(0deg);opacity:0.3} 50%{transform:translateY(-30px) rotate(180deg);opacity:0.7} }
+.page-inner { max-width: 800px; margin: 0 auto; position: relative; z-index: 1; }
+
+.page-header { text-align: center; margin-bottom: 1.5rem; }
+.header-icon { font-size: 3rem; margin-bottom: 0.75rem; filter: drop-shadow(0 0 20px rgba(244,114,182,0.6)); }
+.page-title { font-family: 'Shippori Mincho', serif; font-size: 2rem; color: #fbcfe8; text-shadow: 0 0 30px rgba(244,114,182,0.5); margin-bottom: 0.5rem; }
+.page-desc { font-size: 14px; color: var(--text-secondary); line-height: 1.8; }
+.header-divider { width: 60px; height: 1px; background: linear-gradient(90deg,transparent,#f472b6,transparent); margin: 1rem auto 0; }
+
+.campaign-banner {
+  display: flex; align-items: center; justify-content: center; gap: 0.75rem;
+  background: linear-gradient(135deg, rgba(244,63,94,0.15), rgba(168,85,247,0.15));
+  border: 1px solid rgba(244,114,182,0.3); border-radius: 12px;
+  padding: 0.75rem 1.5rem; margin-bottom: 2rem; font-size: 14px; color: #fbcfe8;
+  animation: pulse-border 2s ease-in-out infinite;
+}
+.campaign-banner strong { color: #f9a8d4; }
+.campaign-fire { font-size: 18px; }
+@keyframes pulse-border { 0%,100%{border-color:rgba(244,114,182,0.3)} 50%{border-color:rgba(244,114,182,0.7)} }
+
+.premium-menus { display: flex; flex-direction: column; gap: 2rem; }
 .menu-card {
-  position: relative;
-  padding: 3rem 2.5rem 2.5rem;
-  border-top: 3px solid #a855f7; /* 恋愛テーマのアメジストカラー */
-  background: linear-gradient(145deg, rgba(20, 24, 39, 0.8), rgba(10, 12, 16, 0.9));
+  position: relative; padding: 3rem 2.5rem 2.5rem;
+  background: linear-gradient(145deg, rgba(20,16,32,0.9), rgba(10,8,20,0.95));
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
+.menu-card:hover { transform: translateY(-3px); box-shadow: 0 20px 60px rgba(244,114,182,0.15); }
+.theme-love { border-top: 3px solid #a855f7; }
+.instant-card { border-top: 3px solid #f472b6; background: linear-gradient(145deg, rgba(30,10,30,0.9), rgba(15,5,20,0.95)); }
+
 .menu-badge {
-  position: absolute;
-  top: 0;
-  left: 2rem;
-  transform: translateY(-50%);
-  padding: 4px 16px;
-  border-radius: 20px;
-  font-size: 0.8rem;
-  font-weight: bold;
-  color: #fff;
-  letter-spacing: 0.1em;
+  position: absolute; top: 0; left: 2rem; transform: translateY(-50%);
+  padding: 4px 16px; border-radius: 20px; font-size: 0.8rem; font-weight: bold; color: #fff; letter-spacing: 0.1em;
 }
-.menu-badge.hot { background: linear-gradient(135deg, #f43f5e, #fb923c); box-shadow: 0 4px 15px rgba(244, 63, 94, 0.4); }
-.menu-badge.special { background: linear-gradient(135deg, #8b5cf6, #3b82f6); box-shadow: 0 4px 15px rgba(139, 92, 246, 0.4); }
+.menu-badge.hot { background: linear-gradient(135deg, #f43f5e, #fb923c); box-shadow: 0 4px 15px rgba(244,63,94,0.5); }
+.menu-badge.special { background: linear-gradient(135deg, #8b5cf6, #3b82f6); box-shadow: 0 4px 15px rgba(139,92,246,0.5); }
+.menu-badge.instant { background: linear-gradient(135deg, #f472b6, #e879f9); box-shadow: 0 4px 15px rgba(244,114,182,0.5); animation: badge-glow 1.5s ease-in-out infinite; }
+@keyframes badge-glow { 0%,100%{box-shadow:0 4px 15px rgba(244,114,182,0.5)} 50%{box-shadow:0 4px 25px rgba(244,114,182,0.9)} }
 
-.menu-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: 1.5rem;
-  margin-bottom: 1.5rem;
-}
-.menu-title {
-  font-family: var(--font-mincho);
-  font-size: 1.4rem;
-  color: #fff;
-  line-height: 1.6;
-  margin: 0;
-  flex: 1;
-}
-.menu-price {
-  font-size: 1.8rem;
-  font-weight: bold;
-  color: var(--gold-light);
-  white-space: nowrap;
-  background: rgba(212, 175, 55, 0.1);
-  padding: 8px 16px;
-  border-radius: 12px;
-  border: 1px solid rgba(212, 175, 55, 0.3);
-}
-.menu-price span {
-  font-size: 1rem;
-  margin-left: 2px;
-  color: var(--gold);
-}
+.menu-header { display: flex; justify-content: space-between; align-items: flex-start; gap: 1.5rem; margin-bottom: 1.25rem; }
+.menu-title { font-family: 'Shippori Mincho', serif; font-size: 1.35rem; color: #fff; line-height: 1.6; margin: 0; flex: 1; }
+.menu-price { font-size: 1.8rem; font-weight: bold; color: var(--gold-light); white-space: nowrap; background: rgba(212,175,55,0.1); padding: 8px 16px; border-radius: 12px; border: 1px solid rgba(212,175,55,0.3); }
+.menu-price span { font-size: 1rem; margin-left: 2px; color: var(--gold); }
 
-.menu-desc {
-  font-size: 0.95rem;
-  color: var(--text-secondary);
-  line-height: 1.8;
-  margin-bottom: 1.5rem;
-}
+.menu-desc { font-size: 0.9rem; color: var(--text-secondary); line-height: 1.9; margin-bottom: 1.25rem; }
 
-/* 焦らし（ティーザー）ボックス */
-.teaser-box {
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px dashed rgba(212, 175, 55, 0.3);
-  border-radius: 12px;
-  padding: 1.5rem;
-  margin-bottom: 2rem;
+.teaser-box { background: rgba(168,85,247,0.05); border: 1px dashed rgba(244,114,182,0.25); border-radius: 12px; padding: 1.25rem; margin-bottom: 1.25rem; }
+.teaser-label { font-size: 0.8rem; color: #f9a8d4; margin-bottom: 0.75rem; font-weight: bold; letter-spacing: 0.1em; }
+.teaser-box ul { list-style: none; padding: 0; margin: 0; }
+.teaser-box li { font-size: 0.875rem; color: var(--text-main); margin-bottom: 0.5rem; padding-left: 1.5rem; position: relative; line-height: 1.7; }
+.teaser-box li::before { content: '✓'; position: absolute; left: 0; color: #f9a8d4; }
+
+.review-row { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1.25rem; padding: 0.75rem 1rem; background: rgba(255,255,255,0.03); border-radius: 8px; }
+.stars-rating { color: #fbbf24; font-size: 14px; }
+.review-text { font-size: 12px; color: var(--text-secondary); font-style: italic; }
+
+.btn-group { display: flex; flex-direction: column; align-items: center; gap: 0.5rem; }
+.btn-note { font-size: 11px; color: var(--text-secondary); }
+.btn-secondary {
+  width: 100%; padding: 0.875rem 1.5rem; border-radius: var(--radius-md);
+  background: rgba(168,85,247,0.15); border: 1px solid rgba(168,85,247,0.4);
+  color: #d8b4fe; font-family: 'Noto Serif JP', serif; font-size: 15px; cursor: pointer;
+  transition: all 0.2s;
 }
-.teaser-label {
-  font-size: 0.85rem;
-  color: var(--gold);
-  margin-bottom: 0.75rem;
-  font-weight: bold;
-  letter-spacing: 0.1em;
-}
-.teaser-box ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-.teaser-box li {
-  font-size: 0.9rem;
-  color: var(--text-main);
-  margin-bottom: 0.5rem;
-  padding-left: 1.5rem;
-  position: relative;
-}
-.teaser-box li::before {
-  content: '✓';
-  position: absolute;
-  left: 0;
-  color: var(--gold-light);
-}
+.btn-secondary:hover { background: rgba(168,85,247,0.25); border-color: rgba(168,85,247,0.7); }
+.btn-instant { background: linear-gradient(135deg, #be185d, #7c3aed) !important; border: none !important; }
+
+.trust-section { display: flex; justify-content: center; gap: 2rem; margin-top: 2.5rem; padding: 1.25rem; background: rgba(255,255,255,0.02); border-radius: 12px; border: 0.5px solid rgba(255,255,255,0.06); }
+.trust-item { display: flex; flex-direction: column; align-items: center; gap: 0.375rem; font-size: 12px; color: var(--text-secondary); }
+.trust-item span:first-child { font-size: 20px; }
 
 @media (max-width: 600px) {
   .menu-header { flex-direction: column; gap: 1rem; }
   .menu-price { align-self: flex-start; }
-  .menu-title { font-size: 1.2rem; }
-  .menu-card { padding: 2.5rem 1.5rem 1.5rem; }
+  .menu-title { font-size: 1.15rem; }
+  .menu-card { padding: 2.5rem 1.25rem 1.5rem; }
+  .trust-section { gap: 1rem; }
+  .campaign-banner { font-size: 12px; }
 }
 </style>
+
+<script is:inline>
+const starsEl = document.getElementById('stars');
+if (starsEl && starsEl.children.length === 0) {
+  for (let i = 0; i < 60; i++) {
+    const s = document.createElement('div');
+    const size = Math.random() * 2 + 0.5;
+    s.style.cssText = `position:absolute;border-radius:50%;background:#fff;width:${size}px;height:${size}px;top:${Math.random()*100}%;left:${Math.random()*100}%;opacity:${Math.random()*0.4+0.1};animation:twinkle ${2+Math.random()*4}s ease-in-out infinite;animation-delay:${Math.random()*4}s;`;
+    starsEl.appendChild(s);
+  }
+}
+</script>

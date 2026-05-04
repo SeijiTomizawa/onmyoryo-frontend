@@ -361,10 +361,10 @@ a { text-decoration: none; color: inherit; }
   // 星空の生成とスクロール制御はLayoutに統合したため削除（Layout.astro側で実行されます）
   // スムーススクロール制御のみ残す
   document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener('click', function (e) {
+    anchor.addEventListener('click', (e) => {
       e.preventDefault();
-      const targetId = this.getAttribute('href');
-      if(targetId === '#') return;
+      const targetId = anchor.getAttribute('href');
+      if (!targetId || targetId === '#') return;
       const targetElement = document.querySelector(targetId);
       if(targetElement) {
         targetElement.scrollIntoView({ behavior: 'smooth' });

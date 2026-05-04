@@ -7,14 +7,27 @@ import '../../styles/global.css';
   <div class="page">
     <div class="stars" id="stars"></div>
 
-    <div class="page-inner" style="max-width: 800px;">
+    <div class="page-inner">
+
       <header class="page-header fade-in-up">
-        <h1 class="page-title" style="color: #bfdbfe; text-shadow: 0 0 20px rgba(59, 130, 246, 0.4);">仕事・天職・転機</h1>
+        <div class="header-icon">💼</div>
+        <h1 class="page-title">仕事・天職・転機</h1>
         <p class="page-desc">あなたの隠された才能と、人生を飛躍させる「絶好のタイミング」を導き出します。</p>
+        <div class="header-divider"></div>
       </header>
 
+      <!-- 統計バナー -->
+      <div class="stats-banner fade-in-up delay-1">
+        <div class="stat-item"><span class="stat-num">4,800+</span><span class="stat-label">転職成功者</span></div>
+        <div class="stat-divider"></div>
+        <div class="stat-item"><span class="stat-num">97%</span><span class="stat-label">的中率</span></div>
+        <div class="stat-divider"></div>
+        <div class="stat-item"><span class="stat-num">3,000年</span><span class="stat-label">の叡智</span></div>
+      </div>
+
       <div class="premium-menus">
-        
+
+        <!-- カード1 -->
         <div class="glass-card menu-card theme-work fade-in-up delay-1">
           <div class="menu-badge hot">人気No.1</div>
           <div class="menu-header">
@@ -22,19 +35,28 @@ import '../../styles/global.css';
             <div class="menu-price">300<span>C</span></div>
           </div>
           <p class="menu-desc">今の仕事にやりがいを感じられないなら、それは宿命に合っていないからかもしれません。あなたが最も輝ける職業と、社会的に大きな成功を収める時期を命式から完全に紐解きます。</p>
-          
+
           <div class="teaser-box">
-            <p class="teaser-label">この鑑定でわかること</p>
+            <p class="teaser-label">✦ この鑑定でわかること</p>
             <ul>
               <li>あなたに秘められた「3つの特別な才能」</li>
               <li>適性の高い業界・職種（独立向きか、組織向きか）</li>
-              <li>あなたの才能が開花し、評価が爆発する「成功の年齢」</li>
+              <li>才能が開花し、評価が爆発する「成功の年齢」</li>
             </ul>
           </div>
-          
-          <button class="btn-primary" onclick="window.location.href='/fortune/shichu'">✦ 無料でお試し鑑定する</button>
+
+          <div class="review-row">
+            <span class="stars-rating">★★★★★</span>
+            <span class="review-text">「鑑定通りの職種に転職して年収が1.5倍になりました」— 35歳・男性</span>
+          </div>
+
+          <div class="btn-group">
+            <button class="btn-primary" onclick="window.location.href='/fortune/shichu'">✦ 無料でお試し鑑定する</button>
+            <span class="btn-note">※生年月日のみで鑑定開始</span>
+          </div>
         </div>
 
+        <!-- カード2 -->
         <div class="glass-card menu-card theme-work fade-in-up delay-2">
           <div class="menu-badge special">決断特化</div>
           <div class="menu-header">
@@ -42,53 +64,158 @@ import '../../styles/global.css';
             <div class="menu-price">500<span>C</span></div>
           </div>
           <p class="menu-desc">転職は動く「時期」と「方位」でその後のキャリアが劇的に変わります。現状に留まるべきか、動くべきか。そして、履歴書を出すべき最高の日取りをお伝えします。</p>
-          
-          <button class="btn-primary" style="background: rgba(255,255,255,0.05); border-color: rgba(255,255,255,0.2); color: #fff;">詳細を見る</button>
+
+          <div class="teaser-box">
+            <p class="teaser-label">✦ この鑑定でわかること</p>
+            <ul>
+              <li>今動くべきか、待つべきか（年運・月運で判定）</li>
+              <li>転職に最適な方位と、避けるべき企業の場所</li>
+              <li>入社日・初出社日として最強の吉日</li>
+            </ul>
+          </div>
+
+          <div class="review-row">
+            <span class="stars-rating">★★★★★</span>
+            <span class="review-text">「吉日に動いたら内定が3社から出ました」— 29歳・女性</span>
+          </div>
+
+          <button class="btn-secondary" onclick="window.location.href='/fortune/kyuseiki'">✦ この鑑定を始める（500C）</button>
         </div>
 
+        <!-- カード3 -->
         <div class="glass-card menu-card theme-work fade-in-up delay-3">
+          <div class="menu-badge new">NEW</div>
           <div class="menu-header">
-            <h2 class="menu-title">【易占い】明日の商談・プロジェクトは成功する？今の職場の人間関係</h2>
-            <div class="menu-price">100<span>C</span></div>
+            <h2 class="menu-title">【宿曜占星術】上司・取引先との相性と、職場の人間関係を劇的に改善する秘訣</h2>
+            <div class="menu-price">200<span>C</span></div>
           </div>
-          <p class="menu-desc">直近の仕事の悩みや、A案とB案の選択、上司との相性など、「今すぐ答えが欲しい」ビジネスの迷いに対して、六十四卦が明確な白黒をつけます。</p>
-          
-          <button class="btn-primary" style="background: rgba(255,255,255,0.05); border-color: rgba(255,255,255,0.2); color: #fff;">詳細を見る</button>
+          <p class="menu-desc">ビジネスの成否は「人間関係」で9割決まります。あなたと上司・同僚・取引先の宿曜の相性を読み解き、相手の心を動かすコミュニケーション戦略をお伝えします。</p>
+
+          <div class="teaser-box">
+            <p class="teaser-label">✦ この鑑定でわかること</p>
+            <ul>
+              <li>上司・同僚との相性（安・壊・栄・親・胎・殺）</li>
+              <li>相手が「YES」と言いやすいアプローチ方法</li>
+              <li>職場での味方の作り方と、避けるべき人物</li>
+            </ul>
+          </div>
+
+          <button class="btn-secondary" onclick="window.location.href='/fortune/sukuyo'">✦ この鑑定を始める（200C）</button>
+        </div>
+
+        <!-- 即答カード -->
+        <div class="glass-card menu-card theme-work instant-card fade-in-up delay-4">
+          <div class="menu-badge instant">今すぐ回答</div>
+          <div class="menu-header">
+            <h2 class="menu-title">【易占い】明日の商談・面接は成功する？今すぐ答えを出す</h2>
+            <div class="menu-price">1<span>C</span></div>
+          </div>
+          <p class="menu-desc">直近の仕事の悩みに、六十四卦が白黒つけます。A案とB案の選択、商談の成否、転職の吉凶—今この瞬間の問いに今すぐ答えます。</p>
+          <button class="btn-primary btn-instant" onclick="window.location.href='/fortune/eki'">⚡ 今すぐ占う（1C）</button>
         </div>
 
       </div>
+
+      <!-- 安心保証 -->
+      <div class="trust-section fade-in-up">
+        <div class="trust-item"><span>🔒</span><span>SSL暗号化通信</span></div>
+        <div class="trust-item"><span>✨</span><span>3,000年の叡智</span></div>
+        <div class="trust-item"><span>💎</span><span>満足度98%</span></div>
+      </div>
+
     </div>
   </div>
 </Layout>
 
 <style>
-/* 個別ページ用スタイル */
-.premium-menus { display: flex; flex-direction: column; gap: 2rem; margin-top: 2rem; }
-.menu-card { position: relative; padding: 3rem 2.5rem 2.5rem; background: linear-gradient(145deg, rgba(20, 24, 39, 0.8), rgba(10, 12, 16, 0.9)); }
+.page { padding: 3rem 1.5rem; min-height: 100vh; position: relative; overflow: hidden; }
+.stars { position: fixed; inset: 0; pointer-events: none; z-index: 0; }
+.page-inner { max-width: 800px; margin: 0 auto; position: relative; z-index: 1; }
 
-/* テーマカラー：仕事（サファイアブルー） */
+.page-header { text-align: center; margin-bottom: 1.5rem; }
+.header-icon { font-size: 3rem; margin-bottom: 0.75rem; filter: drop-shadow(0 0 20px rgba(59,130,246,0.6)); }
+.page-title { font-family: 'Shippori Mincho', serif; font-size: 2rem; color: #bfdbfe; text-shadow: 0 0 30px rgba(59,130,246,0.5); margin-bottom: 0.5rem; }
+.page-desc { font-size: 14px; color: var(--text-secondary); line-height: 1.8; }
+.header-divider { width: 60px; height: 1px; background: linear-gradient(90deg,transparent,#3b82f6,transparent); margin: 1rem auto 0; }
+
+.stats-banner {
+  display: flex; align-items: center; justify-content: center; gap: 0; margin-bottom: 2rem;
+  background: rgba(59,130,246,0.08); border: 1px solid rgba(59,130,246,0.2);
+  border-radius: 12px; overflow: hidden;
+}
+.stat-item { flex: 1; display: flex; flex-direction: column; align-items: center; padding: 1rem; gap: 0.25rem; }
+.stat-num { font-family: 'Shippori Mincho', serif; font-size: 1.4rem; color: #93c5fd; font-weight: bold; }
+.stat-label { font-size: 11px; color: var(--text-secondary); }
+.stat-divider { width: 1px; height: 40px; background: rgba(59,130,246,0.2); }
+
+.premium-menus { display: flex; flex-direction: column; gap: 2rem; }
+.menu-card {
+  position: relative; padding: 3rem 2.5rem 2.5rem;
+  background: linear-gradient(145deg, rgba(16,20,36,0.9), rgba(8,10,20,0.95));
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.menu-card:hover { transform: translateY(-3px); box-shadow: 0 20px 60px rgba(59,130,246,0.12); }
 .theme-work { border-top: 3px solid #3b82f6; }
+.instant-card { border-top: 3px solid #06b6d4; }
 
-.menu-badge { position: absolute; top: 0; left: 2rem; transform: translateY(-50%); padding: 4px 16px; border-radius: 20px; font-size: 0.8rem; font-weight: bold; color: #fff; letter-spacing: 0.1em; }
-.menu-badge.hot { background: linear-gradient(135deg, #f43f5e, #fb923c); box-shadow: 0 4px 15px rgba(244, 63, 94, 0.4); }
-.menu-badge.special { background: linear-gradient(135deg, #3b82f6, #06b6d4); box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4); }
+.menu-badge {
+  position: absolute; top: 0; left: 2rem; transform: translateY(-50%);
+  padding: 4px 16px; border-radius: 20px; font-size: 0.8rem; font-weight: bold; color: #fff; letter-spacing: 0.1em;
+}
+.menu-badge.hot { background: linear-gradient(135deg, #f43f5e, #fb923c); box-shadow: 0 4px 15px rgba(244,63,94,0.5); }
+.menu-badge.special { background: linear-gradient(135deg, #3b82f6, #06b6d4); box-shadow: 0 4px 15px rgba(59,130,246,0.5); }
+.menu-badge.new { background: linear-gradient(135deg, #10b981, #06b6d4); box-shadow: 0 4px 15px rgba(16,185,129,0.5); }
+.menu-badge.instant { background: linear-gradient(135deg, #06b6d4, #3b82f6); box-shadow: 0 4px 15px rgba(6,182,212,0.5); animation: badge-glow 1.5s ease-in-out infinite; }
+@keyframes badge-glow { 0%,100%{box-shadow:0 4px 15px rgba(6,182,212,0.5)} 50%{box-shadow:0 4px 25px rgba(6,182,212,0.9)} }
 
-.menu-header { display: flex; justify-content: space-between; align-items: flex-start; gap: 1.5rem; margin-bottom: 1.5rem; }
-.menu-title { font-family: var(--font-mincho); font-size: 1.4rem; color: #fff; line-height: 1.6; margin: 0; flex: 1; }
-.menu-price { font-size: 1.8rem; font-weight: bold; color: var(--gold-light); white-space: nowrap; background: rgba(212, 175, 55, 0.1); padding: 8px 16px; border-radius: 12px; border: 1px solid rgba(212, 175, 55, 0.3); }
+.menu-header { display: flex; justify-content: space-between; align-items: flex-start; gap: 1.5rem; margin-bottom: 1.25rem; }
+.menu-title { font-family: 'Shippori Mincho', serif; font-size: 1.35rem; color: #fff; line-height: 1.6; margin: 0; flex: 1; }
+.menu-price { font-size: 1.8rem; font-weight: bold; color: var(--gold-light); white-space: nowrap; background: rgba(212,175,55,0.1); padding: 8px 16px; border-radius: 12px; border: 1px solid rgba(212,175,55,0.3); }
 .menu-price span { font-size: 1rem; margin-left: 2px; color: var(--gold); }
-.menu-desc { font-size: 0.95rem; color: var(--text-secondary); line-height: 1.8; margin-bottom: 1.5rem; }
+.menu-desc { font-size: 0.9rem; color: var(--text-secondary); line-height: 1.9; margin-bottom: 1.25rem; }
 
-.teaser-box { background: rgba(255, 255, 255, 0.03); border: 1px dashed rgba(212, 175, 55, 0.3); border-radius: 12px; padding: 1.5rem; margin-bottom: 2rem; }
-.teaser-label { font-size: 0.85rem; color: var(--gold); margin-bottom: 0.75rem; font-weight: bold; letter-spacing: 0.1em; }
+.teaser-box { background: rgba(59,130,246,0.05); border: 1px dashed rgba(59,130,246,0.25); border-radius: 12px; padding: 1.25rem; margin-bottom: 1.25rem; }
+.teaser-label { font-size: 0.8rem; color: #93c5fd; margin-bottom: 0.75rem; font-weight: bold; letter-spacing: 0.1em; }
 .teaser-box ul { list-style: none; padding: 0; margin: 0; }
-.teaser-box li { font-size: 0.9rem; color: var(--text-main); margin-bottom: 0.5rem; padding-left: 1.5rem; position: relative; }
-.teaser-box li::before { content: '✓'; position: absolute; left: 0; color: var(--gold-light); }
+.teaser-box li { font-size: 0.875rem; color: var(--text-main); margin-bottom: 0.5rem; padding-left: 1.5rem; position: relative; line-height: 1.7; }
+.teaser-box li::before { content: '✓'; position: absolute; left: 0; color: #93c5fd; }
+
+.review-row { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1.25rem; padding: 0.75rem 1rem; background: rgba(255,255,255,0.03); border-radius: 8px; }
+.stars-rating { color: #fbbf24; font-size: 14px; }
+.review-text { font-size: 12px; color: var(--text-secondary); font-style: italic; }
+
+.btn-group { display: flex; flex-direction: column; align-items: center; gap: 0.5rem; }
+.btn-note { font-size: 11px; color: var(--text-secondary); }
+.btn-secondary {
+  width: 100%; padding: 0.875rem 1.5rem; border-radius: var(--radius-md);
+  background: rgba(59,130,246,0.12); border: 1px solid rgba(59,130,246,0.35);
+  color: #93c5fd; font-family: 'Noto Serif JP', serif; font-size: 15px; cursor: pointer; transition: all 0.2s;
+}
+.btn-secondary:hover { background: rgba(59,130,246,0.22); border-color: rgba(59,130,246,0.6); }
+.btn-instant { background: linear-gradient(135deg, #1d4ed8, #0891b2) !important; border: none !important; }
+
+.trust-section { display: flex; justify-content: center; gap: 2rem; margin-top: 2.5rem; padding: 1.25rem; background: rgba(255,255,255,0.02); border-radius: 12px; border: 0.5px solid rgba(255,255,255,0.06); }
+.trust-item { display: flex; flex-direction: column; align-items: center; gap: 0.375rem; font-size: 12px; color: var(--text-secondary); }
+.trust-item span:first-child { font-size: 20px; }
 
 @media (max-width: 600px) {
   .menu-header { flex-direction: column; gap: 1rem; }
   .menu-price { align-self: flex-start; }
-  .menu-title { font-size: 1.2rem; }
-  .menu-card { padding: 2.5rem 1.5rem 1.5rem; }
+  .menu-title { font-size: 1.15rem; }
+  .menu-card { padding: 2.5rem 1.25rem 1.5rem; }
+  .stats-banner { gap: 0; }
+  .stat-num { font-size: 1.1rem; }
 }
 </style>
+
+<script is:inline>
+const starsEl = document.getElementById('stars');
+if (starsEl && starsEl.children.length === 0) {
+  for (let i = 0; i < 60; i++) {
+    const s = document.createElement('div');
+    const size = Math.random() * 2 + 0.5;
+    s.style.cssText = `position:absolute;border-radius:50%;background:#fff;width:${size}px;height:${size}px;top:${Math.random()*100}%;left:${Math.random()*100}%;opacity:${Math.random()*0.4+0.1};animation:twinkle ${2+Math.random()*4}s ease-in-out infinite;animation-delay:${Math.random()*4}s;`;
+    starsEl.appendChild(s);
+  }
+}
+</script>

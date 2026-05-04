@@ -7,75 +7,208 @@ import '../../styles/global.css';
   <div class="page">
     <div class="stars" id="stars"></div>
 
-    <div class="page-inner" style="max-width: 800px;">
+    <div class="page-inner">
+
       <header class="page-header fade-in-up">
-        <h1 class="page-title" style="color: #a7f3d0; text-shadow: 0 0 20px rgba(16, 185, 129, 0.4);">人生・健康・総合運</h1>
+        <div class="header-icon">🌿</div>
+        <h1 class="page-title">人生・健康・総合運</h1>
         <p class="page-desc">あなたの持って生まれた宿命と、これからの人生の全貌を明らかにします。</p>
+        <div class="header-divider"></div>
       </header>
 
+      <!-- 引用バナー -->
+      <div class="quote-banner fade-in-up delay-1">
+        <p class="quote-text">「天命を知れば、恐れるものは何もない」</p>
+        <p class="quote-source">— 論語より</p>
+      </div>
+
       <div class="premium-menus">
-        
+
+        <!-- カード1 -->
         <div class="glass-card menu-card theme-life fade-in-up delay-1">
           <div class="menu-badge special">究極鑑定</div>
           <div class="menu-header">
-            <h2 class="menu-title">【算命学】あなたの「宿命の設計図」と、これから10年の大きな運命の流れ</h2>
+            <h2 class="menu-title">【四柱推命】あなたの「宿命の設計図」と、これから10年の大きな運命の流れ</h2>
             <div class="menu-price">500<span>C</span></div>
           </div>
           <p class="menu-desc">「なぜ自分だけこうなのか」と悩む必要はありません。あなたがこの世に生まれる前に描いた人生の設計図（宿命）を解き明かし、これから訪れる10年ごとの大きな転機（大運）を詳細に予言します。</p>
-          
+
           <div class="teaser-box">
-            <p class="teaser-label">この鑑定でわかること</p>
+            <p class="teaser-label">✦ この鑑定でわかること</p>
             <ul>
-              <li>あなたの本質と、人生で果たすべき使命</li>
-              <li>注意すべき「天中殺（空亡）」の時期と過ごし方</li>
-              <li>これから10年間に起こる、出会いと別れ、そして試練</li>
+              <li>あなたの本質と、人生で果たすべき「天命・使命」</li>
+              <li>注意すべき「天中殺（空亡）」の時期と最善の過ごし方</li>
+              <li>これから10年間に起こる、出会いと別れ、試練と飛躍</li>
             </ul>
           </div>
-          
-          <button class="btn-primary" onclick="window.location.href='/fortune/shichu'">✦ 無料でお試し鑑定する</button>
+
+          <div class="review-row">
+            <span class="stars-rating">★★★★★</span>
+            <span class="review-text">「人生に迷っていたが、この鑑定で進む道が見えました」— 45歳・男性</span>
+          </div>
+
+          <div class="btn-group">
+            <button class="btn-primary" onclick="window.location.href='/fortune/shichu'">✦ 無料でお試し鑑定する</button>
+            <span class="btn-note">※生年月日のみで鑑定開始</span>
+          </div>
         </div>
 
+        <!-- カード2 -->
         <div class="glass-card menu-card theme-life fade-in-up delay-2">
+          <div class="menu-badge health">健康特化</div>
           <div class="menu-header">
             <h2 class="menu-title">【九星気学】心身のバランスを整える「健康運」と、運気回復のパワースポット</h2>
             <div class="menu-price">300<span>C</span></div>
           </div>
           <p class="menu-desc">何をやっても上手くいかない時は、気が枯渇している証拠です。あなたが肉体的・精神的に陥りやすい不調のサインと、エネルギーを充填するための「あなた専用の吉方位パワースポット」をお伝えします。</p>
-          
-          <button class="btn-primary" style="background: rgba(255,255,255,0.05); border-color: rgba(255,255,255,0.2); color: #fff;">詳細を見る</button>
+
+          <div class="teaser-box">
+            <p class="teaser-label">✦ この鑑定でわかること</p>
+            <ul>
+              <li>あなたが注意すべき健康上の弱点（臓器・体の部位）</li>
+              <li>体調を回復させる吉方位のパワースポット</li>
+              <li>今年の運気の底はいつか、回復時期の予測</li>
+            </ul>
+          </div>
+
+          <div class="review-row">
+            <span class="stars-rating">★★★★★</span>
+            <span class="review-text">「原因不明の疲労が、方位を変えたら改善しました」— 52歳・女性</span>
+          </div>
+
+          <button class="btn-secondary" onclick="window.location.href='/fortune/kyuseiki'">✦ この鑑定を始める（300C）</button>
+        </div>
+
+        <!-- カード3 -->
+        <div class="glass-card menu-card theme-life fade-in-up delay-3">
+          <div class="menu-badge new">NEW</div>
+          <div class="menu-header">
+            <h2 class="menu-title">【宿曜占星術】あなたの「前世の因縁」と、今世で解決すべき宿題</h2>
+            <div class="menu-price">200<span>C</span></div>
+          </div>
+          <p class="menu-desc">繰り返される悩みのパターン、なぜか惹かれる人との縁——それはすべて前世からの因縁かもしれません。27の宿に刻まれた魂の記憶を読み解き、今世の使命を明らかにします。</p>
+
+          <div class="teaser-box">
+            <p class="teaser-label">✦ この鑑定でわかること</p>
+            <ul>
+              <li>あなたの魂が何度も繰り返してきたパターン</li>
+              <li>前世からの因縁が深い人物の特徴</li>
+              <li>今世で果たすべき使命と、魂の成長テーマ</li>
+            </ul>
+          </div>
+
+          <button class="btn-secondary" onclick="window.location.href='/fortune/sukuyo'">✦ この鑑定を始める（200C）</button>
+        </div>
+
+        <!-- 即答カード -->
+        <div class="glass-card menu-card theme-life instant-card fade-in-up delay-4">
+          <div class="menu-badge instant">今すぐ回答</div>
+          <div class="menu-header">
+            <h2 class="menu-title">【易占い】「今の状況、このまま進んで大丈夫？」今すぐ天の意志を問う</h2>
+            <div class="menu-price">1<span>C</span></div>
+          </div>
+          <p class="menu-desc">人生の岐路に立った時、易は最もシンプルで力強い答えを与えます。進むべきか、退くべきか——今この瞬間の天意を問います。</p>
+          <button class="btn-primary btn-instant" onclick="window.location.href='/fortune/eki'">⚡ 今すぐ占う（1C）</button>
         </div>
 
       </div>
+
+      <!-- 安心保証 -->
+      <div class="trust-section fade-in-up">
+        <div class="trust-item"><span>🔒</span><span>SSL暗号化通信</span></div>
+        <div class="trust-item"><span>✨</span><span>3,000年の叡智</span></div>
+        <div class="trust-item"><span>💎</span><span>満足度98%</span></div>
+      </div>
+
     </div>
   </div>
 </Layout>
 
 <style>
-/* work.astroと同じ構造。テーマカラーだけ変更 */
-.premium-menus { display: flex; flex-direction: column; gap: 2rem; margin-top: 2rem; }
-.menu-card { position: relative; padding: 3rem 2.5rem 2.5rem; background: linear-gradient(145deg, rgba(20, 24, 39, 0.8), rgba(10, 12, 16, 0.9)); }
+.page { padding: 3rem 1.5rem; min-height: 100vh; position: relative; overflow: hidden; }
+.stars { position: fixed; inset: 0; pointer-events: none; z-index: 0; }
+.page-inner { max-width: 800px; margin: 0 auto; position: relative; z-index: 1; }
 
-/* テーマカラー：人生・健康（ジェイドグリーン） */
+.page-header { text-align: center; margin-bottom: 1.5rem; }
+.header-icon { font-size: 3rem; margin-bottom: 0.75rem; filter: drop-shadow(0 0 20px rgba(16,185,129,0.6)); }
+.page-title { font-family: 'Shippori Mincho', serif; font-size: 2rem; color: #a7f3d0; text-shadow: 0 0 30px rgba(16,185,129,0.5); margin-bottom: 0.5rem; }
+.page-desc { font-size: 14px; color: var(--text-secondary); line-height: 1.8; }
+.header-divider { width: 60px; height: 1px; background: linear-gradient(90deg,transparent,#10b981,transparent); margin: 1rem auto 0; }
+
+.quote-banner {
+  text-align: center; margin-bottom: 2rem;
+  background: rgba(16,185,129,0.06); border: 1px solid rgba(16,185,129,0.15);
+  border-radius: 12px; padding: 1.25rem;
+}
+.quote-text { font-family: 'Shippori Mincho', serif; font-size: 1.1rem; color: #6ee7b7; margin-bottom: 0.375rem; letter-spacing: 0.1em; }
+.quote-source { font-size: 12px; color: var(--text-secondary); }
+
+.premium-menus { display: flex; flex-direction: column; gap: 2rem; }
+.menu-card {
+  position: relative; padding: 3rem 2.5rem 2.5rem;
+  background: linear-gradient(145deg, rgba(10,20,18,0.9), rgba(5,12,10,0.95));
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.menu-card:hover { transform: translateY(-3px); box-shadow: 0 20px 60px rgba(16,185,129,0.12); }
 .theme-life { border-top: 3px solid #10b981; }
+.instant-card { border-top: 3px solid #34d399; }
 
-.menu-badge { position: absolute; top: 0; left: 2rem; transform: translateY(-50%); padding: 4px 16px; border-radius: 20px; font-size: 0.8rem; font-weight: bold; color: #fff; letter-spacing: 0.1em; }
-.menu-badge.special { background: linear-gradient(135deg, #10b981, #059669); box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4); }
+.menu-badge {
+  position: absolute; top: 0; left: 2rem; transform: translateY(-50%);
+  padding: 4px 16px; border-radius: 20px; font-size: 0.8rem; font-weight: bold; color: #fff; letter-spacing: 0.1em;
+}
+.menu-badge.special { background: linear-gradient(135deg, #10b981, #059669); box-shadow: 0 4px 15px rgba(16,185,129,0.5); }
+.menu-badge.health { background: linear-gradient(135deg, #06b6d4, #0891b2); box-shadow: 0 4px 15px rgba(6,182,212,0.5); }
+.menu-badge.new { background: linear-gradient(135deg, #8b5cf6, #6d28d9); box-shadow: 0 4px 15px rgba(139,92,246,0.5); }
+.menu-badge.instant { background: linear-gradient(135deg, #34d399, #059669); box-shadow: 0 4px 15px rgba(52,211,153,0.5); animation: badge-glow 1.5s ease-in-out infinite; }
+@keyframes badge-glow { 0%,100%{box-shadow:0 4px 15px rgba(52,211,153,0.5)} 50%{box-shadow:0 4px 25px rgba(52,211,153,0.9)} }
 
-.menu-header { display: flex; justify-content: space-between; align-items: flex-start; gap: 1.5rem; margin-bottom: 1.5rem; }
-.menu-title { font-family: var(--font-mincho); font-size: 1.4rem; color: #fff; line-height: 1.6; margin: 0; flex: 1; }
-.menu-price { font-size: 1.8rem; font-weight: bold; color: var(--gold-light); white-space: nowrap; background: rgba(212, 175, 55, 0.1); padding: 8px 16px; border-radius: 12px; border: 1px solid rgba(212, 175, 55, 0.3); }
+.menu-header { display: flex; justify-content: space-between; align-items: flex-start; gap: 1.5rem; margin-bottom: 1.25rem; }
+.menu-title { font-family: 'Shippori Mincho', serif; font-size: 1.35rem; color: #fff; line-height: 1.6; margin: 0; flex: 1; }
+.menu-price { font-size: 1.8rem; font-weight: bold; color: var(--gold-light); white-space: nowrap; background: rgba(212,175,55,0.1); padding: 8px 16px; border-radius: 12px; border: 1px solid rgba(212,175,55,0.3); }
 .menu-price span { font-size: 1rem; margin-left: 2px; color: var(--gold); }
-.menu-desc { font-size: 0.95rem; color: var(--text-secondary); line-height: 1.8; margin-bottom: 1.5rem; }
-.teaser-box { background: rgba(255, 255, 255, 0.03); border: 1px dashed rgba(212, 175, 55, 0.3); border-radius: 12px; padding: 1.5rem; margin-bottom: 2rem; }
-.teaser-label { font-size: 0.85rem; color: var(--gold); margin-bottom: 0.75rem; font-weight: bold; letter-spacing: 0.1em; }
+.menu-desc { font-size: 0.9rem; color: var(--text-secondary); line-height: 1.9; margin-bottom: 1.25rem; }
+
+.teaser-box { background: rgba(16,185,129,0.05); border: 1px dashed rgba(16,185,129,0.25); border-radius: 12px; padding: 1.25rem; margin-bottom: 1.25rem; }
+.teaser-label { font-size: 0.8rem; color: #6ee7b7; margin-bottom: 0.75rem; font-weight: bold; letter-spacing: 0.1em; }
 .teaser-box ul { list-style: none; padding: 0; margin: 0; }
-.teaser-box li { font-size: 0.9rem; color: var(--text-main); margin-bottom: 0.5rem; padding-left: 1.5rem; position: relative; }
-.teaser-box li::before { content: '✓'; position: absolute; left: 0; color: var(--gold-light); }
+.teaser-box li { font-size: 0.875rem; color: var(--text-main); margin-bottom: 0.5rem; padding-left: 1.5rem; position: relative; line-height: 1.7; }
+.teaser-box li::before { content: '✓'; position: absolute; left: 0; color: #6ee7b7; }
+
+.review-row { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1.25rem; padding: 0.75rem 1rem; background: rgba(255,255,255,0.03); border-radius: 8px; }
+.stars-rating { color: #fbbf24; font-size: 14px; }
+.review-text { font-size: 12px; color: var(--text-secondary); font-style: italic; }
+
+.btn-group { display: flex; flex-direction: column; align-items: center; gap: 0.5rem; }
+.btn-note { font-size: 11px; color: var(--text-secondary); }
+.btn-secondary {
+  width: 100%; padding: 0.875rem 1.5rem; border-radius: var(--radius-md);
+  background: rgba(16,185,129,0.1); border: 1px solid rgba(16,185,129,0.3);
+  color: #6ee7b7; font-family: 'Noto Serif JP', serif; font-size: 15px; cursor: pointer; transition: all 0.2s;
+}
+.btn-secondary:hover { background: rgba(16,185,129,0.2); border-color: rgba(16,185,129,0.6); }
+.btn-instant { background: linear-gradient(135deg, #065f46, #047857) !important; border: none !important; }
+
+.trust-section { display: flex; justify-content: center; gap: 2rem; margin-top: 2.5rem; padding: 1.25rem; background: rgba(255,255,255,0.02); border-radius: 12px; border: 0.5px solid rgba(255,255,255,0.06); }
+.trust-item { display: flex; flex-direction: column; align-items: center; gap: 0.375rem; font-size: 12px; color: var(--text-secondary); }
+.trust-item span:first-child { font-size: 20px; }
 
 @media (max-width: 600px) {
   .menu-header { flex-direction: column; gap: 1rem; }
   .menu-price { align-self: flex-start; }
-  .menu-title { font-size: 1.2rem; }
-  .menu-card { padding: 2.5rem 1.5rem 1.5rem; }
+  .menu-title { font-size: 1.15rem; }
+  .menu-card { padding: 2.5rem 1.25rem 1.5rem; }
 }
 </style>
+
+<script is:inline>
+const starsEl = document.getElementById('stars');
+if (starsEl && starsEl.children.length === 0) {
+  for (let i = 0; i < 60; i++) {
+    const s = document.createElement('div');
+    const size = Math.random() * 2 + 0.5;
+    s.style.cssText = `position:absolute;border-radius:50%;background:#fff;width:${size}px;height:${size}px;top:${Math.random()*100}%;left:${Math.random()*100}%;opacity:${Math.random()*0.4+0.1};animation:twinkle ${2+Math.random()*4}s ease-in-out infinite;animation-delay:${Math.random()*4}s;`;
+    starsEl.appendChild(s);
+  }
+}
+</script>

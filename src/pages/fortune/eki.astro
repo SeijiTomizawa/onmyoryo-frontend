@@ -368,8 +368,6 @@ import '../../styles/global.css';
 </style>
 
 <script is:inline>
-const WORKERS_URL = 'https://kyusei-api.seiji-tomizawa.workers.dev';
-
 const CATEGORIES = {
   love:  { icon: '❤️', name: '恋愛・相性・復縁',  question: '恋愛・相性・復縁について教えてください' },
   work:  { icon: '💼', name: '仕事・天職・転機',  question: '仕事・天職・転機について教えてください' },
@@ -392,9 +390,9 @@ const MAIN_FIELDS = {
 };
 
 const AFFILIATE_BOOKS = [
-  { title: '易経 上経・下経（岩波文庫）', author: '高田真治・後藤基巳 訳注', url: 'https://www.amazon.co.jp/dp/4003320816?tag=YOUR_ASSOCIATE_ID', icon: '📖' },
-  { title: '易の話（岩波新書）', author: '本田濟', url: 'https://www.amazon.co.jp/dp/4004120799?tag=YOUR_ASSOCIATE_ID', icon: '📚' },
-  { title: '入門 易経（講談社学術文庫）', author: '後藤基巳', url: 'https://www.amazon.co.jp/s?k=易経+入門&tag=YOUR_ASSOCIATE_ID', icon: '🔮' },
+  { title: '易経 上経・下経（岩波文庫）', author: '高田真治・後藤基巳 訳注', url: '#', icon: '📖' },
+  { title: '易の話（岩波新書）', author: '本田濟', url: '#', icon: '📚' },
+  { title: '入門 易経（講談社学術文庫）', author: '後藤基巳', url: '#', icon: '🔮' },
 ];
 
 let selectedCategory = null;
@@ -585,34 +583,6 @@ init();
 </script>
 
 <script is:inline>
-const CATEGORIES = {
-  love:  { icon: '❤️', name: '恋愛・相性・復縁',  question: '恋愛・相性・復縁について教えてください' },
-  work:  { icon: '💼', name: '仕事・天職・転機',  question: '仕事・天職・転機について教えてください' },
-  money: { icon: '💰', name: '金運・財運・投資',  question: '金運・財運・投資について教えてください' },
-  life:  { icon: '🌟', name: '人生・総合運',      question: '人生・総合運について教えてください' },
-};
-
-const MAIN_LABELS = {
-  love:  '恋愛・相性・復縁への示唆',
-  work:  '仕事・天職・転機への示唆',
-  money: '金運・財運・投資への示唆',
-  life:  '人生・総合運への示唆',
-};
-
-const MAIN_FIELDS = {
-  love:  'love',
-  work:  'work',
-  money: 'money',
-  life:  'overview',
-};
-
-const AFFILIATE_BOOKS = [
-  { title: '易経 上経・下経（岩波文庫）', author: '高田真治・後藤基巳 訳注', url: '#', icon: '📖' },
-  { title: '易の話（岩波新書）', author: '本田濟', url: '#', icon: '📚' },
-  { title: '入門 易経（講談社学術文庫）', author: '後藤基巳', url: '#', icon: '🔮' },
-];
-
-let selectedCategory = null;
 
 function init() {
   // 🌟 修正ポイント1：API・ログインチェックを一時的に無効化し、UIを表示
@@ -764,17 +734,6 @@ window.resetAll = function() {
   document.getElementById('form-error').textContent = '';
   window.scrollTo({ top: 0, behavior: 'smooth' });
 };
-
-// 星背景
-const starsEl = document.getElementById('stars');
-if (starsEl && starsEl.children.length === 0) {
-  for (let i = 0; i < 50; i++) {
-    const s = document.createElement('div');
-    const size = Math.random() * 2 + 1;
-    s.style.cssText = `position:absolute;border-radius:50%;background:#fff;width:${size}px;height:${size}px;top:${Math.random()*100}%;left:${Math.random()*100}%;opacity:${Math.random()*0.5+0.1};animation:twinkle ${2+Math.random()*3}s ease-in-out infinite;animation-delay:${Math.random()*3}s;`;
-    starsEl.appendChild(s);
-  }
-}
 
 init();
 </script>
