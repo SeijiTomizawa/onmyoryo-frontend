@@ -14,36 +14,36 @@ import '../../styles/global.css';
         <p class="page-desc">生年月日から、あなたの運命の羅針盤を読み解きます</p>
       </header>
 
-      <div class="glass-card intro-card fade-in-up delay-1">
+      <section class="glass-card intro-card fade-in-up delay-1">
         <h2 class="intro-title">宇宙の「気」を読み解く運命学</h2>
 
-        <div class="intro-section">
+        <section class="intro-section">
           <h3 class="intro-section-title">九星気学とは</h3>
           <p class="intro-text">
             九星気学（きゅうせいきがく）は、古代中国を起源とする「気（エネルギー）」の法則をもとにした東洋占術です。
             宇宙のエネルギーを一白水星・二黒土星・三碧木星・四緑木星・五黄土星・六白金星・七赤金星・八白土星・九紫火星の9つに分類し、
             生まれ持った宿命や才能、そして人生のバイオリズムを読み解きます。
           </p>
-        </div>
+        </section>
 
-        <div class="intro-section">
+        <section class="intro-section">
           <h3 class="intro-section-title">本命星・月命星・傾斜宮</h3>
           <p class="intro-text">
             九星気学では主に3つの星を使います。生まれた年から算出する「本命星（ほんめいせい）」があなたの本質と表の性格を表し、
             生まれた月から算出する「月命星（つきめいせい）」が内面と感情パターンを表します。
             この2つの組み合わせを「傾斜宮（けいしゃきゅう）」と呼び、より深い宿命の読み解きに使います。
           </p>
-        </div>
+        </section>
 
-        <div class="intro-section">
+        <section class="intro-section">
           <h3 class="intro-section-title">吉方位とは</h3>
           <p class="intro-text">
             九星気学の最大の特徴が「方位学（ほういがく）」です。本命星によって吉方位・凶方位が決まり、
             引越し・旅行・転職・結婚など人生の重要な決断において、吉方位を活用することで運気を大きく引き寄せることができます。
           </p>
-        </div>
+        </section>
 
-        <div class="intro-features">
+        <section class="intro-features">
           <div class="intro-feature">
             <span class="feature-icon">✧</span>
             <span><strong>本命星：本質と才能</strong><br>生まれ年から算出する本命星が示す、あなたの真の姿・性格・才能・人生テーマ</span>
@@ -60,15 +60,15 @@ import '../../styles/global.css';
             <span class="feature-icon">⏳</span>
             <span><strong>年運・月運：運命の波</strong><br>今は攻める時か、守る時か。9年・9ヶ月サイクルで変化する人生の波を読む</span>
           </div>
-        </div>
+        </section>
 
-        <div class="intro-note">
+        <section class="intro-note">
           <p>※ 九星気学では2月3日（節分）を年の区切りとします。1〜2月3日生まれの方は前年の本命星になる場合があります。</p>
-        </div>
-      </div>
+        </section>
+      </section>
 
       <!-- 入力フォーム -->
-      <div class="glass-card form-card fade-in-up delay-2">
+      <section class="glass-card form-card fade-in-up delay-2">
         <div class="autofill-banner" id="autofill-banner" style="display:none"></div>
         <div class="date-row">
           <div class="field">
@@ -94,14 +94,14 @@ import '../../styles/global.css';
         </div>
         <p class="error-msg" id="form-error"></p>
         <button class="btn-primary" id="preview-btn" onclick="runPreview()">✦ 無料鑑定を開始する</button>
-      </div>
+      </section>
 
       <!-- 無料鑑定結果 -->
-      <div id="result-section" style="display:none">
+      <section id="result-section" style="display:none">
         <div class="result-grid">
 
           <!-- 本命星カード（無料） -->
-          <div class="glass-card result-item star-card">
+          <section class="glass-card result-item star-card">
             <p class="star-label" id="res-star-num"></p>
             <h2 class="result-title" id="res-star-name"></h2>
             <p class="star-sub" id="res-keisha"></p>
@@ -116,10 +116,10 @@ import '../../styles/global.css';
               </div>
             </div>
             <div class="personality-box" id="res-personality"></div>
-          </div>
+          </section>
 
           <!-- 有料誘導CTA -->
-          <div class="glass-card result-item premium-cta">
+          <section class="glass-card result-item premium-cta">
             <div class="cta-header">
               <div class="cta-ornament">✦</div>
               <h3 class="cta-title">あなたの運命を、もっと深く</h3>
@@ -157,37 +157,13 @@ import '../../styles/global.css';
                 </div>
               </div>
             </div>
-
-            <div class="cta-divider"><span>コインをチャージして鑑定する</span></div>
-
-            <div class="cta-plans">
-              <div class="cta-plan" onclick="window.location.href='/register'">
-                <p class="cta-plan-coin">100C</p>
-                <p class="cta-plan-price">¥500</p>
-                <p class="cta-plan-note">お試し</p>
-              </div>
-              <div class="cta-plan cta-plan-featured" onclick="window.location.href='/register'">
-                <p class="cta-plan-badge">人気</p>
-                <p class="cta-plan-coin">300C</p>
-                <p class="cta-plan-price">¥1,200</p>
-                <p class="cta-plan-note">おすすめ</p>
-              </div>
-              <div class="cta-plan" onclick="window.location.href='/register'">
-                <p class="cta-plan-coin">500C</p>
-                <p class="cta-plan-price">¥1,800</p>
-                <p class="cta-plan-note">お得</p>
-              </div>
-            </div>
-
-            <p class="cta-note">1コイン = ¥5相当 · 期限なし · いつでも利用可能</p>
             <button class="cta-btn" onclick="window.location.href='/register'">
               無料登録して詳細鑑定を受ける
             </button>
-            <p class="cta-sub">登録無料 · 1分で完了 · クレジットカード不要</p>
-          </div>
+          </section>
 
           <!-- ログイン済みユーザー向けメニュー -->
-          <div class="glass-card result-item paid-menu" id="paid-menu" style="display:none">
+          <section class="glass-card result-item paid-menu" id="paid-menu" style="display:none">
             <h3 class="paid-menu-title">✦ 詳細鑑定メニュー</h3>
             <p class="paid-menu-desc">コインを使って、さらに深い鑑定を受けましょう。</p>
             <div class="paid-menu-grid">
@@ -232,8 +208,7 @@ import '../../styles/global.css';
                 <span class="paid-menu-cost">2C</span>
               </a>
             </div>
-          </div>
-
+          </section>
         </div>
       </div>
     </div>

@@ -1,0 +1,377 @@
+---
+import Layout from '../../../layouts/Layout.astro';
+import '../../../styles/global.css';
+---
+<Layout title="宿曜 詳細鑑定 | 陰陽寮">
+  <div class="page">
+    <div class="stars" id="stars"></div>
+    <div class="page-inner">
+
+      <header class="page-header fade-in-up">
+        <a href="/fortune/sukuyo" class="back-link">← 宿曜占星術に戻る</a>
+        <h1 class="page-title">🔮 詳細鑑定</h1>
+        <p class="page-desc">あなたの本宿が持つ、才能・恋愛・仕事・宿曜相性を完全解読します</p>
+      </header>
+
+      <!-- コイン残高 -->
+      <div class="coin-bar fade-in-up delay-1" id="coin-bar" style="display:none">
+        <span class="coin-bar-label">保有コイン</span>
+        <span class="coin-bar-value" id="coin-balance">-- コイン</span>
+        <span class="coin-bar-cost">詳細鑑定 2コイン</span>
+      </div>
+
+      <!-- 確認カード -->
+      <div class="glass-card confirm-card fade-in-up delay-1" id="confirm-card">
+        <div class="confirm-shuku" id="confirm-shuku">
+          <div class="confirm-symbol" id="c-symbol">🌙</div>
+          <div>
+            <p class="confirm-num" id="c-num">—</p>
+            <h2 class="confirm-name" id="c-name">—</h2>
+          </div>
+        </div>
+        <div class="confirm-contents">
+          <p class="contents-label">✦ 鑑定内容</p>
+          <div class="contents-grid">
+            <span class="content-chip">💎 才能・弱点</span>
+            <span class="content-chip">❤️ 恋愛傾向</span>
+            <span class="content-chip">💼 仕事・天職</span>
+            <span class="content-chip">🧭 吉方位・ラッキー</span>
+            <span class="content-chip">🌟 宿曜相性（27宿）</span>
+          </div>
+        </div>
+        <div id="login-note" style="display:none">
+          <p class="login-text">鑑定にはログインが必要です</p>
+          <a href="/login" class="btn-primary" style="display:inline-block;text-decoration:none;text-align:center">ログイン・新規登録</a>
+        </div>
+        <button class="btn-primary reading-btn" id="reading-btn" onclick="runReading()" style="display:none">🔮 詳細鑑定を受ける（2コイン）</button>
+        <p class="error-msg" id="reading-error"></p>
+      </div>
+
+      <!-- 詳細鑑定結果 -->
+      <div id="result-section" style="display:none">
+        <div class="result-grid">
+
+          <!-- ヒーローカード -->
+          <div class="glass-card shuku-hero-card fade-in-up">
+            <div class="hero-top">
+              <div class="hero-symbol-wrap">
+                <div class="hero-symbol" id="r-symbol"></div>
+                <div class="hero-glow"></div>
+              </div>
+              <div class="hero-info">
+                <p class="hero-num" id="r-num"></p>
+                <h2 class="hero-name" id="r-name"></h2>
+                <p class="hero-element" id="r-element"></p>
+                <p class="hero-birth" id="r-birth"></p>
+              </div>
+            </div>
+            <p class="hero-personality" id="r-personality"></p>
+          </div>
+
+          <!-- 才能 -->
+          <div class="glass-card result-block talent-block fade-in-up">
+            <div class="block-header">
+              <span class="block-icon">💎</span>
+              <h3 class="block-title">あなたの才能</h3>
+            </div>
+            <p class="block-text" id="r-talent"></p>
+          </div>
+
+          <!-- 弱点 -->
+          <div class="glass-card result-block weakness-block fade-in-up">
+            <div class="block-header">
+              <span class="block-icon">🌱</span>
+              <h3 class="block-title">やさしい注意点</h3>
+            </div>
+            <p class="block-text" id="r-weakness"></p>
+          </div>
+
+          <!-- 恋愛 -->
+          <div class="glass-card result-block love-block fade-in-up">
+            <div class="block-header">
+              <span class="block-icon">❤️</span>
+              <h3 class="block-title">恋愛でのあなたらしさ</h3>
+            </div>
+            <p class="block-text" id="r-love"></p>
+          </div>
+
+          <!-- 仕事 -->
+          <div class="glass-card result-block work-block fade-in-up">
+            <div class="block-header">
+              <span class="block-icon">💼</span>
+              <h3 class="block-title">仕事・天職</h3>
+            </div>
+            <p class="block-text" id="r-work"></p>
+          </div>
+
+          <!-- ラッキー -->
+          <div class="glass-card result-block lucky-block fade-in-up">
+            <div class="block-header">
+              <span class="block-icon">🧭</span>
+              <h3 class="block-title">吉方位・ラッキー</h3>
+            </div>
+            <div class="lucky-chips" id="r-lucky"></div>
+          </div>
+
+          <!-- 相性 -->
+          <div class="glass-card result-block compat-block fade-in-up">
+            <div class="block-header">
+              <span class="block-icon">🌟</span>
+              <h3 class="block-title">宿曜相性（27宿）</h3>
+            </div>
+            <div class="compat-tabs">
+              <button class="compat-tab active" onclick="filterCompat('all', this)">すべて</button>
+              <button class="compat-tab" onclick="filterCompat('best', this)">最高相性</button>
+              <button class="compat-tab" onclick="filterCompat('good', this)">良縁</button>
+              <button class="compat-tab" onclick="filterCompat('normal', this)">普通</button>
+            </div>
+            <div class="compat-list" id="r-compat"></div>
+          </div>
+
+          <!-- 次のアクション -->
+          <div class="glass-card result-block next-block fade-in-up" style="text-align:center">
+            <p class="next-title">さらに深く読み解きましょう</p>
+            <div class="next-grid">
+              <a href="#" id="yearly-link" class="next-btn"><span>📅</span><span>年間運勢</span><span class="next-cost">3C</span></a>
+              <a href="/fortune/compat" class="next-btn"><span>❤️</span><span>相性鑑定</span><span class="next-cost">3C</span></a>
+              <a href="/fortune/daily" class="next-btn"><span>☀️</span><span>本日の運勢</span><span class="next-cost">1C</span></a>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+</Layout>
+
+<style>
+.page { padding: 3rem 1.5rem; min-height: 100vh; position: relative; }
+.stars { position: fixed; inset: 0; pointer-events: none; z-index: 0; }
+.page-inner { max-width: 680px; margin: 0 auto; position: relative; z-index: 1; }
+.back-link { display: inline-block; font-size: 13px; color: var(--text-secondary); text-decoration: none; margin-bottom: 1rem; transition: color 0.2s; }
+.back-link:hover { color: #c4b5fd; }
+.page-header { margin-bottom: 1.5rem; }
+.page-title { font-family: 'Shippori Mincho', serif; font-size: 1.75rem; color: #c4b5fd; margin-bottom: 0.4rem; }
+.page-desc { font-size: 13px; color: var(--text-secondary); }
+
+.coin-bar { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1.25rem; background: rgba(124,111,205,0.08); border: 0.5px solid rgba(124,111,205,0.25); border-radius: var(--radius-md); padding: 0.75rem 1rem; }
+.coin-bar-label { font-size: 12px; color: var(--text-secondary); }
+.coin-bar-value { font-size: 16px; color: #c4b5fd; font-weight: 500; }
+.coin-bar-cost { font-size: 11px; color: var(--text-muted); margin-left: auto; }
+
+.confirm-card { border-top: 2px solid #7c6fcd; margin-bottom: 1.25rem; }
+.confirm-shuku { display: flex; align-items: center; gap: 1.25rem; margin-bottom: 1.5rem; }
+.confirm-symbol { font-size: 52px; color: #c4b5fd; line-height: 1; filter: drop-shadow(0 0 12px rgba(124,111,205,0.5)); }
+.confirm-num { font-size: 11px; color: #c4b5fd; letter-spacing: 0.15em; margin-bottom: 4px; }
+.confirm-name { font-family: 'Shippori Mincho', serif; font-size: 1.75rem; color: #f0e6d3; }
+.confirm-contents { background: rgba(124,111,205,0.07); border-radius: var(--radius-md); padding: 1rem; margin-bottom: 1.25rem; }
+.contents-label { font-size: 11px; color: #c4b5fd; letter-spacing: 0.1em; margin-bottom: 0.75rem; }
+.contents-grid { display: flex; flex-wrap: wrap; gap: 8px; }
+.content-chip { font-size: 13px; padding: 5px 12px; border-radius: 999px; background: rgba(124,111,205,0.12); color: #c4b5fd; border: 0.5px solid rgba(124,111,205,0.25); }
+.login-text { font-size: 13px; color: var(--text-secondary); text-align: center; margin-bottom: 0.75rem; }
+.reading-btn { width: 100%; }
+.error-msg { font-size: 13px; color: #ff8e8e; min-height: 1.2em; margin-top: 0.5rem; }
+
+.result-grid { display: flex; flex-direction: column; gap: 1.25rem; }
+.result-block { padding: 1.5rem; }
+.block-header { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1rem; padding-bottom: 0.75rem; border-bottom: 0.5px solid rgba(124,111,205,0.2); }
+.block-icon { font-size: 20px; }
+.block-title { font-family: 'Shippori Mincho', serif; font-size: 17px; color: #c4b5fd; margin: 0; }
+.block-text { font-size: 15px; color: var(--text-secondary); line-height: 2.1; }
+
+.shuku-hero-card { border-top: 3px solid #7c6fcd; padding: 2rem; background: linear-gradient(160deg, rgba(20,16,40,0.9), rgba(10,12,16,0.95)); }
+.hero-top { display: flex; align-items: center; gap: 1.5rem; margin-bottom: 1.5rem; }
+.hero-symbol-wrap { position: relative; flex-shrink: 0; }
+.hero-symbol { font-size: 64px; color: #c4b5fd; line-height: 1; position: relative; z-index: 1; }
+.hero-glow { position: absolute; inset: -10px; background: radial-gradient(circle, rgba(124,111,205,0.35) 0%, transparent 70%); border-radius: 50%; }
+.hero-num { font-size: 11px; color: #c4b5fd; letter-spacing: 0.15em; margin-bottom: 4px; }
+.hero-name { font-family: 'Shippori Mincho', serif; font-size: 2.25rem; color: #f0e6d3; margin-bottom: 6px; }
+.hero-element { font-size: 14px; color: #c4b5fd; margin-bottom: 4px; }
+.hero-birth { font-size: 12px; color: var(--text-muted); }
+.hero-personality { font-size: 15px; color: #d4c5a9; line-height: 2.1; border-left: 3px solid #7c6fcd; padding-left: 1rem; }
+
+.talent-block { border-left: 3px solid #5ef0c5; }
+.weakness-block { border-left: 3px solid #f59e0b; }
+.love-block { border-left: 3px solid #fda4af; }
+.work-block { border-left: 3px solid #93c5fd; }
+.lucky-block { background: linear-gradient(135deg, rgba(20,16,40,0.5), rgba(10,12,16,0.7)); }
+
+.lucky-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.lucky-chip { font-size: 14px; padding: 6px 16px; border-radius: 999px; background: rgba(124,111,205,0.12); color: #c4b5fd; border: 0.5px solid rgba(124,111,205,0.3); }
+
+.compat-tabs { display: flex; gap: 6px; margin-bottom: 1rem; flex-wrap: wrap; }
+.compat-tab { padding: 0.35rem 0.875rem; background: #ffffff08; border: 0.5px solid #ffffff18; color: var(--text-secondary); border-radius: var(--radius-sm); font-size: 12px; cursor: pointer; transition: all 0.15s; }
+.compat-tab.active { background: rgba(124,111,205,0.2); border-color: rgba(124,111,205,0.45); color: #c4b5fd; }
+
+.compat-list { display: flex; flex-direction: column; gap: 0.75rem; }
+.compat-item { background: rgba(255,255,255,0.03); border-radius: var(--radius-md); padding: 1rem; border: 0.5px solid rgba(255,255,255,0.07); transition: opacity 0.2s; }
+.compat-item.hidden { display: none; }
+.compat-top { display: flex; align-items: center; gap: 0.875rem; margin-bottom: 0.5rem; }
+.compat-name { font-family: 'Shippori Mincho', serif; font-size: 18px; color: #f0e6d3; }
+.compat-badge { font-size: 11px; padding: 3px 10px; border-radius: 999px; font-weight: 500; }
+.badge-best { background: rgba(94,240,197,0.15); color: #5ef0c5; border: 0.5px solid rgba(94,240,197,0.3); }
+.badge-good { background: rgba(124,111,205,0.15); color: #c4b5fd; border: 0.5px solid rgba(124,111,205,0.3); }
+.badge-friend { background: rgba(249,168,212,0.15); color: #f9a8d4; border: 0.5px solid rgba(249,168,212,0.3); }
+.badge-normal { background: rgba(255,255,255,0.05); color: var(--text-secondary); border: 0.5px solid rgba(255,255,255,0.1); }
+.compat-desc { font-size: 14px; color: var(--text-secondary); line-height: 1.8; }
+
+.next-block { background: linear-gradient(135deg, rgba(20,16,40,0.6), rgba(10,12,16,0.8)); }
+.next-title { font-size: 14px; color: var(--text-secondary); margin-bottom: 1.25rem; }
+.next-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+.next-btn { display: flex; flex-direction: column; align-items: center; gap: 6px; padding: 1rem 0.5rem; background: rgba(255,255,255,0.04); border: 0.5px solid rgba(255,255,255,0.1); border-radius: var(--radius-md); text-decoration: none; transition: all 0.2s; font-size: 13px; color: #f0e6d3; }
+.next-btn:hover { border-color: #7c6fcd; background: rgba(124,111,205,0.1); transform: translateY(-2px); }
+.next-btn span:first-child { font-size: 22px; }
+.next-cost { font-size: 11px; color: #c4b5fd; background: rgba(124,111,205,0.15); padding: 2px 10px; border-radius: 999px; }
+
+@keyframes twinkle { 0%,100%{opacity:0.15}50%{opacity:0.7} }
+</style>
+
+<script is:inline>
+const WORKERS_URL = 'https://kyusei-api.seiji-tomizawa.workers.dev';
+const BADGE_MAP = { '安宿': 'badge-best', '栄宿': 'badge-good', '命宿': 'badge-friend', '友宿': 'badge-good', '業宿': 'badge-normal', '衰宿': 'badge-normal' };
+let compatData = [];
+
+// URLパラメータから生年月日を取得
+const params = new URLSearchParams(location.search);
+const qYear = params.get('year');
+const qMonth = params.get('month');
+const qDay = params.get('day');
+
+(async function init() {
+  const token = localStorage.getItem('kyusei_token');
+  const user = JSON.parse(localStorage.getItem('kyusei_user') || 'null');
+
+  // 生年月日の決定（URLパラメータ優先 → ユーザープロフィール）
+  const year = qYear || user?.birth_date?.split('-')[0];
+  const month = qMonth || user?.birth_date?.split('-')[1];
+  const day = qDay || user?.birth_date?.split('-')[2];
+
+  if (!year) return;
+
+  // プレビュー表示
+  try {
+    const res = await fetch(`${WORKERS_URL}/api/sukuyo/preview?year=${year}&month=${month}&day=${day}`);
+    const data = await res.json();
+    document.getElementById('c-symbol').textContent = data.symbol || '🌙';
+    document.getElementById('c-num').textContent = '第' + (data.shukuIndex + 1) + '宿';
+    document.getElementById('c-name').textContent = data.shuku;
+  } catch {}
+
+  // 年間運勢リンク
+  document.getElementById('yearly-link').href = `/fortune/sukuyo/yearly?year=${year}&month=${month}&day=${day}`;
+
+  if (token) {
+    document.getElementById('coin-bar').style.display = 'flex';
+    document.getElementById('reading-btn').style.display = 'block';
+    document.getElementById('login-note').style.display = 'none';
+    loadBalance(token);
+
+    // キャッシュ確認
+    const savedKey = `sukuyo_reading_${year}_${month}_${day}`;
+    const saved = localStorage.getItem(savedKey);
+    if (saved) {
+      try { displayResult(JSON.parse(saved)); return; } catch(e) {}
+    }
+  } else {
+    document.getElementById('login-note').style.display = 'block';
+    document.getElementById('reading-btn').style.display = 'none';
+  }
+})();
+
+async function loadBalance(token) {
+  try {
+    const res = await fetch(`${WORKERS_URL}/api/coins/balance`, { headers: { Authorization: 'Bearer ' + token } });
+    const data = await res.json();
+    document.getElementById('coin-balance').textContent = data.coins + ' コイン';
+  } catch {}
+}
+
+window.runReading = async function() {
+  const token = localStorage.getItem('kyusei_token');
+  if (!token) { window.location.href = '/login'; return; }
+  const user = JSON.parse(localStorage.getItem('kyusei_user') || 'null');
+  const year = qYear || user?.birth_date?.split('-')[0];
+  const month = qMonth || user?.birth_date?.split('-')[1];
+  const day = qDay || user?.birth_date?.split('-')[2];
+  const errEl = document.getElementById('reading-error');
+  const btn = document.getElementById('reading-btn');
+  errEl.textContent = '';
+  btn.textContent = '鑑定中...'; btn.disabled = true;
+  try {
+    const res = await fetch(`${WORKERS_URL}/api/sukuyo/reading`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + token },
+      body: JSON.stringify({ year: parseInt(year), month: parseInt(month), day: parseInt(day) }),
+    });
+    const data = await res.json();
+    if (!res.ok) { errEl.textContent = data.error || 'エラーが発生しました'; return; }
+    const savedKey = `sukuyo_reading_${year}_${month}_${day}`;
+    localStorage.setItem(savedKey, JSON.stringify(data));
+    displayResult(data);
+  } catch {
+    errEl.textContent = '通信エラーが発生しました。';
+  } finally {
+    btn.textContent = '🔮 詳細鑑定を受ける（2コイン）'; btn.disabled = false;
+  }
+};
+
+function displayResult(data) {
+  document.getElementById('r-symbol').textContent = data.symbol || '🌙';
+  document.getElementById('r-num').textContent = '第' + (data.shukuIndex + 1) + '宿';
+  document.getElementById('r-name').textContent = data.shuku;
+  document.getElementById('r-element').textContent = data.element + 'の気';
+  document.getElementById('r-birth').textContent = data.birthDate || '';
+  document.getElementById('r-personality').textContent = data.personality || '';
+  document.getElementById('r-talent').textContent = data.talent || '';
+  document.getElementById('r-weakness').textContent = data.weakness || '';
+  document.getElementById('r-love').textContent = data.love || '';
+  document.getElementById('r-work').textContent = data.work || '';
+
+  document.getElementById('r-lucky').innerHTML = (data.lucky || '').split('・').map(l =>
+    `<span class="lucky-chip">${l}</span>`
+  ).join('');
+
+  compatData = data.compatibility || [];
+  renderCompat('all');
+
+  if (data.remainingCoins !== undefined) {
+    document.getElementById('coin-balance').textContent = data.remainingCoins + ' コイン';
+  }
+
+  document.getElementById('confirm-card').style.display = 'none';
+  document.getElementById('coin-bar').style.display = 'none';
+  document.getElementById('result-section').style.display = 'block';
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function renderCompat(filter) {
+  const el = document.getElementById('r-compat');
+  el.innerHTML = compatData.map(c => {
+    const badgeClass = BADGE_MAP[c.relation] || 'badge-normal';
+    const category = ['安宿'].includes(c.relation) ? 'best' : ['栄宿','命宿','友宿'].includes(c.relation) ? 'good' : 'normal';
+    const hidden = filter !== 'all' && filter !== category ? 'hidden' : '';
+    return `<div class="compat-item ${hidden}">
+      <div class="compat-top">
+        <span class="compat-name">${c.name}</span>
+        <span class="compat-badge ${badgeClass}">${c.relation}</span>
+      </div>
+      <p class="compat-desc">${c.desc}</p>
+    </div>`;
+  }).join('');
+}
+
+window.filterCompat = function(filter, btn) {
+  document.querySelectorAll('.compat-tab').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderCompat(filter);
+};
+
+const starsEl = document.getElementById('stars');
+for (let i = 0; i < 60; i++) {
+  const s = document.createElement('div');
+  const size = Math.random() * 2 + 1;
+  s.style.cssText = `position:absolute;border-radius:50%;background:#fff;width:${size}px;height:${size}px;top:${Math.random()*100}%;left:${Math.random()*100}%;opacity:${Math.random()*0.4+0.1};animation:twinkle ${2+Math.random()*3}s ease-in-out infinite;animation-delay:${Math.random()*3}s;`;
+  starsEl.appendChild(s);
+}
+</script>

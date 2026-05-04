@@ -12,7 +12,7 @@ import '../../styles/global.css';
         <p class="page-desc" id="today-date">今日の運気を詳しく読み解きます</p>
       </header>
 
-      <div class="glass-card intro-card fade-in-up delay-1">
+      <section class="glass-card intro-card fade-in-up delay-1">
         <h2 class="intro-title">今日一日の流れを、星が教えてくれる</h2>
         <p class="intro-text">
           九星気学では、毎日変わる「日盤の星」とあなたの本命星の組み合わせで、
@@ -21,15 +21,15 @@ import '../../styles/global.css';
           おすすめの行動・避けるべき行動まで、今日一日を最高に過ごすための
           具体的な指針をお伝えします。
         </p>
-      </div>
+      </section>
 
-      <div class="coin-balance-bar" id="balance-bar" style="display:none">
+      <aside class="coin-balance-bar" id="balance-bar" style="display:none">
         <span class="balance-label">保有コイン</span>
         <span class="balance-value" id="coin-balance">-- コイン</span>
         <span class="balance-cost">日運鑑定 1コイン（¥100相当）</span>
-      </div>
+      </aside>
 
-      <div id="form-section">
+      <section id="form-section">
         <div class="glass-card form-card fade-in-up delay-2" style="text-align:center">
           <div class="autofill-banner" id="autofill-banner" style="display:none"></div>
           <p class="form-desc">今日一日を最高に過ごすための具体的な指針を鑑定します。</p>
@@ -41,12 +41,13 @@ import '../../styles/global.css';
             ☀️ 本日の運勢を鑑定する（1コイン）
           </button>
         </div>
-      </div>
+      </section>
 
-      <div id="result-section" style="display:none">
+      <!-- 結果表示セクション -->
+      <section id="result-section" style="display:none">
         <div class="result-grid">
 
-          <div class="glass-card result-block score-card">
+          <section class="glass-card result-block score-card">
             <div class="score-layout">
               <div class="score-left">
                 <p class="score-date" id="r-date"></p>
@@ -66,14 +67,14 @@ import '../../styles/global.css';
                 <p class="ring-label">今日の運気</p>
               </div>
             </div>
-          </div>
+          </section>
 
-          <div class="glass-card result-block message-block">
+          <section class="glass-card result-block message-block">
             <h3 class="block-title">☀️ 今日のあなたへ</h3>
             <p class="block-text message-text" id="r-message"></p>
-          </div>
+          </section>
 
-          <div class="glass-card result-block lucky-block">
+          <section class="glass-card result-block lucky-block">
             <h3 class="block-title">✦ 今日のラッキー</h3>
             <div class="lucky-grid">
               <div class="lucky-item">
@@ -102,19 +103,19 @@ import '../../styles/global.css';
                 <p class="lucky-value" id="r-spot"></p>
               </div>
             </div>
-          </div>
+          </section>
 
-          <div class="glass-card result-block action-block">
+          <section class="glass-card result-block action-block">
             <h3 class="block-title">✦ 今日おすすめの行動</h3>
             <div class="action-list" id="r-actions"></div>
-          </div>
+          </section>
 
-          <div class="glass-card result-block caution-block">
+          <section class="glass-card result-block caution-block">
             <h3 class="block-title">⚠ 今日避けるべきこと</h3>
             <div class="caution-list" id="r-cautions"></div>
-          </div>
+          </section>
 
-          <div class="glass-card result-block next-block" style="text-align:center">
+          <aside class="glass-card result-block next-block" style="text-align:center">
             <p class="next-title">他の鑑定も組み合わせて、今日をさらに充実させましょう</p>
             <div class="next-grid">
               <a href="/fortune/monthly" class="next-btn">
@@ -128,10 +129,10 @@ import '../../styles/global.css';
               </a>
             </div>
             <button class="btn-secondary" onclick="resetAll()" style="margin-top:1.25rem">明日また鑑定する</button>
-          </div>
+          </aside>
 
         </div>
-      </div>
+      </section>
     </div>
   </div>
 </Layout>

@@ -13,7 +13,7 @@ import '../../styles/global.css';
         <p class="page-desc">心に迷いがある時、六十四の卦が今のあなたに啓示を与えます</p>
       </header>
 
-      <div class="glass-card intro-card fade-in-up delay-1">
+      <section class="glass-card intro-card fade-in-up delay-1">
         <h2 class="intro-title">「今」の迷いに答える神秘の卜術</h2>
 
         <div class="intro-section">
@@ -68,17 +68,17 @@ import '../../styles/global.css';
         <div class="intro-note">
           <p>※ 易は「今この瞬間の問い」に答えます。占う前に心を静め、具体的な問いを一つだけ心に念じてからボタンを押してください。</p>
         </div>
-      </div>
+      </section>
 
       <!-- コイン残高 -->
-      <div class="coin-balance-bar" id="balance-bar" style="display:none">
+      <aside class="coin-balance-bar" id="balance-bar" style="display:none">
         <span class="balance-label">保有コイン</span>
         <span class="balance-value" id="coin-balance">-- コイン</span>
         <span class="balance-cost">1回 1コイン（¥100相当）</span>
-      </div>
+      </aside>
 
       <!-- カテゴリ選択 -->
-      <div id="category-section">
+      <section id="category-section">
         <div class="glass-card form-card fade-in-up delay-2" style="text-align:center;">
           <p class="form-desc">
             占いたいことを選んでから、心の中で強く念じてください。
@@ -119,10 +119,10 @@ import '../../styles/global.css';
           <button class="btn-primary cast-btn" id="cast-btn" onclick="runEki()">☯ 卦を立てる（1コイン）</button>
           <button class="change-btn" onclick="resetCategory()">カテゴリを変える</button>
         </div>
-      </div>
+      </section>
 
       <!-- 結果セクション -->
-      <div id="result-section" style="display:none">
+      <section id="result-section" style="display:none">
         <div class="result-grid">
 
           <!-- カテゴリ・質問 -->
@@ -199,21 +199,21 @@ import '../../styles/global.css';
             <p class="detail-text advice-box" style="margin-top:1rem" id="r-nouke-advice"></p>
           </div>
 
-          <!-- アフィリエイト -->
-          <div class="glass-card result-item affiliate-block">
-            <p class="result-subtitle">易をさらに深く学ぶ</p>
-            <p class="affiliate-desc">易経の世界をより深く理解するためのおすすめ書籍です。</p>
-            <div class="affiliate-list" id="affiliate-list"></div>
-          </div>
-
           <!-- 再鑑定 -->
           <div class="glass-card result-item" style="text-align:center">
             <button class="btn-primary" onclick="resetAll()" style="max-width:300px">☯ もう一度占う</button>
             <a href="/mypage" class="btn-outline" style="display:block;text-align:center;margin-top:0.75rem;max-width:300px;margin-left:auto;margin-right:auto">マイページへ</a>
           </div>
 
+          <!-- アフィリエイト -->
+          <!-- <aside class="glass-card result-item affiliate-block">
+            <p class="result-subtitle">易をさらに深く学ぶ</p>
+            <p class="affiliate-desc">易経の世界をより深く理解するためのおすすめ書籍です。</p>
+            <div class="affiliate-list" id="affiliate-list"></div>
+          </aside> -->
+
         </div>
-      </div>
+      </section>
     </div>
   </div>
 </Layout>

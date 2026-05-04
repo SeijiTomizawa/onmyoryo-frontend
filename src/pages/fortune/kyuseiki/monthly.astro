@@ -12,24 +12,24 @@ import '../../styles/global.css';
         <p class="page-desc" id="month-label">今月の運気の流れを詳しく読み解きます</p>
       </header>
 
-      <div class="glass-card intro-card fade-in-up delay-1">
+      <section class="glass-card intro-card fade-in-up delay-1">
         <h2 class="intro-title">今月、あなたはどんな時期にいますか？</h2>
         <p class="intro-text">
           九星気学では、毎月訪れる「月盤の星」があなたの本命星と交差することで、
           その月特有のエネルギーが生まれます。月運詳細鑑定では、今月のテーマ・恋愛運・仕事運・
           金運・健康運・吉日・注意日・そして日ごとの運気グラフまで、今月の運気を完全に読み解きます。
         </p>
-      </div>
+      </section>
 
       <!-- コイン残高 -->
-      <div class="coin-balance-bar" id="balance-bar" style="display:none">
+      <aside class="coin-balance-bar" id="balance-bar" style="display:none">
         <span class="balance-label">保有コイン</span>
         <span class="balance-value" id="coin-balance">-- コイン</span>
         <span class="balance-cost">月運詳細 2コイン（¥200相当）</span>
-      </div>
+      </aside>
 
       <!-- 鑑定ボタン -->
-      <div id="form-section">
+      <section id="form-section">
         <div class="glass-card form-card fade-in-up delay-2" style="text-align:center">
           <div class="autofill-banner" id="autofill-banner" style="display:none"></div>
           <p class="form-desc">今月の詳細な運気を鑑定します。生年月日を登録済みの方はワンクリックで鑑定できます。</p>
@@ -41,14 +41,14 @@ import '../../styles/global.css';
             🌙 今月の詳細月運を鑑定する（2コイン）
           </button>
         </div>
-      </div>
+      </section>
 
       <!-- 結果セクション -->
-      <div id="result-section" style="display:none">
+      <section id="result-section" style="display:none">
         <div class="result-grid">
 
           <!-- 月運スコア -->
-          <div class="glass-card result-block score-card">
+          <section class="glass-card result-block score-card">
             <div class="score-layout">
               <div class="score-left">
                 <p class="score-month" id="r-month"></p>
@@ -68,16 +68,16 @@ import '../../styles/global.css';
                 <p class="ring-label">今月の運気</p>
               </div>
             </div>
-          </div>
+          </section>
 
           <!-- 今月の概要 -->
-          <div class="glass-card result-block">
+          <section   class="glass-card result-block">
             <h3 class="block-title">🌙 今月のテーマ・全体運</h3>
             <p class="block-text" id="r-overview"></p>
-          </div>
+          </section>
 
           <!-- 各分野 -->
-          <div class="glass-card result-block">
+          <section class="glass-card result-block">
             <h3 class="block-title">✦ 各分野の運気</h3>
             <div class="field-grid">
               <div class="field-item">
@@ -97,10 +97,10 @@ import '../../styles/global.css';
                 <p class="field-text" id="r-health"></p>
               </div>
             </div>
-          </div>
+          </section>
 
           <!-- 吉日・注意日 -->
-          <div class="glass-card result-block">
+          <section class="glass-card result-block">
             <h3 class="block-title">✦ 吉日・注意日</h3>
             <div class="days-layout">
               <div class="days-group">
@@ -112,31 +112,29 @@ import '../../styles/global.css';
                 <div class="days-chips" id="r-caution-days"></div>
               </div>
             </div>
-          </div>
+          </section>
 
           <!-- 日ごとの運気グラフ -->
-          <div class="glass-card result-block">
+          <section class="glass-card result-block">
             <h3 class="block-title">✦ 日ごとの運気カレンダー</h3>
             <div class="calendar-grid" id="r-calendar"></div>
-          </div>
+          </section>
 
           <!-- アドバイス -->
-          <div class="glass-card result-block advice-block">
+          <section class="glass-card result-block advice-block">
             <h3 class="block-title">✦ 今月のあなたへ</h3>
             <p class="block-text advice-text" id="r-advice"></p>
-          </div>
+          </section>
 
           <!-- 再鑑定 -->
-          <div class="glass-card result-block" style="text-align:center">
+          <aside class="glass-card result-block" style="text-align:center">
             <a href="/fortune/compat" class="btn-primary" style="display:block;text-decoration:none;max-width:300px;margin:0 auto 0.75rem;text-align:center">
               ❤️ 相性鑑定も試してみる
             </a>
             <a href="/mypage" class="btn-outline" style="display:block;max-width:300px;margin:0 auto;text-align:center">マイページへ</a>
-          </div>
-
-        </div>
+          </aside>
+        </section>
       </div>
-
     </div>
   </div>
 </Layout>
