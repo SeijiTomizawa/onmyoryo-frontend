@@ -15,7 +15,7 @@ import '../../styles/global.css';
       </header>
 
       <!-- イントロ -->
-      <div class="glass-card intro-card fade-in-up delay-1">
+      <section class="glass-card intro-card fade-in-up delay-1">
         <h2 class="intro-title">古代インドから伝わる「月の占星術」</h2>
         <p class="intro-text">宿曜占星術は、月が約27日かけて地球を一周する軌道を27の「宿」に分け、生まれた日に月がどの宿にあったかで本質・才能・運命を読み解く占術です。8世紀に空海によって日本に伝えられ、平安貴族に愛されました。</p>
         <div class="intro-features">
@@ -41,10 +41,10 @@ import '../../styles/global.css';
             </div>
           </div>
         </div>
-      </div>
+      </section>
 
       <!-- 本宿診断フォーム -->
-      <div class="glass-card form-card fade-in-up delay-2" id="form-card">
+      <section class="glass-card form-card fade-in-up delay-2" id="form-card">
         <div class="autofill-banner" id="autofill-banner" style="display:none"></div>
         <h3 class="form-title">🌙 あなたの「本宿」を無料で調べる</h3>
         <p class="form-sub">生年月日を入力するだけ。まず本宿名を無料で確認できます。</p>
@@ -55,10 +55,10 @@ import '../../styles/global.css';
         </div>
         <p class="error-msg" id="form-error"></p>
         <button class="btn-primary" id="preview-btn" onclick="runPreview()">🌙 無料で本宿を調べる</button>
-      </div>
+      </section>
 
       <!-- 無料プレビュー -->
-      <div class="glass-card preview-card" id="preview-card" style="display:none">
+      <section class="glass-card preview-card" id="preview-card" style="display:none">
         <p class="preview-label">あなたの本宿</p>
         <div class="preview-shuku">
           <div class="preview-symbol" id="p-symbol"></div>
@@ -90,6 +90,14 @@ import '../../styles/global.css';
               </div>
               <span class="menu-cost">3<small>C</small></span>
             </a>
+            <a href="/fortune/sukuyo/compatibility" class="menu-card-item" id="compatibility-link">
+              <span class="menu-icon">📅</span>
+              <div class="menu-info">
+                <p class="menu-name">宿曜相性</p>
+                <p class="menu-desc">他の宿との相性を詳しく知る</p>
+              </div>
+              <span class="menu-cost">3<small>C</small></span>
+            </a>
           </div>
         </div>
 
@@ -103,7 +111,7 @@ import '../../styles/global.css';
         </div>
 
         <button class="btn-clear" onclick="resetPreview()">別の生年月日で調べる</button>
-      </div>
+      </section>
 
     </div>
   </div>

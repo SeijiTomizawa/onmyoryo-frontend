@@ -1,0 +1,592 @@
+---
+import Layout from '../../../layouts/Layout.astro';
+import '../../../styles/global.css';
+---
+<Layout title="宿曜 相性鑑定 | 陰陽寮">
+  <div class="page">
+    <div class="stars" id="stars"></div>
+    <div class="page-inner">
+
+      <header class="page-header fade-in-up">
+        <a href="/fortune/sukuyo" class="back-link">← 宿曜占星術に戻る</a>
+        <h1 class="page-title">❤️ 宿曜 相性鑑定</h1>
+        <p class="page-desc">古代の月の占術が、二人の宿命的な縁と関係の深さを解き明かします</p>
+      </header>
+
+      <!-- コイン残高 -->
+      <div class="coin-bar fade-in-up delay-1" id="coin-bar" style="display:none">
+        <span class="coin-bar-label">保有コイン</span>
+        <span class="coin-bar-value" id="coin-balance">-- コイン</span>
+        <span class="coin-bar-cost">相性鑑定 3コイン</span>
+      </div>
+
+      <!-- 入力フォーム -->
+      <div class="glass-card form-card fade-in-up delay-1" id="form-card">
+
+        <!-- 自分の生年月日 -->
+        <div class="person-section my-section">
+          <div class="person-label-row">
+            <span class="person-icon">🌙</span>
+            <span class="person-label">あなたの生年月日</span>
+            <span class="person-shuku" id="my-shuku-preview"></span>
+          </div>
+          <div class="date-row">
+            <div class="field"><label>生年（西暦）</label><input type="number" id="my-year" placeholder="1990" min="1900" max="2010" onchange="previewShuku('my')" /></div>
+            <div class="field"><label>月</label><select id="my-month" onchange="previewShuku('my')">{Array.from({length:12},(_,i)=><option value={i+1}>{i+1}月</option>)}</select></div>
+            <div class="field"><label>日</label><select id="my-day" onchange="previewShuku('my')">{Array.from({length:31},(_,i)=><option value={i+1}>{i+1}日</option>)}</select></div>
+          </div>
+        </div>
+
+        <div class="vs-divider">
+          <div class="vs-line"></div>
+          <span class="vs-text">❤️</span>
+          <div class="vs-line"></div>
+        </div>
+
+        <!-- 相手の生年月日 -->
+        <div class="person-section target-section">
+          <div class="person-label-row">
+            <span class="person-icon">⭐</span>
+            <span class="person-label">相手の生年月日</span>
+            <span class="person-shuku" id="target-shuku-preview"></span>
+          </div>
+          <div class="date-row">
+            <div class="field"><label>生年（西暦）</label><input type="number" id="target-year" placeholder="1990" min="1900" max="2010" onchange="previewShuku('target')" /></div>
+            <div class="field"><label>月</label><select id="target-month" onchange="previewShuku('target')">{Array.from({length:12},(_,i)=><option value={i+1}>{i+1}月</option>)}</select></div>
+            <div class="field"><label>日</label><select id="target-day" onchange="previewShuku('target')">{Array.from({length:31},(_,i)=><option value={i+1}>{i+1}日</option>)}</select></div>
+          </div>
+        </div>
+
+        <!-- 無料プレビュー -->
+        <div id="free-preview" style="display:none" class="free-preview">
+          <div class="preview-pair">
+            <div class="preview-person" id="preview-my">
+              <span class="preview-sym" id="pv-my-sym">🌙</span>
+              <span class="preview-shuku" id="pv-my-name">—</span>
+            </div>
+            <div class="preview-arrow">↔️</div>
+            <div class="preview-person" id="preview-target">
+              <span class="preview-sym" id="pv-target-sym">⭐</span>
+              <span class="preview-shuku" id="pv-target-name">—</span>
+            </div>
+          </div>
+          <div class="preview-relation" id="pv-relation" style="display:none">
+            <span class="relation-badge" id="pv-relation-badge"></span>
+            <span class="relation-hint">詳細な鑑定で二人の深い縁を解き明かします</span>
+          </div>
+        </div>
+
+        <p class="error-msg" id="form-error"></p>
+
+        <div id="login-note" style="display:none">
+          <p class="login-text">鑑定にはログインが必要です</p>
+          <a href="/login" class="btn-primary" style="display:inline-block;text-decoration:none;text-align:center">ログイン・新規登録</a>
+        </div>
+        <button class="btn-primary" id="compat-btn" onclick="runCompat()" style="display:none">❤️ 相性鑑定を受ける（3コイン）</button>
+        <button class="btn-outline" id="preview-btn" onclick="runFreePreview()">🌙 まず本宿だけ確認する（無料）</button>
+      </div>
+
+      <!-- 鑑定結果 -->
+      <div id="result-section" style="display:none">
+        <div class="result-grid">
+
+          <!-- 二人の宿カード -->
+          <div class="glass-card pair-card fade-in-up">
+            <div class="pair-display">
+              <div class="pair-person my-person">
+                <div class="pair-symbol" id="r-my-sym"></div>
+                <div class="pair-info">
+                  <p class="pair-label">あなた</p>
+                  <h3 class="pair-name" id="r-my-name"></h3>
+                  <p class="pair-element" id="r-my-element"></p>
+                  <p class="pair-birth" id="r-my-birth"></p>
+                </div>
+              </div>
+
+              <!-- スコア -->
+              <div class="score-center">
+                <div class="score-ring" id="score-ring">
+                  <svg viewBox="0 0 100 100" class="score-svg">
+                    <circle cx="50" cy="50" r="44" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="8"/>
+                    <circle cx="50" cy="50" r="44" fill="none" stroke="#c4b5fd" stroke-width="8"
+                      stroke-dasharray="276.46" stroke-dashoffset="276.46"
+                      stroke-linecap="round" transform="rotate(-90 50 50)"
+                      id="score-circle" style="transition: stroke-dashoffset 1.5s ease"/>
+                  </svg>
+                  <div class="score-inner">
+                    <span class="score-num" id="r-score">0</span>
+                    <span class="score-label">点</span>
+                  </div>
+                </div>
+                <span class="relation-badge-lg" id="r-relation-badge"></span>
+              </div>
+
+              <div class="pair-person target-person">
+                <div class="pair-symbol" id="r-target-sym"></div>
+                <div class="pair-info">
+                  <p class="pair-label">相手</p>
+                  <h3 class="pair-name" id="r-target-name"></h3>
+                  <p class="pair-element" id="r-target-element"></p>
+                  <p class="pair-birth" id="r-target-birth"></p>
+                </div>
+              </div>
+            </div>
+
+            <div class="relation-desc" id="r-desc"></div>
+          </div>
+
+          <!-- 分野別相性 -->
+          <div class="glass-card result-block fade-in-up">
+            <div class="block-header">
+              <span class="block-icon">💑</span>
+              <h3 class="block-title">恋愛・パートナーとしての相性</h3>
+            </div>
+            <p class="block-text" id="r-love"></p>
+          </div>
+
+          <div class="glass-card result-block fade-in-up">
+            <div class="block-header">
+              <span class="block-icon">💼</span>
+              <h3 class="block-title">仕事・ビジネスでの相性</h3>
+            </div>
+            <p class="block-text" id="r-work"></p>
+          </div>
+
+          <div class="glass-card result-block fade-in-up">
+            <div class="block-header">
+              <span class="block-icon">🤝</span>
+              <h3 class="block-title">友人・人間関係としての相性</h3>
+            </div>
+            <p class="block-text" id="r-friendship"></p>
+          </div>
+
+          <!-- アドバイス -->
+          <div class="glass-card result-block advice-block fade-in-up">
+            <div class="block-header">
+              <span class="block-icon">💡</span>
+              <h3 class="block-title">二人へのアドバイス</h3>
+            </div>
+            <p class="block-text" id="r-advice"></p>
+          </div>
+
+          <!-- 全27宿相性一覧 -->
+          <div class="glass-card result-block fade-in-up">
+            <div class="block-header">
+              <span class="block-icon">🌟</span>
+              <h3 class="block-title">あなたの全宿相性一覧</h3>
+            </div>
+            <p class="all-compat-desc">27宿すべてとの相性をご参考にどうぞ</p>
+            <div class="compat-filter-row">
+              <button class="cf-btn active" onclick="filterAll('all', this)">すべて</button>
+              <button class="cf-btn" onclick="filterAll('安宿', this)">安宿</button>
+              <button class="cf-btn" onclick="filterAll('栄宿', this)">栄宿</button>
+              <button class="cf-btn" onclick="filterAll('命宿', this)">命宿</button>
+              <button class="cf-btn" onclick="filterAll('友宿', this)">友宿</button>
+              <button class="cf-btn" onclick="filterAll('業宿', this)">業宿</button>
+              <button class="cf-btn" onclick="filterAll('衰宿', this)">衰宿</button>
+            </div>
+            <div class="all-compat-list" id="all-compat-list"></div>
+          </div>
+
+          <!-- 次のアクション -->
+          <div class="glass-card result-block next-block fade-in-up" style="text-align:center">
+            <p class="next-title">さらに深く読み解きましょう</p>
+            <div class="next-grid">
+              <a href="/fortune/sukuyo/reading" class="next-btn"><span>🔮</span><span>詳細鑑定</span><span class="next-cost">2C</span></a>
+              <a href="/fortune/sukuyo/yearly" class="next-btn"><span>📅</span><span>年間運勢</span><span class="next-cost">3C</span></a>
+              <a href="/fortune/eki" class="next-btn"><span>☯️</span><span>易占い</span><span class="next-cost">1C</span></a>
+            </div>
+            <button class="btn-secondary" onclick="resetResult()" style="margin-top:1.25rem">別の相手と鑑定する</button>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+</Layout>
+
+<style>
+.page { padding: 3rem 1.5rem; min-height: 100vh; position: relative; }
+.stars { position: fixed; inset: 0; pointer-events: none; z-index: 0; }
+.page-inner { max-width: 680px; margin: 0 auto; position: relative; z-index: 1; }
+.back-link { display: inline-block; font-size: 13px; color: var(--text-secondary); text-decoration: none; margin-bottom: 1rem; transition: color 0.2s; }
+.back-link:hover { color: #c4b5fd; }
+.page-header { margin-bottom: 1.5rem; }
+.page-title { font-family: 'Shippori Mincho', serif; font-size: 1.75rem; color: #f9a8d4; margin-bottom: 0.4rem; }
+.page-desc { font-size: 13px; color: var(--text-secondary); line-height: 1.8; }
+
+.coin-bar { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1.25rem; background: rgba(249,168,212,0.08); border: 0.5px solid rgba(249,168,212,0.25); border-radius: var(--radius-md); padding: 0.75rem 1rem; }
+.coin-bar-label { font-size: 12px; color: var(--text-secondary); }
+.coin-bar-value { font-size: 16px; color: #f9a8d4; font-weight: 500; }
+.coin-bar-cost { font-size: 11px; color: var(--text-muted); margin-left: auto; }
+
+.form-card { border-top: 2px solid #a855f7; margin-bottom: 1.25rem; }
+
+.person-section { padding: 1.25rem; border-radius: var(--radius-md); margin-bottom: 0.75rem; }
+.my-section { background: rgba(124,111,205,0.07); border: 0.5px solid rgba(124,111,205,0.2); }
+.target-section { background: rgba(249,168,212,0.06); border: 0.5px solid rgba(249,168,212,0.2); }
+.person-label-row { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.875rem; }
+.person-icon { font-size: 18px; }
+.person-label { font-family: 'Shippori Mincho', serif; font-size: 15px; color: #f0e6d3; }
+.person-shuku { font-size: 13px; color: #c4b5fd; margin-left: auto; background: rgba(124,111,205,0.15); padding: 3px 10px; border-radius: 999px; }
+
+.date-row { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 8px; }
+.field { display: flex; flex-direction: column; gap: 4px; }
+.field label { font-size: 11px; color: var(--text-secondary); }
+
+.vs-divider { display: flex; align-items: center; gap: 1rem; margin: 0.5rem 0 0.75rem; }
+.vs-line { flex: 1; height: 1px; background: linear-gradient(90deg, transparent, rgba(249,168,212,0.3), transparent); }
+.vs-text { font-size: 20px; }
+
+.free-preview { background: rgba(124,111,205,0.06); border: 0.5px solid rgba(124,111,205,0.2); border-radius: var(--radius-md); padding: 1.25rem; margin-bottom: 1.25rem; }
+.preview-pair { display: flex; align-items: center; justify-content: center; gap: 1.5rem; margin-bottom: 0.875rem; }
+.preview-person { display: flex; flex-direction: column; align-items: center; gap: 6px; }
+.preview-sym { font-size: 32px; }
+.preview-shuku { font-family: 'Shippori Mincho', serif; font-size: 16px; color: #f0e6d3; }
+.preview-arrow { font-size: 24px; }
+.preview-relation { display: flex; align-items: center; gap: 0.75rem; justify-content: center; }
+.relation-badge { font-size: 13px; padding: 4px 14px; border-radius: 999px; font-weight: bold; }
+.relation-hint { font-size: 12px; color: var(--text-secondary); }
+
+.error-msg { font-size: 13px; color: #ff8e8e; min-height: 1.2em; margin: 0.5rem 0; }
+.login-text { font-size: 13px; color: var(--text-secondary); text-align: center; margin-bottom: 0.75rem; }
+.btn-outline { display: block; width: 100%; margin-top: 0.75rem; background: none; border: 0.5px solid rgba(124,111,205,0.35); color: #c4b5fd; padding: 0.75rem; border-radius: var(--radius-md); font-size: 14px; cursor: pointer; font-family: 'Noto Serif JP', serif; transition: all 0.2s; }
+.btn-outline:hover { background: rgba(124,111,205,0.1); }
+
+/* 結果 */
+.result-grid { display: flex; flex-direction: column; gap: 1.25rem; }
+.result-block { padding: 1.5rem; }
+.block-header { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1rem; padding-bottom: 0.75rem; border-bottom: 0.5px solid rgba(124,111,205,0.2); }
+.block-icon { font-size: 20px; }
+.block-title { font-family: 'Shippori Mincho', serif; font-size: 17px; color: #c4b5fd; margin: 0; }
+.block-text { font-size: 15px; color: var(--text-secondary); line-height: 2.1; }
+
+/* ペアカード */
+.pair-card { border-top: 3px solid #a855f7; padding: 2rem; background: linear-gradient(160deg, rgba(25,10,40,0.9), rgba(10,8,20,0.95)); }
+.pair-display { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem; }
+.pair-person { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 0.5rem; text-align: center; }
+.pair-symbol { font-size: 48px; line-height: 1; filter: drop-shadow(0 0 12px rgba(196,181,253,0.5)); }
+.pair-info { }
+.pair-label { font-size: 10px; color: var(--text-secondary); letter-spacing: 0.1em; margin-bottom: 2px; }
+.pair-name { font-family: 'Shippori Mincho', serif; font-size: 1.25rem; color: #f0e6d3; margin-bottom: 2px; }
+.pair-element { font-size: 12px; color: #c4b5fd; margin-bottom: 2px; }
+.pair-birth { font-size: 11px; color: var(--text-muted); }
+
+/* スコア */
+.score-center { display: flex; flex-direction: column; align-items: center; gap: 0.75rem; flex-shrink: 0; }
+.score-ring { position: relative; width: 100px; height: 100px; }
+.score-svg { width: 100%; height: 100%; }
+.score-inner { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+.score-num { font-family: 'Shippori Mincho', serif; font-size: 1.75rem; color: #f0e6d3; font-weight: bold; line-height: 1; }
+.score-label { font-size: 11px; color: var(--text-secondary); }
+.relation-badge-lg { font-size: 13px; padding: 5px 14px; border-radius: 999px; font-weight: bold; text-align: center; }
+
+.relation-desc { font-size: 15px; color: #d4c5a9; line-height: 2.1; border-left: 3px solid #a855f7; padding-left: 1rem; }
+
+/* バッジ色 */
+.badge-安宿 { background: rgba(94,240,197,0.15); color: #5ef0c5; border: 0.5px solid rgba(94,240,197,0.35); }
+.badge-栄宿 { background: rgba(124,111,205,0.15); color: #c4b5fd; border: 0.5px solid rgba(124,111,205,0.35); }
+.badge-命宿 { background: rgba(249,168,212,0.15); color: #f9a8d4; border: 0.5px solid rgba(249,168,212,0.35); }
+.badge-友宿 { background: rgba(147,197,253,0.15); color: #93c5fd; border: 0.5px solid rgba(147,197,253,0.35); }
+.badge-本宿（同宿） { background: rgba(212,175,55,0.15); color: #fde68a; border: 0.5px solid rgba(212,175,55,0.35); }
+.badge-業宿 { background: rgba(251,191,36,0.12); color: #fcd34d; border: 0.5px solid rgba(251,191,36,0.25); }
+.badge-衰宿 { background: rgba(239,68,68,0.12); color: #fca5a5; border: 0.5px solid rgba(239,68,68,0.25); }
+
+/* 全相性一覧 */
+.all-compat-desc { font-size: 12px; color: var(--text-secondary); margin-bottom: 0.875rem; }
+.compat-filter-row { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 1rem; }
+.cf-btn { padding: 0.3rem 0.75rem; background: #ffffff08; border: 0.5px solid #ffffff18; color: var(--text-secondary); border-radius: var(--radius-sm); font-size: 12px; cursor: pointer; transition: all 0.15s; }
+.cf-btn.active { background: rgba(124,111,205,0.2); border-color: rgba(124,111,205,0.45); color: #c4b5fd; }
+.all-compat-list { display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; }
+.compat-row { display: flex; align-items: center; gap: 0.75rem; padding: 0.6rem 0.875rem; background: #ffffff04; border-radius: var(--radius-sm); border: 0.5px solid #ffffff08; transition: opacity 0.2s; }
+.compat-row.hidden { display: none; }
+.compat-row-sym { font-size: 20px; flex-shrink: 0; }
+.compat-row-info { flex: 1; min-width: 0; }
+.compat-row-name { font-size: 13px; color: #f0e6d3; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.compat-row-badge { font-size: 10px; padding: 2px 8px; border-radius: 999px; white-space: nowrap; }
+
+.advice-block { border-top: 3px solid #f59e0b; background: linear-gradient(135deg, rgba(20,15,5,0.6), rgba(10,8,3,0.8)); }
+.next-block { background: linear-gradient(135deg, rgba(20,16,40,0.6), rgba(10,12,16,0.8)); }
+.next-title { font-size: 14px; color: var(--text-secondary); margin-bottom: 1.25rem; }
+.next-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+.next-btn { display: flex; flex-direction: column; align-items: center; gap: 6px; padding: 1rem 0.5rem; background: rgba(255,255,255,0.04); border: 0.5px solid rgba(255,255,255,0.1); border-radius: var(--radius-md); text-decoration: none; transition: all 0.2s; font-size: 13px; color: #f0e6d3; }
+.next-btn:hover { border-color: #a855f7; background: rgba(168,85,247,0.08); transform: translateY(-2px); }
+.next-btn span:first-child { font-size: 22px; }
+.next-cost { font-size: 11px; color: #c4b5fd; background: rgba(124,111,205,0.15); padding: 2px 10px; border-radius: 999px; }
+.btn-secondary { background: transparent; border: 0.5px solid rgba(255,255,255,0.2); color: var(--text-secondary); padding: 0.6rem 1.5rem; border-radius: var(--radius-md); font-size: 14px; cursor: pointer; font-family: 'Noto Serif JP', serif; }
+
+@media (max-width: 600px) {
+  .all-compat-list { grid-template-columns: 1fr; }
+  .pair-display { gap: 0.5rem; }
+  .pair-symbol { font-size: 36px; }
+  .pair-name { font-size: 1rem; }
+  .score-ring { width: 80px; height: 80px; }
+  .score-num { font-size: 1.4rem; }
+}
+@keyframes twinkle { 0%,100%{opacity:0.15}50%{opacity:0.7} }
+</style>
+
+<script is:inline>
+const WORKERS_URL = 'https://kyusei-api.seiji-tomizawa.workers.dev';
+let allCompatData = [];
+
+// 宿インデックス簡易計算（クライアント側）
+function calcShukuIndex(year, month, day) {
+  const base = new Date(1900, 0, 1);
+  const target = new Date(year, month - 1, day);
+  const diff = Math.floor((target - base) / 86400000);
+  return ((diff % 27) + 27) % 27;
+}
+
+const SUKUYO_NAMES = [
+  '昴宿','畢宿','觜宿','参宿','井宿','鬼宿','柳宿','星宿','張宿',
+  '翼宿','軫宿','角宿','亢宿','氐宿','房宿','心宿','尾宿','箕宿',
+  '斗宿','牛宿','女宿','虚宿','危宿','室宿','壁宿','奎宿','婁宿',
+];
+
+const RELATION_MAP = {
+  0:'本宿（同宿）', 9:'安宿', 18:'栄宿',
+  3:'友宿', 6:'友宿', 12:'友宿', 15:'友宿', 21:'友宿', 24:'友宿',
+  1:'業宿', 2:'業宿', 4:'業宿', 5:'業宿', 7:'業宿', 8:'業宿',
+  10:'衰宿', 11:'衰宿', 13:'衰宿', 14:'衰宿', 16:'衰宿', 17:'衰宿',
+  19:'命宿', 20:'命宿', 22:'命宿', 23:'命宿', 25:'命宿', 26:'命宿',
+};
+
+function getRelation(a, b) {
+  const diff = ((b - a) + 27) % 27;
+  return RELATION_MAP[diff] || '普通';
+}
+
+// 初期化
+(function init() {
+  const token = localStorage.getItem('kyusei_token');
+  const user = JSON.parse(localStorage.getItem('kyusei_user') || 'null');
+
+  if (user?.birth_date) {
+    const [y, m, d] = user.birth_date.split('-').map(Number);
+    document.getElementById('my-year').value = y;
+    document.getElementById('my-month').value = m;
+    document.getElementById('my-day').value = d;
+    updateShukuPreview('my', y, m, d);
+  }
+
+  if (token) {
+    document.getElementById('coin-bar').style.display = 'flex';
+    document.getElementById('compat-btn').style.display = 'block';
+    document.getElementById('login-note').style.display = 'none';
+    loadBalance(token);
+  } else {
+    document.getElementById('login-note').style.display = 'block';
+    document.getElementById('compat-btn').style.display = 'none';
+  }
+})();
+
+async function loadBalance(token) {
+  try {
+    const res = await fetch(`${WORKERS_URL}/api/coins/balance`, { headers: { Authorization: 'Bearer ' + token } });
+    const data = await res.json();
+    document.getElementById('coin-balance').textContent = data.coins + ' コイン';
+  } catch {}
+}
+
+// 宿プレビュー更新
+window.previewShuku = function(who) {
+  const year = parseInt(document.getElementById(`${who}-year`).value);
+  const month = parseInt(document.getElementById(`${who}-month`).value);
+  const day = parseInt(document.getElementById(`${who}-day`).value);
+  if (!year || year < 1900 || year > 2010) return;
+  updateShukuPreview(who, year, month, day);
+  tryShowRelation();
+};
+
+function updateShukuPreview(who, year, month, day) {
+  const idx = calcShukuIndex(year, month, day);
+  const name = SUKUYO_NAMES[idx];
+  document.getElementById(`${who}-shuku-preview`).textContent = name;
+}
+
+function tryShowRelation() {
+  const myYear = parseInt(document.getElementById('my-year').value);
+  const myMonth = parseInt(document.getElementById('my-month').value);
+  const myDay = parseInt(document.getElementById('my-day').value);
+  const tYear = parseInt(document.getElementById('target-year').value);
+  const tMonth = parseInt(document.getElementById('target-month').value);
+  const tDay = parseInt(document.getElementById('target-day').value);
+
+  if (!myYear || myYear < 1900 || !tYear || tYear < 1900) return;
+
+  const myIdx = calcShukuIndex(myYear, myMonth, myDay);
+  const tIdx = calcShukuIndex(tYear, tMonth, tDay);
+  const relation = getRelation(myIdx, tIdx);
+
+  document.getElementById('pv-my-name').textContent = SUKUYO_NAMES[myIdx];
+  document.getElementById('pv-target-name').textContent = SUKUYO_NAMES[tIdx];
+  document.getElementById('pv-relation-badge').textContent = relation;
+  document.getElementById('pv-relation-badge').className = `relation-badge badge-${relation}`;
+  document.getElementById('pv-relation').style.display = 'flex';
+  document.getElementById('free-preview').style.display = 'block';
+}
+
+window.runFreePreview = async function() {
+  const year = document.getElementById('my-year').value;
+  const month = document.getElementById('my-month').value;
+  const day = document.getElementById('my-day').value;
+  if (!year || parseInt(year) < 1900) {
+    document.getElementById('form-error').textContent = 'あなたの生年を入力してください';
+    return;
+  }
+  document.getElementById('form-error').textContent = '';
+
+  // プレビューAPIで本宿シンボルを取得
+  try {
+    const [myRes, tRes] = await Promise.all([
+      fetch(`${WORKERS_URL}/api/sukuyo/preview?year=${year}&month=${month}&day=${day}`),
+      document.getElementById('target-year').value
+        ? fetch(`${WORKERS_URL}/api/sukuyo/preview?year=${document.getElementById('target-year').value}&month=${document.getElementById('target-month').value}&day=${document.getElementById('target-day').value}`)
+        : Promise.resolve(null),
+    ]);
+    const myData = await myRes.json();
+    document.getElementById('pv-my-sym').textContent = myData.symbol || '🌙';
+    document.getElementById('pv-my-name').textContent = myData.shuku;
+
+    if (tRes) {
+      const tData = await tRes.json();
+      document.getElementById('pv-target-sym').textContent = tData.symbol || '⭐';
+      document.getElementById('pv-target-name').textContent = tData.shuku;
+    }
+    tryShowRelation();
+    document.getElementById('free-preview').style.display = 'block';
+  } catch {
+    document.getElementById('form-error').textContent = 'エラーが発生しました';
+  }
+};
+
+window.runCompat = async function() {
+  const token = localStorage.getItem('kyusei_token');
+  if (!token) { window.location.href = '/login'; return; }
+
+  const myYear = document.getElementById('my-year').value;
+  const myMonth = document.getElementById('my-month').value;
+  const myDay = document.getElementById('my-day').value;
+  const tYear = document.getElementById('target-year').value;
+  const tMonth = document.getElementById('target-month').value;
+  const tDay = document.getElementById('target-day').value;
+  const errEl = document.getElementById('form-error');
+
+  if (!myYear || parseInt(myYear) < 1900) { errEl.textContent = 'あなたの生年を正しく入力してください'; return; }
+  if (!tYear || parseInt(tYear) < 1900) { errEl.textContent = '相手の生年を正しく入力してください'; return; }
+  errEl.textContent = '';
+
+  const btn = document.getElementById('compat-btn');
+  btn.textContent = '鑑定中...'; btn.disabled = true;
+
+  try {
+    const res = await fetch(`${WORKERS_URL}/api/sukuyo/compat`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + token },
+      body: JSON.stringify({
+        targetYear: parseInt(tYear), targetMonth: parseInt(tMonth), targetDay: parseInt(tDay),
+      }),
+    });
+    const data = await res.json();
+    if (!res.ok) { errEl.textContent = data.error || 'エラーが発生しました'; return; }
+    displayResult(data);
+  } catch {
+    errEl.textContent = '通信エラーが発生しました。';
+  } finally {
+    btn.textContent = '❤️ 相性鑑定を受ける（3コイン）'; btn.disabled = false;
+  }
+};
+
+function displayResult(data) {
+  // 自分
+  document.getElementById('r-my-sym').textContent = data.my.symbol || '🌙';
+  document.getElementById('r-my-name').textContent = data.my.shuku;
+  document.getElementById('r-my-element').textContent = data.my.element + 'の気';
+  document.getElementById('r-my-birth').textContent = data.my.birthDate;
+
+  // 相手
+  document.getElementById('r-target-sym').textContent = data.target.symbol || '⭐';
+  document.getElementById('r-target-name').textContent = data.target.shuku;
+  document.getElementById('r-target-element').textContent = data.target.element + 'の気';
+  document.getElementById('r-target-birth').textContent = data.target.birthDate;
+
+  // スコアアニメーション
+  const score = data.score || 0;
+  document.getElementById('r-score').textContent = score;
+  const circle = document.getElementById('score-circle');
+  const circumference = 276.46;
+  const scoreColor = score >= 80 ? '#5ef0c5' : score >= 60 ? '#c4b5fd' : score >= 40 ? '#fcd34d' : '#fca5a5';
+  circle.style.stroke = scoreColor;
+  setTimeout(() => {
+    circle.style.strokeDashoffset = circumference - (circumference * score / 100);
+  }, 100);
+
+  // 相性バッジ
+  const relation = data.relation || '';
+  const badge = document.getElementById('r-relation-badge');
+  badge.textContent = relation;
+  badge.className = `relation-badge-lg badge-${relation}`;
+
+  document.getElementById('r-desc').textContent = data.desc || '';
+  document.getElementById('r-love').textContent = data.love || '';
+  document.getElementById('r-work').textContent = data.work || '';
+  document.getElementById('r-friendship').textContent = data.friendship || '';
+  document.getElementById('r-advice').textContent = data.advice || '';
+
+  // 全相性一覧
+  allCompatData = data.allCompat || [];
+  renderAllCompat('all');
+
+  if (data.remainingCoins !== undefined) {
+    document.getElementById('coin-balance').textContent = data.remainingCoins + ' コイン';
+  }
+
+  document.getElementById('form-card').style.display = 'none';
+  document.getElementById('coin-bar').style.display = 'none';
+  document.getElementById('result-section').style.display = 'block';
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function renderAllCompat(filter) {
+  const el = document.getElementById('all-compat-list');
+  const SYMBOLS = ['☽','★','✦','✧','◈','⊕','⊗','✺','⋆','✵','⬟','◇','◆','▷','▶','⊙','⊚','☆','⊛','⊜','⊝','⊞','⊟','⊠','⊡','⊢','⊣'];
+  el.innerHTML = allCompatData.map(c => {
+    const hidden = filter !== 'all' && c.relation !== filter ? 'hidden' : '';
+    return `<div class="compat-row ${hidden}">
+      <span class="compat-row-sym">${SYMBOLS[c.shukuIndex] || '🌙'}</span>
+      <div class="compat-row-info">
+        <div class="compat-row-name">${c.name}</div>
+        <span class="compat-row-badge badge-${c.relation}">${c.relation}</span>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+window.filterAll = function(filter, btn) {
+  document.querySelectorAll('.cf-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderAllCompat(filter);
+};
+
+window.resetResult = function() {
+  document.getElementById('result-section').style.display = 'none';
+  document.getElementById('form-card').style.display = 'block';
+  document.getElementById('coin-bar').style.display = 'flex';
+  document.getElementById('target-year').value = '';
+  document.getElementById('target-month').value = 1;
+  document.getElementById('target-day').value = 1;
+  document.getElementById('target-shuku-preview').textContent = '';
+  document.getElementById('free-preview').style.display = 'none';
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+};
+
+const starsEl = document.getElementById('stars');
+for (let i = 0; i < 60; i++) {
+  const s = document.createElement('div');
+  const size = Math.random() * 2 + 1;
+  s.style.cssText = `position:absolute;border-radius:50%;background:#fff;width:${size}px;height:${size}px;top:${Math.random()*100}%;left:${Math.random()*100}%;opacity:${Math.random()*0.4+0.1};animation:twinkle ${2+Math.random()*3}s ease-in-out infinite;animation-delay:${Math.random()*3}s;`;
+  starsEl.appendChild(s);
+}
+</script>
