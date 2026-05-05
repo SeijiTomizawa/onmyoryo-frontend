@@ -14,7 +14,6 @@ import '../../styles/global.css';
         <div class="header-divider"></div>
       </header>
 
-      <!-- イントロ -->
       <section class="glass-card intro-card fade-in-up delay-1">
         <h2 class="intro-title">宇宙の「気」を読み解く運命学</h2>
         <p class="intro-text">九星気学は、古代中国を起源とする「気（エネルギー）」の法則をもとにした東洋占術です。宇宙のエネルギーを9つの星に分類し、生まれ持った宿命や才能、そして人生のバイオリズムを読み解きます。</p>
@@ -46,7 +45,6 @@ import '../../styles/global.css';
         </div>
       </section>
 
-      <!-- 入力フォーム -->
       <section class="glass-card form-card fade-in-up delay-2" id="form-card">
         <div class="autofill-banner" id="autofill-banner" style="display:none"></div>
         <h3 class="form-title">⭐ あなたの「本命星」を無料で調べる</h3>
@@ -60,10 +58,7 @@ import '../../styles/global.css';
         <button class="btn-primary" id="preview-btn" onclick="runPreview()">⭐ 無料で本命星を調べる</button>
       </section>
 
-      <!-- 無料プレビュー結果 -->
       <section class="glass-card preview-card" id="preview-card" style="display:none">
-
-        <!-- 本命星表示 -->
         <div class="star-hero">
           <div class="star-badge-wrap">
             <div class="star-badge" id="p-badge"></div>
@@ -89,7 +84,6 @@ import '../../styles/global.css';
 
         <div class="personality-box" id="p-personality"></div>
 
-        <!-- 鑑定メニュー（ログイン済み） -->
         <div class="menu-section" id="menu-section" style="display:none">
           <p class="menu-title">✦ この本命星でできる鑑定</p>
           <div class="menu-grid">
@@ -142,14 +136,12 @@ import '../../styles/global.css';
               <span class="menu-cost">2<small>C</small></span>
             </a>
           </div>
-
           <div class="coin-bar">
             <span class="coin-bar-label">保有コイン</span>
             <span class="coin-bar-value" id="coin-balance">-- コイン</span>
           </div>
         </div>
 
-        <!-- 未ログイン誘導 -->
         <div id="login-note" style="display:none">
           <div class="cta-box">
             <div class="cta-header-row">
@@ -180,16 +172,12 @@ import '../../styles/global.css';
 .page { padding: 3rem 1.5rem; min-height: 100vh; position: relative; }
 .stars { position: fixed; inset: 0; pointer-events: none; z-index: 0; }
 .page-inner { max-width: 680px; margin: 0 auto; position: relative; z-index: 1; }
-
-/* ヘッダー */
 .page-header { text-align: center; margin-bottom: 2rem; }
 .header-icon { font-size: 3.5rem; margin-bottom: 0.75rem; filter: drop-shadow(0 0 20px rgba(212,175,55,0.6)); animation: float 4s ease-in-out infinite; }
 @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-8px)} }
 .page-title { font-family: 'Shippori Mincho', serif; font-size: 2rem; color: #fde68a; text-shadow: 0 0 30px rgba(212,175,55,0.4); margin-bottom: 0.5rem; }
 .page-desc { font-size: 14px; color: var(--text-secondary); }
 .header-divider { width: 60px; height: 1px; background: linear-gradient(90deg,transparent,var(--gold),transparent); margin: 1rem auto 0; }
-
-/* イントロ */
 .intro-card { border-top: 2px solid var(--gold); background: linear-gradient(180deg, rgba(30,24,8,0.7) 0%, rgba(10,12,16,0.85) 100%); margin-bottom: 1.5rem; }
 .intro-title { font-family: 'Shippori Mincho', serif; font-size: 1.25rem; color: #fde68a; margin-bottom: 1rem; text-align: center; }
 .intro-text { font-size: 14px; color: var(--text-secondary); line-height: 2; margin-bottom: 1.5rem; }
@@ -200,8 +188,6 @@ import '../../styles/global.css';
 .feature-desc { font-size: 12px; color: var(--text-secondary); line-height: 1.7; }
 .intro-note { background: rgba(255,255,255,0.03); border-radius: var(--radius-md); padding: 0.75rem 1rem; border: 0.5px solid rgba(255,255,255,0.07); }
 .intro-note p { font-size: 12px; color: var(--text-secondary); margin: 0; }
-
-/* フォーム */
 .form-card { margin-bottom: 1.25rem; }
 .form-title { font-family: 'Shippori Mincho', serif; font-size: 17px; color: #fde68a; margin-bottom: 0.5rem; }
 .form-sub { font-size: 13px; color: var(--text-secondary); margin-bottom: 1.25rem; }
@@ -210,11 +196,7 @@ import '../../styles/global.css';
 .field label { font-size: 11px; color: var(--text-secondary); }
 .autofill-banner { background: rgba(16,185,129,0.1); border: 0.5px solid rgba(16,185,129,0.3); border-radius: var(--radius-md); padding: 0.6rem 1rem; font-size: 13px; color: #6ee7b7; margin-bottom: 1rem; }
 .error-msg { font-size: 13px; color: #ff8e8e; min-height: 1.2em; margin: 0 0 0.5rem; }
-
-/* プレビューカード */
 .preview-card { border-top: 2px solid var(--gold); background: linear-gradient(180deg, rgba(30,24,8,0.8), rgba(10,12,16,0.9)); }
-
-/* 本命星ヒーロー */
 .star-hero { display: flex; align-items: center; gap: 1.5rem; margin-bottom: 1.25rem; }
 .star-badge-wrap { position: relative; flex-shrink: 0; }
 .star-badge { width: 72px; height: 72px; border-radius: 50%; background: linear-gradient(135deg, #d4af37, #8b6d20); display: flex; align-items: center; justify-content: center; font-family: 'Shippori Mincho', serif; font-size: 26px; color: #000; font-weight: bold; position: relative; z-index: 1; }
@@ -222,15 +204,11 @@ import '../../styles/global.css';
 .star-num-label { font-size: 11px; color: var(--gold); letter-spacing: 0.15em; margin-bottom: 4px; }
 .star-name { font-family: 'Shippori Mincho', serif; font-size: 1.75rem; color: #f0e6d3; margin-bottom: 4px; }
 .star-sub { font-size: 13px; color: var(--text-secondary); }
-
 .star-meta-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-bottom: 1.25rem; }
 .meta-item { background: rgba(255,255,255,0.04); border-radius: var(--radius-md); padding: 0.75rem 1rem; display: flex; flex-direction: column; gap: 4px; border: 0.5px solid rgba(255,255,255,0.08); }
 .meta-label { font-size: 10px; color: var(--text-secondary); letter-spacing: 0.05em; }
 .meta-value { font-size: 15px; color: #f0e6d3; font-family: 'Shippori Mincho', serif; }
-
 .personality-box { background: rgba(212,175,55,0.06); border-left: 3px solid var(--gold); padding: 1.25rem; font-size: 14px; line-height: 2; color: var(--text-secondary); border-radius: 0 var(--radius-md) var(--radius-md) 0; margin-bottom: 1.5rem; }
-
-/* 鑑定メニュー */
 .menu-section { margin-bottom: 1.25rem; }
 .menu-title { font-size: 13px; color: var(--gold); letter-spacing: 0.1em; margin-bottom: 0.75rem; }
 .menu-grid { display: flex; flex-direction: column; gap: 0.625rem; margin-bottom: 1.25rem; }
@@ -242,12 +220,9 @@ import '../../styles/global.css';
 .menu-desc { font-size: 12px; color: var(--text-secondary); }
 .menu-cost { font-size: 1.2rem; font-weight: bold; color: var(--gold); background: rgba(212,175,55,0.1); padding: 5px 10px; border-radius: 10px; border: 0.5px solid rgba(212,175,55,0.25); white-space: nowrap; }
 .menu-cost small { font-size: 0.65rem; margin-left: 1px; }
-
 .coin-bar { display: flex; align-items: center; gap: 0.75rem; background: rgba(212,175,55,0.06); border: 0.5px solid rgba(212,175,55,0.18); border-radius: var(--radius-md); padding: 0.6rem 1rem; }
 .coin-bar-label { font-size: 12px; color: var(--text-secondary); }
 .coin-bar-value { font-size: 16px; color: #fde68a; font-weight: 500; }
-
-/* 未ログインCTA */
 .cta-box { background: linear-gradient(160deg, rgba(30,24,8,0.8), rgba(10,12,16,0.9)); border: 0.5px solid rgba(212,175,55,0.25); border-radius: var(--radius-lg); padding: 1.75rem; margin-bottom: 1.25rem; }
 .cta-header-row { display: flex; align-items: center; justify-content: center; gap: 0.75rem; margin-bottom: 0.75rem; }
 .cta-ornament { font-size: 14px; color: var(--gold); opacity: 0.6; }
@@ -258,10 +233,8 @@ import '../../styles/global.css';
 .cta-feature span:first-child { font-size: 16px; flex-shrink: 0; }
 .cta-login-link { font-size: 12px; color: var(--text-secondary); text-align: center; margin-top: 0.75rem; }
 .cta-login-link a { color: var(--gold); text-decoration: underline; }
-
 .btn-clear { display: block; width: 100%; margin-top: 1rem; background: none; border: 0.5px solid rgba(255,255,255,0.15); color: var(--text-secondary); padding: 0.6rem; border-radius: var(--radius-md); font-size: 13px; cursor: pointer; font-family: 'Noto Serif JP', serif; transition: all 0.2s; }
 .btn-clear:hover { border-color: rgba(255,255,255,0.3); color: #f0e6d3; }
-
 @keyframes twinkle { 0%,100%{opacity:0.15}50%{opacity:0.7} }
 </style>
 
@@ -280,23 +253,15 @@ function calcTsuki(honmei, month, day) {
   return ((base - offset - 1 + 90) % 9) + 1;
 }
 
-(function init() {
-  const token = localStorage.getItem('kyusei_token');
-  const user = JSON.parse(localStorage.getItem('kyusei_user') || 'null');
-  if (!user?.birth_date) return;
-  const [y, m, d] = user.birth_date.split('-').map(Number);
-  document.getElementById('year').value = y;
-  document.getElementById('month').value = m;
-  document.getElementById('day').value = d;
-  const name = user.display_name || user.email?.split('@')[0] || '';
-  if (name) {
-    const b = document.getElementById('autofill-banner');
-    b.textContent = name + 'さんの生年月日を自動入力しました';
-    b.style.display = 'block';
-  }
-  if (token) runPreview(true);
-})();
+async function loadBalance(token) {
+  try {
+    const res = await fetch(`${WORKERS_URL}/api/coins/balance`, { headers: { Authorization: 'Bearer ' + token } });
+    const data = await res.json();
+    document.getElementById('coin-balance').textContent = data.coins + ' コイン';
+  } catch {}
+}
 
+// runPreview を先に定義
 window.runPreview = async function(auto) {
   const year = document.getElementById('year').value;
   const month = document.getElementById('month').value;
@@ -313,8 +278,6 @@ window.runPreview = async function(auto) {
     const res = await fetch(`${WORKERS_URL}/api/fortune/preview?year=${year}&month=${month}&day=${day}`);
     const data = await res.json();
     const h = data.honmeiseiNumber || 1;
-
-    // 本命星バッジ
     document.getElementById('p-badge').textContent = STAR_CHARS[h] || '★';
     document.getElementById('p-num').textContent = '第' + h + '星 · 本命星';
     document.getElementById('p-name').textContent = data.honmeisei || STARS[h - 1];
@@ -322,7 +285,6 @@ window.runPreview = async function(auto) {
     document.getElementById('p-tsuki').textContent = STARS[calcTsuki(h, parseInt(month), parseInt(day)) - 1];
     document.getElementById('p-birth').textContent = year + '年' + month + '月' + day + '日';
     document.getElementById('p-personality').textContent = data.personality || '';
-
     const token = localStorage.getItem('kyusei_token');
     if (token) {
       document.getElementById('menu-section').style.display = 'block';
@@ -332,7 +294,6 @@ window.runPreview = async function(auto) {
       document.getElementById('menu-section').style.display = 'none';
       document.getElementById('login-note').style.display = 'block';
     }
-
     document.getElementById('form-card').style.display = 'none';
     document.getElementById('preview-card').style.display = 'block';
     if (!auto) document.getElementById('preview-card').scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -344,14 +305,6 @@ window.runPreview = async function(auto) {
   }
 };
 
-async function loadBalance(token) {
-  try {
-    const res = await fetch(`${WORKERS_URL}/api/coins/balance`, { headers: { Authorization: 'Bearer ' + token } });
-    const data = await res.json();
-    document.getElementById('coin-balance').textContent = data.coins + ' コイン';
-  } catch {}
-}
-
 window.resetPreview = function() {
   document.getElementById('preview-card').style.display = 'none';
   document.getElementById('form-card').style.display = 'block';
@@ -359,6 +312,24 @@ window.resetPreview = function() {
   document.getElementById('form-error').textContent = '';
   window.scrollTo({ top: 0, behavior: 'smooth' });
 };
+
+// runPreview 定義後に init を実行
+(function init() {
+  const token = localStorage.getItem('kyusei_token');
+  const user = JSON.parse(localStorage.getItem('kyusei_user') || 'null');
+  if (!user?.birth_date) return;
+  const [y, m, d] = user.birth_date.split('-').map(Number);
+  document.getElementById('year').value = y;
+  document.getElementById('month').value = m;
+  document.getElementById('day').value = d;
+  const name = user.display_name || user.email?.split('@')[0] || '';
+  if (name) {
+    const b = document.getElementById('autofill-banner');
+    b.textContent = name + 'さんの生年月日を自動入力しました';
+    b.style.display = 'block';
+  }
+  if (token) window.runPreview(true);
+})();
 
 const starsEl = document.getElementById('stars');
 for (let i = 0; i < 60; i++) {
