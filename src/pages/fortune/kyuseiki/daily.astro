@@ -258,6 +258,15 @@ window.runDaily = async function() {
   const token = localStorage.getItem('kyusei_token');
   if (!token) { window.location.href = '/login'; return; }
   const btn = document.getElementById('cast-btn');
+
+  // キャッシュ確認（当日のみ有効）
+  const today = new Date().toISOString().slice(0, 10);
+  const cacheKey = `kyuseiki_daily_${today}`;
+  const cached = localStorage.getItem(cacheKey);
+  if (cached) {
+    try { displayResult(JSON.parse(cached)); return; }
+    catch(e) { localStorage.removeItem(cacheKey); }
+  }
   btn.textContent = '鑑定中...'; btn.disabled = true;
   try {
     const res = await fetch(WORKERS_URL + '/api/ai_fortune/daily', {
@@ -267,6 +276,7 @@ window.runDaily = async function() {
     });
     const data = await res.json();
     if (!res.ok) { alert(data.error || 'エラーが発生しました'); return; }
+    localStorage.setItem(cacheKey, JSON.stringify(data));
     displayResult(data);
   } catch {
     alert('通信エラーが発生しました。しばらくしてお試しください。');

@@ -312,6 +312,15 @@ window.runYearly = async function() {
   const errEl = document.getElementById('reading-error');
   const btn = document.getElementById('reading-btn');
   errEl.textContent = '';
+
+  // キャッシュ確認（年運は有効期限なし）
+  const cacheKey = `kyuseiki_yearly_${targetYear}`;
+  const cached = localStorage.getItem(cacheKey);
+  if (cached) {
+    try { displayResult(JSON.parse(cached), targetYear); return; }
+    catch(e) { localStorage.removeItem(cacheKey); }
+  }
+
   btn.textContent = '鑑定中...'; btn.disabled = true;
   try {
     const res = await fetch(`${WORKERS_URL}/api/ai_fortune/yearly`, {
@@ -321,6 +330,7 @@ window.runYearly = async function() {
     });
     const data = await res.json();
     if (!res.ok) { errEl.textContent = data.error || 'エラーが発生しました'; return; }
+    localStorage.setItem(cacheKey, JSON.stringify(data));
     displayResult(data, targetYear);
   } catch {
     errEl.textContent = '通信エラーが発生しました。';
