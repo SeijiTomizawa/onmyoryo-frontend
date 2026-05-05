@@ -1,0 +1,287 @@
+---
+import Layout from '../../../layouts/Layout.astro';
+import '../../../styles/global.css';
+---
+<Layout title="四柱推命 日運 | 陰陽寮">
+  <div class="page">
+    <div class="stars" id="stars"></div>
+    <div class="page-inner">
+
+      <header class="page-header fade-in-up">
+        <a href="/fortune/shichu" class="back-link">← 四柱推命に戻る</a>
+        <h1 class="page-title">☀️ 本日の運勢</h1>
+        <p class="page-desc" id="today-date">今日の運気を日干から詳しく読み解きます</p>
+      </header>
+
+      <div class="coin-bar fade-in-up" id="coin-bar" style="display:none">
+        <span class="coin-bar-label">保有コイン</span>
+        <span class="coin-bar-value" id="coin-balance">-- コイン</span>
+        <span class="coin-bar-cost">日運鑑定 1コイン</span>
+      </div>
+
+      <div class="glass-card confirm-card fade-in-up delay-1" id="confirm-card">
+        <div class="nikkan-preview">
+          <div class="nikkan-badge" id="p-badge"></div>
+          <div>
+            <p class="nikkan-label" id="p-label">—</p>
+            <h2 class="nikkan-name" id="p-name">—</h2>
+          </div>
+        </div>
+        <div class="confirm-chips">
+          <span class="chip">⭐ 今日の運気スコア</span><span class="chip">🎨 ラッキーカラー</span>
+          <span class="chip">🧭 吉方角</span><span class="chip">🎁 ラッキーアイテム</span>
+          <span class="chip">✅ おすすめ行動</span><span class="chip">⚠️ 注意点</span>
+        </div>
+        <div id="login-note" style="display:none">
+          <p class="login-text">鑑定にはログインが必要です</p>
+          <a href="/login" class="btn-primary" style="display:inline-block;text-decoration:none;text-align:center">ログイン</a>
+        </div>
+        <button class="btn-primary cast-btn" id="cast-btn" onclick="runDaily()" style="display:none">☀️ 本日の運勢を鑑定する（1コイン）</button>
+        <p class="error-msg" id="err"></p>
+      </div>
+
+      <div id="result-section" style="display:none">
+        <div class="result-grid">
+
+          <!-- スコアカード -->
+          <div class="glass-card score-card fade-in-up">
+            <div class="score-header">
+              <div class="score-left">
+                <p class="score-date" id="r-date"></p>
+                <h2 class="score-label-text" id="r-score-label"></h2>
+                <div class="score-nikkan-row">
+                  <div class="score-badge" id="r-badge"></div>
+                  <div>
+                    <p class="score-nikkan" id="r-nikkan"></p>
+                    <p class="score-kanshi" id="r-kanshi"></p>
+                  </div>
+                </div>
+              </div>
+              <div class="score-ring-wrap">
+                <div class="score-ring">
+                  <svg viewBox="0 0 120 120">
+                    <circle cx="60" cy="60" r="50" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="10"/>
+                    <circle cx="60" cy="60" r="50" fill="none" stroke="#f59e0b" stroke-width="10"
+                      stroke-dasharray="314.2" stroke-dashoffset="314.2"
+                      stroke-linecap="round" transform="rotate(-90 60 60)"
+                      id="score-circle" style="transition:stroke-dashoffset 1.5s ease,stroke 0.5s"/>
+                  </svg>
+                  <div class="score-inner">
+                    <span class="score-num" id="r-score">0</span>
+                    <span class="score-pt">点</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <p class="score-message" id="r-message"></p>
+          </div>
+
+          <!-- ラッキー情報 -->
+          <div class="glass-card result-block lucky-block fade-in-up">
+            <div class="block-header"><span class="block-icon">🍀</span><h3 class="block-title">今日のラッキー</h3></div>
+            <div class="lucky-grid">
+              <div class="lucky-item">
+                <span class="lucky-label">🎨 カラー</span>
+                <span class="lucky-value" id="r-color"></span>
+              </div>
+              <div class="lucky-item">
+                <span class="lucky-label">🧭 方角</span>
+                <span class="lucky-value" id="r-dir"></span>
+              </div>
+              <div class="lucky-item">
+                <span class="lucky-label">🎁 アイテム</span>
+                <span class="lucky-value" id="r-item"></span>
+              </div>
+            </div>
+          </div>
+
+          <!-- おすすめ行動 -->
+          <div class="glass-card result-block advice-block fade-in-up">
+            <div class="block-header"><span class="block-icon">✅</span><h3 class="block-title">今日のおすすめ行動</h3></div>
+            <p class="block-text" id="r-advice"></p>
+          </div>
+
+          <!-- 注意点 -->
+          <div class="glass-card result-block caution-block fade-in-up">
+            <div class="block-header"><span class="block-icon">⚠️</span><h3 class="block-title">今日の注意点</h3></div>
+            <p class="block-text" id="r-caution"></p>
+          </div>
+
+          <div class="glass-card result-block next-block fade-in-up" style="text-align:center">
+            <p class="next-title">さらに深く読み解きましょう</p>
+            <div class="next-grid">
+              <a href="/fortune/shichu/monthly" class="next-btn"><span>🌙</span><span>月運</span><span class="next-cost">2C</span></a>
+              <a href="/fortune/shichu/yearly" class="next-btn"><span>📅</span><span>年運</span><span class="next-cost">2C</span></a>
+              <a href="/fortune/shichu" class="next-btn"><span>🌳</span><span>詳細鑑定</span><span class="next-cost">3C</span></a>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</Layout>
+
+<style>
+.page { padding: 3rem 1.5rem; min-height: 100vh; position: relative; }
+.stars { position: fixed; inset: 0; pointer-events: none; z-index: 0; }
+.page-inner { max-width: 680px; margin: 0 auto; position: relative; z-index: 1; }
+.back-link { display: inline-block; font-size: 13px; color: var(--text-secondary); text-decoration: none; margin-bottom: 1rem; }
+.back-link:hover { color: #fde68a; }
+.page-header { margin-bottom: 1.5rem; }
+.page-title { font-family: 'Shippori Mincho', serif; font-size: 1.75rem; color: #fde68a; margin-bottom: 0.4rem; }
+.page-desc { font-size: 13px; color: var(--text-secondary); }
+.coin-bar { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1.25rem; background: rgba(245,158,11,0.07); border: 0.5px solid rgba(245,158,11,0.2); border-radius: var(--radius-md); padding: 0.75rem 1rem; }
+.coin-bar-label { font-size: 12px; color: var(--text-secondary); }
+.coin-bar-value { font-size: 16px; color: #fde68a; font-weight: 500; }
+.coin-bar-cost { font-size: 11px; color: var(--text-muted); margin-left: auto; }
+.confirm-card { border-top: 2px solid #f59e0b; margin-bottom: 1.25rem; }
+.nikkan-preview { display: flex; align-items: center; gap: 1.25rem; margin-bottom: 1.5rem; }
+.nikkan-badge { width: 60px; height: 60px; border-radius: 50%; background: linear-gradient(135deg,#d4af37,#8b6d20); display: flex; align-items: center; justify-content: center; font-family: 'Shippori Mincho',serif; font-size: 22px; color: #000; font-weight: bold; flex-shrink: 0; }
+.nikkan-label { font-size: 11px; color: var(--gold); margin-bottom: 4px; }
+.nikkan-name { font-family: 'Shippori Mincho', serif; font-size: 1.5rem; color: #f0e6d3; }
+.confirm-chips { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 1.25rem; }
+.chip { font-size: 12px; padding: 4px 12px; border-radius: 999px; background: rgba(245,158,11,0.1); color: #fde68a; border: 0.5px solid rgba(245,158,11,0.25); }
+.login-text { font-size: 13px; color: var(--text-secondary); text-align: center; margin-bottom: 0.75rem; }
+.cast-btn { width: 100%; }
+.error-msg { font-size: 13px; color: #ff8e8e; min-height: 1.2em; margin-top: 0.5rem; }
+.result-grid { display: flex; flex-direction: column; gap: 1.25rem; }
+.result-block { padding: 1.5rem; }
+.block-header { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1rem; padding-bottom: 0.75rem; border-bottom: 0.5px solid rgba(245,158,11,0.2); }
+.block-icon { font-size: 20px; }
+.block-title { font-family: 'Shippori Mincho', serif; font-size: 17px; color: #fde68a; margin: 0; }
+.block-text { font-size: 15px; color: var(--text-secondary); line-height: 2.1; }
+.score-card { border-top: 3px solid #f59e0b; padding: 2rem; background: linear-gradient(160deg,rgba(30,24,5,0.9),rgba(10,12,16,0.95)); }
+.score-header { display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem; margin-bottom: 1.5rem; }
+.score-left { flex: 1; }
+.score-date { font-size: 11px; color: #f59e0b; letter-spacing: 0.15em; margin-bottom: 0.5rem; }
+.score-label-text { font-family: 'Shippori Mincho', serif; font-size: 1.25rem; color: #f0e6d3; margin-bottom: 1rem; }
+.score-nikkan-row { display: flex; align-items: center; gap: 0.875rem; }
+.score-badge { width: 44px; height: 44px; border-radius: 50%; background: linear-gradient(135deg,#d4af37,#8b6d20); display: flex; align-items: center; justify-content: center; font-family: 'Shippori Mincho',serif; font-size: 16px; color: #000; font-weight: bold; flex-shrink: 0; }
+.score-nikkan { font-family: 'Shippori Mincho', serif; font-size: 15px; color: #f0e6d3; margin-bottom: 2px; }
+.score-kanshi { font-size: 12px; color: var(--text-secondary); }
+.score-ring-wrap { flex-shrink: 0; }
+.score-ring { position: relative; width: 100px; height: 100px; }
+.score-ring svg { width: 100px; height: 100px; }
+.score-inner { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+.score-num { font-family: 'Shippori Mincho', serif; font-size: 1.8rem; font-weight: bold; color: #f0e6d3; line-height: 1; }
+.score-pt { font-size: 11px; color: var(--text-secondary); }
+.score-message { font-size: 14px; color: #d4c5a9; line-height: 2.1; border-left: 3px solid #f59e0b; padding-left: 1rem; }
+.lucky-block { border-left: 3px solid #fde68a; }
+.lucky-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 0.75rem; }
+.lucky-item { background: rgba(245,158,11,0.07); border: 0.5px solid rgba(245,158,11,0.2); border-radius: var(--radius-md); padding: 0.875rem; display: flex; flex-direction: column; gap: 6px; align-items: center; text-align: center; }
+.lucky-label { font-size: 11px; color: var(--text-secondary); }
+.lucky-value { font-family: 'Shippori Mincho',serif; font-size: 16px; color: #fde68a; }
+.advice-block { border-left: 3px solid #5ef0c5; }
+.caution-block { border-left: 3px solid #fca5a5; }
+.next-block { background: linear-gradient(135deg,rgba(20,18,5,0.6),rgba(10,9,3,0.8)); }
+.next-title { font-size: 14px; color: var(--text-secondary); margin-bottom: 1.25rem; }
+.next-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 10px; }
+.next-btn { display: flex; flex-direction: column; align-items: center; gap: 6px; padding: 1rem 0.5rem; background: rgba(255,255,255,0.04); border: 0.5px solid rgba(255,255,255,0.1); border-radius: var(--radius-md); text-decoration: none; transition: all 0.2s; font-size: 13px; color: #f0e6d3; }
+.next-btn:hover { border-color: #f59e0b; background: rgba(245,158,11,0.08); transform: translateY(-2px); }
+.next-btn span:first-child { font-size: 22px; }
+.next-cost { font-size: 11px; color: #fde68a; background: rgba(245,158,11,0.12); padding: 2px 10px; border-radius: 999px; }
+@keyframes twinkle { 0%,100%{opacity:0.15}50%{opacity:0.7} }
+</style>
+
+<script is:inline>
+const WORKERS_URL = 'https://kyusei-api.seiji-tomizawa.workers.dev';
+const today = new Date().toISOString().slice(0,10);
+const cacheKey = `shichu_daily_${today}`;
+const WEEK = ['日','月','火','水','木','金','土'];
+const now = new Date();
+document.getElementById('today-date').textContent = `${now.getFullYear()}年${now.getMonth()+1}月${now.getDate()}日（${WEEK[now.getDay()]}）の運気`;
+
+(async function init() {
+  const token = localStorage.getItem('kyusei_token');
+  const user = JSON.parse(localStorage.getItem('kyusei_user') || 'null');
+  if (!user?.birth_date) return;
+  const [y, m, d] = user.birth_date.split('-').map(Number);
+  try {
+    const res = await fetch(`${WORKERS_URL}/api/shichu/preview?year=${y}&month=${m}&day=${d}&hour=unknown&gender=f`);
+    const data = await res.json();
+    document.getElementById('p-badge').textContent = data.nikkan || '甲';
+    document.getElementById('p-label').textContent = '日干 · ' + data.nikkan;
+    document.getElementById('p-name').textContent = data.nikkan + '（' + (data.nikkanSymbol||'') + '）';
+  } catch {}
+
+  if (token) {
+    document.getElementById('coin-bar').style.display = 'flex';
+    document.getElementById('cast-btn').style.display = 'block';
+    document.getElementById('login-note').style.display = 'none';
+    loadBalance(token);
+    const cached = localStorage.getItem(cacheKey);
+    if (cached) {
+      const btn = document.getElementById('cast-btn');
+      btn.textContent = '☀️ 本日の運勢を表示（鑑定済み・無料）';
+      btn.style.background = 'rgba(16,185,129,0.15)';
+      btn.style.borderColor = 'rgba(16,185,129,0.4)';
+      btn.style.color = '#6ee7b7';
+    }
+  } else {
+    document.getElementById('login-note').style.display = 'block';
+    document.getElementById('cast-btn').style.display = 'none';
+  }
+})();
+
+async function loadBalance(token) {
+  try {
+    const res = await fetch(`${WORKERS_URL}/api/coins/balance`, {headers:{Authorization:'Bearer '+token}});
+    const d = await res.json();
+    document.getElementById('coin-balance').textContent = d.coins + ' コイン';
+  } catch {}
+}
+
+window.runDaily = async function() {
+  const token = localStorage.getItem('kyusei_token');
+  if (!token) { window.location.href = '/login'; return; }
+  const cached = localStorage.getItem(cacheKey);
+  if (cached) { try { displayResult(JSON.parse(cached)); return; } catch(e) { localStorage.removeItem(cacheKey); } }
+  const btn = document.getElementById('cast-btn');
+  const errEl = document.getElementById('err');
+  btn.textContent = '鑑定中...'; btn.disabled = true; errEl.textContent = '';
+  try {
+    const res = await fetch(`${WORKERS_URL}/api/shichu/daily`, {
+      method:'POST', headers:{'Content-Type':'application/json',Authorization:'Bearer '+token},
+      body: JSON.stringify({}),
+    });
+    const data = await res.json();
+    if (!res.ok) { errEl.textContent = data.error || 'エラーが発生しました'; return; }
+    localStorage.setItem(cacheKey, JSON.stringify(data));
+    displayResult(data);
+  } catch { errEl.textContent = '通信エラーが発生しました。';
+  } finally { btn.textContent = '☀️ 本日の運勢を鑑定する（1コイン）'; btn.disabled = false; btn.style.background=''; btn.style.borderColor=''; btn.style.color=''; }
+};
+
+function displayResult(data) {
+  document.getElementById('r-date').textContent = data.date || '';
+  document.getElementById('r-score-label').textContent = data.scoreLabel || '';
+  document.getElementById('r-badge').textContent = data.nikkan || '';
+  document.getElementById('r-nikkan').textContent = data.nikkan + '（' + (data.nikkanSymbol||'') + '）';
+  document.getElementById('r-kanshi').textContent = '日盤：' + data.dayKanshi;
+  document.getElementById('r-message').textContent = data.message || '';
+  const score = data.score || 0;
+  document.getElementById('r-score').textContent = score;
+  const color = score>=85?'#5ef0c5':score>=70?'#f59e0b':score>=55?'#fb923c':'#fca5a5';
+  document.getElementById('score-circle').style.stroke = color;
+  setTimeout(() => { document.getElementById('score-circle').style.strokeDashoffset = (314.2-314.2*score/100).toString(); }, 100);
+  document.getElementById('r-color').textContent = data.luckyColor || '';
+  document.getElementById('r-dir').textContent = data.luckyDirection || '';
+  document.getElementById('r-item').textContent = data.luckyItem || '';
+  document.getElementById('r-advice').textContent = data.advice || '';
+  document.getElementById('r-caution').textContent = data.caution || '';
+  if (data.remainingCoins !== undefined) document.getElementById('coin-balance').textContent = data.remainingCoins + ' コイン';
+  document.getElementById('confirm-card').style.display = 'none';
+  document.getElementById('coin-bar').style.display = 'none';
+  document.getElementById('result-section').style.display = 'block';
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+const starsEl = document.getElementById('stars');
+for (let i=0;i<60;i++) {
+  const s = document.createElement('div');
+  const size = Math.random()*2+1;
+  s.style.cssText=`position:absolute;border-radius:50%;background:#fff;width:${size}px;height:${size}px;top:${Math.random()*100}%;left:${Math.random()*100}%;opacity:${Math.random()*0.4+0.1};animation:twinkle ${2+Math.random()*3}s ease-in-out infinite;animation-delay:${Math.random()*3}s;`;
+  starsEl.appendChild(s);
+}
+</script>

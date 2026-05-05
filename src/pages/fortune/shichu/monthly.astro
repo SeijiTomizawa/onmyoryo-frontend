@@ -1,0 +1,298 @@
+---
+import Layout from '../../../layouts/Layout.astro';
+import '../../../styles/global.css';
+---
+<Layout title="四柱推命 月運 | 陰陽寮">
+  <div class="page">
+    <div class="stars" id="stars"></div>
+    <div class="page-inner">
+
+      <header class="page-header fade-in-up">
+        <a href="/fortune/shichu" class="back-link">← 四柱推命に戻る</a>
+        <h1 class="page-title">🌙 月運詳細</h1>
+        <p class="page-desc" id="month-label">今月の運気の流れを詳しく読み解きます</p>
+      </header>
+
+      <div class="coin-bar fade-in-up" id="coin-bar" style="display:none">
+        <span class="coin-bar-label">保有コイン</span>
+        <span class="coin-bar-value" id="coin-balance">-- コイン</span>
+        <span class="coin-bar-cost">月運詳細 2コイン</span>
+      </div>
+
+      <div class="glass-card confirm-card fade-in-up delay-1" id="confirm-card">
+        <div class="nikkan-preview">
+          <div class="nikkan-badge" id="p-badge"></div>
+          <div>
+            <p class="nikkan-label" id="p-label">—</p>
+            <h2 class="nikkan-name" id="p-name">—</h2>
+          </div>
+        </div>
+        <div class="confirm-chips">
+          <span class="chip">🌙 今月の総合運</span><span class="chip">❤️ 恋愛</span>
+          <span class="chip">💼 仕事</span><span class="chip">💰 金運</span>
+          <span class="chip">🏃 健康</span><span class="chip">📅 吉日・注意日</span>
+        </div>
+        <div id="login-note" style="display:none">
+          <p class="login-text">鑑定にはログインが必要です</p>
+          <a href="/login" class="btn-primary" style="display:inline-block;text-decoration:none;text-align:center">ログイン</a>
+        </div>
+        <button class="btn-primary cast-btn" id="cast-btn" onclick="runMonthly()" style="display:none">🌙 今月の月運を見る（2コイン）</button>
+        <p class="error-msg" id="err"></p>
+      </div>
+
+      <div id="result-section" style="display:none">
+        <div class="result-grid">
+
+          <div class="glass-card hero-card fade-in-up">
+            <div class="hero-row">
+              <div class="hero-left">
+                <p class="hero-month-label" id="r-month-label"></p>
+                <div class="hero-score-badge" id="r-score-badge"></div>
+                <div class="hero-nikkan-row">
+                  <div class="hero-badge" id="r-badge"></div>
+                  <div>
+                    <p class="hero-nikkan" id="r-nikkan"></p>
+                    <p class="hero-kanshi" id="r-kanshi"></p>
+                  </div>
+                </div>
+              </div>
+              <div class="score-wrap">
+                <div class="score-ring">
+                  <svg viewBox="0 0 100 100">
+                    <circle cx="50" cy="50" r="42" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="8"/>
+                    <circle cx="50" cy="50" r="42" fill="none" stroke="#c4b5fd" stroke-width="8"
+                      stroke-dasharray="263.9" stroke-dashoffset="263.9"
+                      stroke-linecap="round" transform="rotate(-90 50 50)"
+                      id="score-circle" style="transition:stroke-dashoffset 1.5s ease,stroke 0.5s"/>
+                  </svg>
+                  <div class="score-inner">
+                    <span class="score-num" id="r-score">0</span>
+                    <span class="score-pt">点</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <p class="hero-overview" id="r-overview"></p>
+          </div>
+
+          <div class="glass-card result-block lucky-block fade-in-up">
+            <div class="block-header"><span class="block-icon">✨</span><h3 class="block-title">今月の吉日</h3></div>
+            <div class="day-chips" id="r-lucky-days"></div>
+          </div>
+
+          <div class="glass-card result-block caution-block fade-in-up">
+            <div class="block-header"><span class="block-icon">⚠️</span><h3 class="block-title">天中殺日（慎重に）</h3></div>
+            <div class="day-chips caution-chips" id="r-caution-days"></div>
+            <p class="caution-note">天中殺日は大きな決断・新規事業・高額な契約は避けましょう。</p>
+          </div>
+
+          <div class="glass-card result-block love-block fade-in-up">
+            <div class="block-header"><span class="block-icon">❤️</span><h3 class="block-title">恋愛運</h3></div>
+            <p class="block-text" id="r-love"></p>
+          </div>
+
+          <div class="glass-card result-block work-block fade-in-up">
+            <div class="block-header"><span class="block-icon">💼</span><h3 class="block-title">仕事運</h3></div>
+            <p class="block-text" id="r-work"></p>
+          </div>
+
+          <div class="glass-card result-block money-block fade-in-up">
+            <div class="block-header"><span class="block-icon">💰</span><h3 class="block-title">金運</h3></div>
+            <p class="block-text" id="r-money"></p>
+          </div>
+
+          <div class="glass-card result-block health-block fade-in-up">
+            <div class="block-header"><span class="block-icon">🏃</span><h3 class="block-title">健康運</h3></div>
+            <p class="block-text" id="r-health"></p>
+          </div>
+
+          <div class="glass-card result-block advice-block fade-in-up">
+            <div class="block-header"><span class="block-icon">💡</span><h3 class="block-title">今月のアドバイス</h3></div>
+            <p class="block-text" id="r-advice"></p>
+          </div>
+
+          <div class="glass-card result-block next-block fade-in-up" style="text-align:center">
+            <p class="next-title">さらに深く読み解きましょう</p>
+            <div class="next-grid">
+              <a href="/fortune/shichu/yearly" class="next-btn"><span>📅</span><span>年運</span><span class="next-cost">2C</span></a>
+              <a href="/fortune/shichu/daily" class="next-btn"><span>☀️</span><span>日運</span><span class="next-cost">1C</span></a>
+              <a href="/fortune/shichu" class="next-btn"><span>🌳</span><span>詳細鑑定</span><span class="next-cost">3C</span></a>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</Layout>
+
+<style>
+.page { padding: 3rem 1.5rem; min-height: 100vh; position: relative; }
+.stars { position: fixed; inset: 0; pointer-events: none; z-index: 0; }
+.page-inner { max-width: 680px; margin: 0 auto; position: relative; z-index: 1; }
+.back-link { display: inline-block; font-size: 13px; color: var(--text-secondary); text-decoration: none; margin-bottom: 1rem; }
+.back-link:hover { color: #c4b5fd; }
+.page-header { margin-bottom: 1.5rem; }
+.page-title { font-family: 'Shippori Mincho', serif; font-size: 1.75rem; color: #c4b5fd; margin-bottom: 0.4rem; }
+.page-desc { font-size: 13px; color: var(--text-secondary); }
+.coin-bar { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1.25rem; background: rgba(124,111,205,0.07); border: 0.5px solid rgba(124,111,205,0.2); border-radius: var(--radius-md); padding: 0.75rem 1rem; }
+.coin-bar-label { font-size: 12px; color: var(--text-secondary); }
+.coin-bar-value { font-size: 16px; color: #c4b5fd; font-weight: 500; }
+.coin-bar-cost { font-size: 11px; color: var(--text-muted); margin-left: auto; }
+.confirm-card { border-top: 2px solid #7c6fcd; margin-bottom: 1.25rem; }
+.nikkan-preview { display: flex; align-items: center; gap: 1.25rem; margin-bottom: 1.5rem; }
+.nikkan-badge { width: 60px; height: 60px; border-radius: 50%; background: linear-gradient(135deg,#d4af37,#8b6d20); display: flex; align-items: center; justify-content: center; font-family: 'Shippori Mincho',serif; font-size: 22px; color: #000; font-weight: bold; flex-shrink: 0; }
+.nikkan-label { font-size: 11px; color: var(--gold); margin-bottom: 4px; }
+.nikkan-name { font-family: 'Shippori Mincho', serif; font-size: 1.5rem; color: #f0e6d3; }
+.confirm-chips { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 1.25rem; }
+.chip { font-size: 12px; padding: 4px 12px; border-radius: 999px; background: rgba(124,111,205,0.1); color: #c4b5fd; border: 0.5px solid rgba(124,111,205,0.25); }
+.login-text { font-size: 13px; color: var(--text-secondary); text-align: center; margin-bottom: 0.75rem; }
+.cast-btn { width: 100%; }
+.error-msg { font-size: 13px; color: #ff8e8e; min-height: 1.2em; margin-top: 0.5rem; }
+.result-grid { display: flex; flex-direction: column; gap: 1.25rem; }
+.result-block { padding: 1.5rem; }
+.block-header { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1rem; padding-bottom: 0.75rem; border-bottom: 0.5px solid rgba(124,111,205,0.2); }
+.block-icon { font-size: 20px; }
+.block-title { font-family: 'Shippori Mincho', serif; font-size: 17px; color: #c4b5fd; margin: 0; }
+.block-text { font-size: 15px; color: var(--text-secondary); line-height: 2.1; }
+.hero-card { border-top: 3px solid #7c6fcd; padding: 2rem; background: linear-gradient(160deg,rgba(20,16,40,0.9),rgba(10,12,16,0.95)); }
+.hero-row { display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem; margin-bottom: 1.5rem; }
+.hero-left { flex: 1; }
+.hero-month-label { font-size: 11px; color: #c4b5fd; letter-spacing: 0.15em; margin-bottom: 0.5rem; }
+.hero-score-badge { font-family: 'Shippori Mincho',serif; font-size: 1.25rem; color: #f0e6d3; margin-bottom: 1rem; }
+.hero-nikkan-row { display: flex; align-items: center; gap: 0.875rem; }
+.hero-badge { width: 44px; height: 44px; border-radius: 50%; background: linear-gradient(135deg,#d4af37,#8b6d20); display: flex; align-items: center; justify-content: center; font-family: 'Shippori Mincho',serif; font-size: 16px; color: #000; font-weight: bold; flex-shrink: 0; }
+.hero-nikkan { font-family: 'Shippori Mincho', serif; font-size: 15px; color: #f0e6d3; margin-bottom: 2px; }
+.hero-kanshi { font-size: 12px; color: var(--text-secondary); }
+.score-wrap { display: flex; flex-direction: column; align-items: center; gap: 0.5rem; flex-shrink: 0; }
+.score-ring { position: relative; width: 90px; height: 90px; }
+.score-ring svg { width: 90px; height: 90px; }
+.score-inner { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+.score-num { font-family: 'Shippori Mincho', serif; font-size: 1.6rem; font-weight: bold; color: #f0e6d3; line-height: 1; }
+.score-pt { font-size: 10px; color: var(--text-secondary); }
+.hero-overview { font-size: 14px; color: #d4c5a9; line-height: 2.1; border-left: 3px solid #7c6fcd; padding-left: 1rem; }
+.day-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.day-chip { font-size: 14px; padding: 6px 14px; border-radius: 999px; background: rgba(94,240,197,0.1); color: #5ef0c5; border: 0.5px solid rgba(94,240,197,0.3); }
+.caution-chips .day-chip { background: rgba(239,68,68,0.1); color: #fca5a5; border-color: rgba(239,68,68,0.3); }
+.caution-note { font-size: 12px; color: var(--text-secondary); margin-top: 0.75rem; }
+.lucky-block { border-left: 3px solid #5ef0c5; }
+.caution-block { border-left: 3px solid #ef4444; }
+.love-block { border-left: 3px solid #fda4af; }
+.work-block { border-left: 3px solid #93c5fd; }
+.money-block { border-left: 3px solid #fde68a; }
+.health-block { border-left: 3px solid #86efac; }
+.advice-block { border-top: 3px solid #7c6fcd; background: linear-gradient(135deg,rgba(20,16,40,0.6),rgba(10,8,20,0.8)); }
+.next-block { background: linear-gradient(135deg,rgba(20,16,40,0.6),rgba(10,8,20,0.8)); }
+.next-title { font-size: 14px; color: var(--text-secondary); margin-bottom: 1.25rem; }
+.next-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 10px; }
+.next-btn { display: flex; flex-direction: column; align-items: center; gap: 6px; padding: 1rem 0.5rem; background: rgba(255,255,255,0.04); border: 0.5px solid rgba(255,255,255,0.1); border-radius: var(--radius-md); text-decoration: none; transition: all 0.2s; font-size: 13px; color: #f0e6d3; }
+.next-btn:hover { border-color: #7c6fcd; background: rgba(124,111,205,0.1); transform: translateY(-2px); }
+.next-btn span:first-child { font-size: 22px; }
+.next-cost { font-size: 11px; color: #c4b5fd; background: rgba(124,111,205,0.15); padding: 2px 10px; border-radius: 999px; }
+@keyframes twinkle { 0%,100%{opacity:0.15}50%{opacity:0.7} }
+</style>
+
+<script is:inline>
+const WORKERS_URL = 'https://kyusei-api.seiji-tomizawa.workers.dev';
+const now = new Date();
+const currentYear = now.getFullYear();
+const currentMonth = now.getMonth() + 1;
+const cacheKey = `shichu_monthly_${currentYear}_${currentMonth}`;
+
+document.getElementById('month-label').textContent = `${currentYear}年${currentMonth}月の運気を詳しく読み解きます`;
+
+(async function init() {
+  const token = localStorage.getItem('kyusei_token');
+  const user = JSON.parse(localStorage.getItem('kyusei_user') || 'null');
+  if (!user?.birth_date) return;
+  const [y, m, d] = user.birth_date.split('-').map(Number);
+  try {
+    const res = await fetch(`${WORKERS_URL}/api/shichu/preview?year=${y}&month=${m}&day=${d}&hour=unknown&gender=f`);
+    const data = await res.json();
+    document.getElementById('p-badge').textContent = data.nikkan || '甲';
+    document.getElementById('p-label').textContent = '日干 · ' + data.nikkan;
+    document.getElementById('p-name').textContent = data.nikkan + '（' + (data.nikkanSymbol || '') + '）';
+  } catch {}
+
+  if (token) {
+    document.getElementById('coin-bar').style.display = 'flex';
+    document.getElementById('cast-btn').style.display = 'block';
+    document.getElementById('login-note').style.display = 'none';
+    loadBalance(token);
+    const cached = localStorage.getItem(cacheKey);
+    if (cached) {
+      const btn = document.getElementById('cast-btn');
+      btn.textContent = '🌙 今月の月運を表示（鑑定済み・無料）';
+      btn.style.background = 'rgba(16,185,129,0.15)';
+      btn.style.borderColor = 'rgba(16,185,129,0.4)';
+      btn.style.color = '#6ee7b7';
+    }
+  } else {
+    document.getElementById('login-note').style.display = 'block';
+    document.getElementById('cast-btn').style.display = 'none';
+  }
+})();
+
+async function loadBalance(token) {
+  try {
+    const res = await fetch(`${WORKERS_URL}/api/coins/balance`, {headers:{Authorization:'Bearer '+token}});
+    const d = await res.json();
+    document.getElementById('coin-balance').textContent = d.coins + ' コイン';
+  } catch {}
+}
+
+window.runMonthly = async function() {
+  const token = localStorage.getItem('kyusei_token');
+  if (!token) { window.location.href = '/login'; return; }
+  const cached = localStorage.getItem(cacheKey);
+  if (cached) { try { displayResult(JSON.parse(cached)); return; } catch(e) { localStorage.removeItem(cacheKey); } }
+  const btn = document.getElementById('cast-btn');
+  const errEl = document.getElementById('err');
+  btn.textContent = '鑑定中...'; btn.disabled = true; errEl.textContent = '';
+  try {
+    const res = await fetch(`${WORKERS_URL}/api/shichu/monthly`, {
+      method:'POST', headers:{'Content-Type':'application/json',Authorization:'Bearer '+token},
+      body: JSON.stringify({}),
+    });
+    const data = await res.json();
+    if (!res.ok) { errEl.textContent = data.error || 'エラーが発生しました'; return; }
+    localStorage.setItem(cacheKey, JSON.stringify(data));
+    displayResult(data);
+  } catch { errEl.textContent = '通信エラーが発生しました。';
+  } finally { btn.textContent = '🌙 今月の月運を見る（2コイン）'; btn.disabled = false; btn.style.background=''; btn.style.borderColor=''; btn.style.color=''; }
+};
+
+function displayResult(data) {
+  document.getElementById('r-month-label').textContent = `${data.year}年${data.month}月の運勢`;
+  document.getElementById('r-score-badge').textContent = data.scoreLabel || '';
+  document.getElementById('r-badge').textContent = data.nikkan || '';
+  document.getElementById('r-nikkan').textContent = data.nikkan + '（' + (data.nikkanSymbol||'') + '）';
+  document.getElementById('r-kanshi').textContent = '月盤：' + data.monthKanshi;
+  document.getElementById('r-overview').textContent = data.overview || '';
+  const score = data.score || 0;
+  document.getElementById('r-score').textContent = score;
+  const color = score>=85?'#5ef0c5':score>=70?'#c4b5fd':score>=55?'#fb923c':'#fca5a5';
+  document.getElementById('score-circle').style.stroke = color;
+  setTimeout(() => { document.getElementById('score-circle').style.strokeDashoffset = (263.9-263.9*score/100).toString(); }, 100);
+  document.getElementById('r-lucky-days').innerHTML = (data.luckyDays||[]).map(d=>`<span class="day-chip">${d}日</span>`).join('') || '<span style="font-size:13px;color:var(--text-secondary)">今月は特定の吉日はありません</span>';
+  document.getElementById('r-caution-days').innerHTML = (data.cautionDays||[]).map(d=>`<span class="day-chip">${d}日</span>`).join('') || '<span style="font-size:13px;color:var(--text-secondary)">今月は天中殺日はありません</span>';
+  document.getElementById('r-love').textContent = data.love || '';
+  document.getElementById('r-work').textContent = data.work || '';
+  document.getElementById('r-money').textContent = data.money || '';
+  document.getElementById('r-health').textContent = data.health || '';
+  document.getElementById('r-advice').textContent = data.advice || '';
+  if (data.remainingCoins !== undefined) document.getElementById('coin-balance').textContent = data.remainingCoins + ' コイン';
+  document.getElementById('confirm-card').style.display = 'none';
+  document.getElementById('coin-bar').style.display = 'none';
+  document.getElementById('result-section').style.display = 'block';
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+const starsEl = document.getElementById('stars');
+for (let i=0;i<60;i++) {
+  const s = document.createElement('div');
+  const size = Math.random()*2+1;
+  s.style.cssText=`position:absolute;border-radius:50%;background:#fff;width:${size}px;height:${size}px;top:${Math.random()*100}%;left:${Math.random()*100}%;opacity:${Math.random()*0.4+0.1};animation:twinkle ${2+Math.random()*3}s ease-in-out infinite;animation-delay:${Math.random()*3}s;`;
+  starsEl.appendChild(s);
+}
+</script>
