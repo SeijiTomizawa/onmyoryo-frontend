@@ -54,6 +54,7 @@ import Layout from '../../layouts/Layout.astro';
       <div class="tab-row">
         <button class="tab-btn active" onclick="switchView('users', this)">👥 ユーザー管理</button>
         <button class="tab-btn" onclick="switchView('readings', this)">📖 占い利用履歴</button>
+        <button class="tab-btn" onclick="switchView('costs', this)">💰 コスト管理</button>
       </div>
 
       <!-- ===== ユーザー管理ビュー ===== -->
@@ -176,7 +177,17 @@ import Layout from '../../layouts/Layout.astro';
           <div id="readings-list"><p class="loading-text">読み込み中...</p></div>
           <div id="readings-pagination" class="pagination"></div>
         </div>
+      </div>
 
+      <div id="view-costs" style="display:none">
+        <div class="section-card">
+          <div class="section-header-row">
+            <h3 class="section-title">💰 鑑定コスト設定</h3>
+            <button class="btn-refresh" onclick="loadCosts()">🔄 更新</button>
+          </div>
+          <p style="font-size:12px;color:var(--text-secondary);margin:0">変更はリアルタイムで反映されます。</p>
+          <div id="costs-list"><p class="loading-text">読み込み中...</p></div>
+        </div>
       </div>
 
     </div>
@@ -296,6 +307,14 @@ import Layout from '../../layouts/Layout.astro';
   .stats-bar { flex-wrap: wrap; }
   .reading-stats-grid { grid-template-columns: repeat(2, 1fr); }
 }
+.costs-grid { display: flex; flex-direction: column; gap: 0.75rem; }
+.cost-row { background: #ffffff06; border-radius: var(--radius-md); padding: 1rem; border: 0.5px solid #ffffff0a; }
+.cost-info { margin-bottom: 0.75rem; }
+.cost-label { font-family: 'Shippori Mincho', serif; font-size: 15px; color: #f0e6d3; margin-bottom: 2px; }
+.cost-type { font-size: 11px; color: var(--text-secondary); font-family: monospace; margin-bottom: 2px; }
+.cost-desc { font-size: 12px; color: var(--text-secondary); }
+.cost-edit { display: flex; align-items: center; gap: 8px; }
+.cost-msg { font-size: 12px; min-height: 1.2em; margin-top: 4px; }
 </style>
 
 <script is:inline>
@@ -333,8 +352,10 @@ function adminHeaders() {
 function switchView(name, btn) {
   document.getElementById('view-users').style.display = name === 'users' ? 'block' : 'none';
   document.getElementById('view-readings').style.display = name === 'readings' ? 'block' : 'none';
+  document.getElementById('view-costs').style.display = name === 'costs' ? 'block' : 'none';
   document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
+  if (name === 'costs') loadCosts();
 }
 
 function switchDetailTab(name, btn) {
@@ -611,4 +632,54 @@ function renderReadings() {
 }
 
 function goReadingsPage(p) { readingsPage = p; renderReadings(); }
+
+// ========== コスト管理 ==========
+
+async function loadCosts() {
+  const el = document.getElementById('costs-list');
+  el.innerHTML = '<p class="loading-text">読み込み中...</p>';
+  try {
+    const res = await fetch(`${WORKERS_URL}/api/admin/costs`, { headers: adminHeaders() });
+    const data = await res.json();
+    const costs = data.data || [];
+    if (costs.length === 0) { el.innerHTML = '<p class="empty-text">データがありません</p>'; return; }
+    el.innerHTML = `<div class="costs-grid">${costs.map(c => `
+      <div class="cost-row">
+        <div class="cost-info">
+          <p class="cost-label">${c.label}</p>
+          <p class="cost-type">${c.reading_type}</p>
+          ${c.description ? `<p class="cost-desc">${c.description}</p>` : ''}
+        </div>
+        <div class="cost-edit">
+          <input type="number" class="cost-input" id="cost-${c.reading_type}"
+            value="${c.coins}" min="0" max="99" style="width:70px;text-align:center" />
+          <span style="font-size:13px;color:var(--text-secondary)">C</span>
+          <button class="btn-coin" onclick="saveCost('${c.reading_type}')">保存</button>
+        </div>
+        <p class="cost-msg" id="cost-msg-${c.reading_type}"></p>
+      </div>`).join('')}</div>`;
+  } catch {
+    el.innerHTML = '<p class="empty-text">通信エラーが発生しました</p>';
+  }
+}
+
+async function saveCost(readingType) {
+  const input = document.getElementById(`cost-${readingType}`);
+  const coins = parseInt(input.value, 10);
+  const msgEl = document.getElementById(`cost-msg-${readingType}`);
+  if (isNaN(coins) || coins < 0) { msgEl.style.color = '#ff8e8e'; msgEl.textContent = '無効な値です'; return; }
+  msgEl.style.color = 'var(--text-secondary)'; msgEl.textContent = '保存中...';
+  try {
+    const res = await fetch(`${WORKERS_URL}/api/admin/costs/${readingType}`, {
+      method: 'PUT', headers: adminHeaders(),
+      body: JSON.stringify({ coins }),
+    });
+    const data = await res.json();
+    if (res.ok) { msgEl.style.color = '#6ee7b7'; msgEl.textContent = '✓ 保存しました'; }
+    else { msgEl.style.color = '#ff8e8e'; msgEl.textContent = data.error || '失敗しました'; }
+  } catch {
+    msgEl.style.color = '#ff8e8e'; msgEl.textContent = '通信エラー';
+  }
+}
+
 </script>

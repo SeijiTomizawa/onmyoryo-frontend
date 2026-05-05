@@ -238,7 +238,22 @@ function init() {
 
   document.getElementById('balance-bar').style.display = 'flex';
   loadBalance(token);
-
+  // キャッシュ確認（当月）
+  const cacheKey = `kyuseiki_monthly_${now.getFullYear()}_${now.getMonth() + 1}`;
+  const cached = localStorage.getItem(cacheKey);
+  if (cached) {
+    try {
+      const btn = document.getElementById('cast-btn');
+      btn.textContent = '🌙 今月の月運を表示（鑑定済み・無料）';
+      btn.style.background = 'rgba(16,185,129,0.15)';
+      btn.style.borderColor = 'rgba(16,185,129,0.4)';
+      btn.style.color = '#6ee7b7';
+      btn.onclick = function() {
+        try { displayResult(JSON.parse(cached)); }
+        catch(e) { localStorage.removeItem(cacheKey); location.reload(); }
+      };
+    } catch(e) { localStorage.removeItem(cacheKey); }
+  }
   if (user) {
     const name = user.display_name || user.email.split('@')[0];
     const banner = document.getElementById('autofill-banner');
@@ -283,7 +298,8 @@ window.runMonthly = async function() {
       alert(data.error || 'エラーが発生しました');
       return;
     }
-    localStorage.setItem(cacheKey, JSON.stringify(data));
+    // localStorage.setItem(cacheKey, JSON.stringify(data));
+    localStorage.setItem(`kyuseiki_daily_${new Date().toISOString().slice(0, 10)}`, JSON.stringify(data));
     displayResult(data);
   } catch {
     alert('通信エラーが発生しました。しばらくしてお試しください。');

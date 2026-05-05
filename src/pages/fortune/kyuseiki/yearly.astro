@@ -285,6 +285,18 @@ function getHonmei(year) {
     document.getElementById('reading-btn').style.display = 'block';
     document.getElementById('login-note').style.display = 'none';
     loadBalance(token);
+    // キャッシュ確認（今年・来年）
+  [0, 1].forEach(offset => {
+    const yr = currentYear + offset;
+    const cached = localStorage.getItem(`kyuseiki_yearly_${yr}`);
+    if (cached && offset === 0) {
+      const btn = document.getElementById('reading-btn');
+      btn.textContent = `📅 ${yr}年の年運を表示（鑑定済み・無料）`;
+      btn.style.background = 'rgba(16,185,129,0.15)';
+      btn.style.borderColor = 'rgba(16,185,129,0.4)';
+      btn.style.color = '#6ee7b7';
+    }
+  });
   } else {
     document.getElementById('login-note').style.display = 'block';
     document.getElementById('reading-btn').style.display = 'none';
